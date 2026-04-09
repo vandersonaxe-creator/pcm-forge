@@ -15,17 +15,19 @@ export function useCompany() {
     const { data: { user: authUser } } = await supabase.auth.getUser();
     
     if (!authUser) {
-      // Auditor Mode Fallback: Fetch first company if no user is logged in
-      const { data: firstCompany } = await supabase.from("companies").select("*").limit(1).single();
-      if (firstCompany) {
-        setCompany(firstCompany as Company);
-        // Provide a guest user with the company_id so UI doesn't break
+      // Auditor Mode Fallback: Use specific company/user IDs provided by the user
+      const companyId = "5782213c-5bc5-419b-8b98-01ad9f25beaf"; // IPB-GR Indústria
+      
+      const { data: auditorCompany } = await supabase.from("companies").select("*").eq("id", companyId).single();
+      
+      if (auditorCompany) {
+        setCompany(auditorCompany as Company);
         setUser({
-          id: "00000000-0000-0000-0000-000000000000",
-          full_name: "Auditor IA",
+          id: "dcf49796-569e-4f8e-b6c6-221a2bd47be6", // Vanderson (admin)
+          full_name: "Auditor IA (Acesso Vanderson)",
           email: "auditor@pcmforge.local",
-          role: "auditor",
-          company_id: (firstCompany as any).id,
+          role: "admin",
+          company_id: companyId,
           is_active: true,
           created_at: new Date().toISOString(),
           updated_at: new Date().toISOString()

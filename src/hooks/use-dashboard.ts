@@ -42,10 +42,9 @@ export function useDashboard() {
         if (profile) companyId = profile.company_id;
       }
 
-      // Auditor Mode Fallback: if no session or profile, fetch first company
+      // Auditor Mode Fallback: if no session or profile, use specific company ID
       if (!companyId) {
-        const { data: firstCompany } = await supabase.from("companies").select("id").limit(1).single();
-        if (firstCompany) companyId = firstCompany.id;
+        companyId = "5782213c-5bc5-419b-8b98-01ad9f25beaf"; // IPB-GR Indústria
       }
 
       if (!companyId) throw new Error("Empresa não encontrada");

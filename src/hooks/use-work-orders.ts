@@ -305,10 +305,9 @@ export async function getWorkOrderCounters() {
       if (profile) companyId = profile.company_id;
     }
 
-    // Fallback for Auditor Mode
+    // Fallback for Auditor Mode: use specific ID provided
     if (!companyId) {
-      const { data: firstCompany } = await supabase.from("companies").select("id").limit(1).single();
-      if (firstCompany) companyId = firstCompany.id;
+      companyId = "5782213c-5bc5-419b-8b98-01ad9f25beaf"; // IPB-GR Indústria
     }
 
     if (!companyId) return null;
