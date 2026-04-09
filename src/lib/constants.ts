@@ -128,11 +128,11 @@ export const OS_STATUS_LABELS: Record<OsStatus, string> = {
 }
 
 export const OS_STATUS_COLORS: Record<OsStatus, string> = {
-  planned: 'badge-info',
+  planned: 'badge-neutral',
   open: 'badge-info',
   in_progress: 'badge-warning',
   completed: 'badge-success',
-  cancelled: 'badge-neutral',
+  cancelled: 'badge-danger',
 }
 
 // OS Priority Labels

@@ -10,7 +10,7 @@ import { WOFinalizeModal } from "@/components/work-orders/wo-finalize-modal";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent } from "@/components/ui/card";
-import { ClipboardEdit, Loader2, AlertCircle } from "lucide-react";
+import { ClipboardEdit, Loader2, AlertCircle, CheckCircle2 as CheckCircle2Icon } from "lucide-react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import type { WorkOrderItem } from "@/lib/types/database";
@@ -77,6 +77,7 @@ export default function WorkOrderExecutionPage({ params }: WOPageProps) {
   const items = workOrder.items || [];
   const filledCount = items.filter(i => i.value !== null).length;
   const isReadOnly = workOrder.status === "completed" || workOrder.status === "cancelled";
+  const canFinalize = items.length === 0 || filledCount > 0;
 
   return (
     <div className="flex flex-col min-h-screen bg-background">
@@ -84,7 +85,13 @@ export default function WorkOrderExecutionPage({ params }: WOPageProps) {
       <WOExecutionHeader 
         workOrder={workOrder} 
         onStatusChange={refetch}
-        onFinalize={() => setShowFinalize(true)}
+        onFinalize={() => {
+          if (!canFinalize) {
+            toast.error("Preencha ao menos um item do checklist antes de finalizar.");
+            return;
+          }
+          setShowFinalize(true);
+        }}
       />
 
       {workOrder.status === "in_progress" && (
@@ -93,7 +100,7 @@ export default function WorkOrderExecutionPage({ params }: WOPageProps) {
 
       {workOrder.status === "completed" && (
         <div className="bg-success/10 border-b border-success/20 px-6 py-3 flex items-center justify-center gap-2 text-success text-sm font-bold animate-in fade-in">
-           <CheckCircle2 className="h-4 w-4" />
+           <CheckCircle2Icon className="h-4 w-4" />
            ESTA ORDEM DE SERVIÇO FOI CONCLUÍDA E NÃO PODE SER EDITADA.
         </div>
       )}
@@ -181,23 +188,3 @@ export default function WorkOrderExecutionPage({ params }: WOPageProps) {
   );
 }
 
-// Inline icons not found in standard lucide for local project components
-function CheckCircle2({ className }: { className?: string }) {
-  return (
-    <svg 
-      xmlns="http://www.w3.org/2000/svg" 
-      width="24" 
-      height="24" 
-      viewBox="0 0 24 24" 
-      fill="none" 
-      stroke="currentColor" 
-      strokeWidth="2" 
-      strokeLinecap="round" 
-      strokeLinejoin="round" 
-      className={className}
-    >
-      <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/>
-      <path d="m9 12 2 2 4-4"/>
-    </svg>
-  );
-}

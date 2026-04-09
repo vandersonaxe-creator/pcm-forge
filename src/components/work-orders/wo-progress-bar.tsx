@@ -31,7 +31,7 @@ export function WOProgressBar({ current, total }: WOProgressBarProps) {
               {percentage}%
             </span>
             <span className="text-sm font-medium text-muted-foreground uppercase tracking-wider">
-              Item Progress
+              Progresso dos Itens
             </span>
           </div>
           <p className="text-xs text-muted-foreground">

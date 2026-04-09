@@ -84,7 +84,11 @@ export function GridFilters({ year, onYearChange, filters, onFilterChange }: Gri
               onValueChange={(val) => onFilterChange("location_id", val)}
             >
               <SelectTrigger className="w-[180px] h-9 bg-background border-border text-xs">
-                <SelectValue placeholder="Localização" />
+                <SelectValue placeholder="Localização">
+                  {filters.location_id === "all"
+                    ? "Todas as Áreas"
+                    : locations.find(l => l.id === filters.location_id)?.name ?? filters.location_id}
+                </SelectValue>
               </SelectTrigger>
               <SelectContent className="bg-popover border-border">
                 <SelectItem value="all">Todas as Áreas</SelectItem>
@@ -130,7 +134,11 @@ export function GridFilters({ year, onYearChange, filters, onFilterChange }: Gri
               onValueChange={(val) => onFilterChange("assigned_to", val)}
             >
               <SelectTrigger className="w-[180px] h-9 bg-background border-border text-xs">
-                <SelectValue placeholder="Técnico" />
+                <SelectValue placeholder="Técnico">
+                  {filters.assigned_to === "all"
+                    ? "Todos os Técnicos"
+                    : users.find(u => u.id === filters.assigned_to)?.full_name ?? filters.assigned_to}
+                </SelectValue>
               </SelectTrigger>
               <SelectContent className="bg-popover border-border">
                 <SelectItem value="all">Todos os Técnicos</SelectItem>

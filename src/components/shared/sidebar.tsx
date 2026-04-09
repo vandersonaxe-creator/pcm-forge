@@ -75,22 +75,10 @@ function SidebarContent({
     <div className="flex h-full flex-col bg-[var(--color-bg-sidebar)] text-[var(--color-text-on-dark)]">
       {/* Logo Section */}
       <div className={cn(
-        "flex items-center px-4 py-6 border-b border-[var(--color-bg-sidebar-hover)] transition-all overflow-hidden h-[72px]",
-        collapsed ? "justify-center" : "justify-start gap-3"
+        "flex items-center px-4 py-5 border-b border-[var(--color-bg-sidebar-hover)] transition-all overflow-hidden h-[72px]",
+        collapsed ? "justify-center" : "justify-start"
       )}>
-        <div className="flex items-center justify-center h-8 w-8 bg-[var(--color-brand)] rounded-lg shrink-0 shadow-sm">
-          <Wrench className="h-[18px] w-[18px] text-white" />
-        </div>
-        {!collapsed && (
-          <div className="flex flex-col items-start select-none">
-            <span className="text-[15px] font-bold tracking-tight leading-none text-white focus:outline-none focus:ring-0">
-              PCM Forge
-            </span>
-            <span className="mt-1 px-1.5 py-0.5 rounded bg-[var(--color-bg-sidebar-hover)] text-[10px] font-bold tracking-widest uppercase text-[var(--color-text-muted)] leading-none">
-              Industrial
-            </span>
-          </div>
-        )}
+        <BrandLogo collapsed={collapsed} size={collapsed ? "sm" : "md"} />
       </div>
 
       {/* Navigation */}

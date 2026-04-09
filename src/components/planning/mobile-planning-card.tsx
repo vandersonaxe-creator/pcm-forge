@@ -30,7 +30,7 @@ export function MobilePlanningCard({ asset, onCellClick }: MobilePlanningCardPro
                 "text-[9px] font-black h-5 px-1.5",
                 asset.criticality === "A" ? "text-destructive border-destructive/30 bg-destructive/5" :
                 asset.criticality === "B" ? "text-warning border-warning/30 bg-warning/5" :
-                "text-success border-success/30 bg-success/5"
+                "text-info border-info/30 bg-info/5"
               )}>
                 {asset.criticality}
               </Badge>
@@ -71,7 +71,10 @@ export function MobilePlanningCard({ asset, onCellClick }: MobilePlanningCardPro
                         )}
                         onClick={() => onCellClick(asset.id, plan.plan_id, m, monthData.wo_id)}
                       >
-                         <span className="text-[8px] font-black text-white/40">{MONTH_INITIALS[i]}</span>
+                         <span className={cn(
+                           "text-[10px] font-black",
+                           status && status !== "due_not_generated" ? "text-white/70" : "text-muted-foreground/40"
+                         )}>{MONTH_INITIALS[i]}</span>
                       </button>
                     );
                   })}

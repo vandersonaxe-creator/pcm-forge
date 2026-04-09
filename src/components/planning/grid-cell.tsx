@@ -116,7 +116,7 @@ export const GridCell = memo(function GridCell({
       <Tooltip>
         <TooltipTrigger render={<span />}>
           <button
-            onClick={status !== 'due_not_generated' || status === 'due_not_generated' ? onClick : undefined}
+            onClick={onClick}
             className={cn(
               "w-12 h-10 flex items-center justify-center border transition-all hover:scale-105 hover:z-10 focus:outline-none focus:ring-1 focus:ring-primary/50",
               getStatusStyles()

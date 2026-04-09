@@ -149,7 +149,7 @@ export default function PlanningPage() {
       </main>
 
       {/* Legend Footer */}
-      <footer className="fixed bottom-0 left-0 lg:left-64 right-0 z-30 p-0 m-0 print:hidden">
+      <footer className="sticky bottom-0 left-0 right-0 z-30 p-0 m-0 print:hidden">
          <GridLegend />
       </footer>
 

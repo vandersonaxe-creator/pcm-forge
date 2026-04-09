@@ -72,6 +72,8 @@ export function daysUntil(date: string | Date | null | undefined): number | null
 }
 
 // Generate breadcrumb segments from pathname
+const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
+
 export function generateBreadcrumbs(pathname: string): { label: string; href: string }[] {
   const pathMap: Record<string, string> = {
     dashboard: 'Dashboard',
@@ -96,8 +98,11 @@ export function generateBreadcrumbs(pathname: string): { label: string; href: st
   let currentPath = ''
   for (const segment of segments) {
     currentPath += `/${segment}`
-    const label = pathMap[segment] || segment
-    breadcrumbs.push({ label, href: currentPath })
+    let label = pathMap[segment]
+    if (!label && UUID_RE.test(segment)) {
+      label = 'Detalhes'
+    }
+    breadcrumbs.push({ label: label || segment, href: currentPath })
   }
 
   return breadcrumbs

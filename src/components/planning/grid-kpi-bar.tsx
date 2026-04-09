@@ -56,11 +56,11 @@ export function GridKPIBar({ summary, loading }: GridKPIBarProps) {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
       {kpis.map((kpi) => (
-        <Card key={kpi.label} className={cn("bg-card/40 border-border/40 overflow-hidden", loading && "opacity-50 transition-opacity")}>
-          <div className={cn("h-1 w-full", kpi.bgColor.replace("/5", "/40"))} />
+        <Card key={kpi.label} className={cn("overflow-hidden border", kpi.borderColor, kpi.bgColor, loading && "opacity-50 transition-opacity")}>
+          <div className={cn("h-1.5 w-full", kpi.bgColor.replace("/5", "/50"))} />
           <CardContent className="p-4 flex items-center justify-between">
             <div className="space-y-1">
-              <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
+              <p className="text-[11px] font-bold uppercase tracking-widest text-muted-foreground">
                 {kpi.label}
               </p>
               <div className="flex items-baseline gap-2">
@@ -70,18 +70,18 @@ export function GridKPIBar({ summary, loading }: GridKPIBarProps) {
                 <span className="text-[10px] text-muted-foreground font-medium">OS</span>
               </div>
             </div>
-            <div className={cn("p-2 rounded-lg border", kpi.borderColor, kpi.bgColor)}>
+            <div className={cn("p-2.5 rounded-lg border bg-white/60", kpi.borderColor)}>
               {kpi.icon}
             </div>
           </CardContent>
         </Card>
       ))}
 
-      <Card className={cn("bg-card/40 border-border/40 overflow-hidden", loading && "opacity-50 transition-opacity")}>
-        <div className={cn("h-1 w-full", summary.compliance_rate >= 80 ? "bg-success/40" : summary.compliance_rate >= 60 ? "bg-warning/40" : "bg-destructive/40")} />
+      <Card className={cn("overflow-hidden border", getComplianceColor(summary.compliance_rate), loading && "opacity-50 transition-opacity")}>
+        <div className={cn("h-1.5 w-full", summary.compliance_rate >= 80 ? "bg-success/50" : summary.compliance_rate >= 60 ? "bg-warning/50" : "bg-destructive/50")} />
         <CardContent className="p-4 flex items-center justify-between">
           <div className="space-y-1">
-            <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
+            <p className="text-[11px] font-bold uppercase tracking-widest text-muted-foreground">
               Conformidade
             </p>
             <div className="flex items-baseline gap-2">
@@ -90,7 +90,7 @@ export function GridKPIBar({ summary, loading }: GridKPIBarProps) {
               </span>
             </div>
           </div>
-          <div className={cn("p-2 rounded-lg border", getComplianceColor(summary.compliance_rate))}>
+          <div className={cn("p-2.5 rounded-lg border bg-white/60", getComplianceColor(summary.compliance_rate))}>
             {getComplianceIcon(summary.compliance_rate)}
           </div>
         </CardContent>

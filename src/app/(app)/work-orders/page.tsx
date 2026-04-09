@@ -143,19 +143,19 @@ export default function WorkOrdersPage() {
       {/* Counters */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {[
-          { label: "Planejadas", value: counters?.planned || 0, bgClass: "bg-[var(--color-bg-muted)]", textClass: "text-[var(--color-text-secondary)]", icon: Calendar },
-          { label: "Abertas", value: counters?.open || 0, bgClass: "bg-[var(--color-brand-light)]", textClass: "text-[var(--color-brand)]", icon: CircleDot },
-          { label: "Em Andamento", value: counters?.inProgress || 0, bgClass: "bg-[var(--color-warning-bg)]", textClass: "text-[var(--color-warning-text)]", icon: Loader2 },
-          { label: "Concluídas (Mês)", value: counters?.completedMonth || 0, bgClass: "bg-[var(--color-success-bg)]", textClass: "text-[var(--color-success-icon)]", icon: ClipboardList },
+          { label: "Planejadas", value: counters?.planned || 0, bgClass: "bg-[var(--color-info-bg)]", textClass: "text-[var(--color-info-text)]", borderClass: "border-[var(--color-info-border)]", icon: Calendar },
+          { label: "Abertas", value: counters?.open || 0, bgClass: "bg-[var(--color-brand-light)]", textClass: "text-[var(--color-brand)]", borderClass: "border-[var(--color-brand-muted)]", icon: CircleDot },
+          { label: "Em Andamento", value: counters?.inProgress || 0, bgClass: "bg-[var(--color-warning-bg)]", textClass: "text-[var(--color-warning-text)]", borderClass: "border-[var(--color-warning-border)]", icon: Loader2 },
+          { label: "Concluídas (Mês)", value: counters?.completedMonth || 0, bgClass: "bg-[var(--color-success-bg)]", textClass: "text-[var(--color-success-icon)]", borderClass: "border-[var(--color-success-border)]", icon: ClipboardList },
         ].map((card) => (
-          <Card key={card.label} className="bg-white border-[var(--color-border)] shadow-card">
+          <Card key={card.label} className={cn("shadow-card border", card.borderClass, card.bgClass)}>
             <CardContent className="flex items-center gap-4 p-5">
-              <div className={cn("p-2.5 rounded-full", card.bgClass)}>
-                <card.icon className={cn("h-5 w-5", card.textClass, card.label === "Em Andamento" && "animate-spin-slow")} />
+              <div className={cn("p-2.5 rounded-full bg-white/70 border", card.borderClass)}>
+                <card.icon className={cn("h-5 w-5", card.textClass)} />
               </div>
               <div>
-                <p className="text-[24px] font-bold tracking-tight leading-none text-[var(--color-text-primary)]">{card.value}</p>
-                <p className="text-[12px] font-medium text-[var(--color-text-tertiary)] uppercase tracking-[0.05em] leading-none mt-2">{card.label}</p>
+                <p className={cn("text-[28px] font-bold tracking-tight leading-none", card.textClass)}>{card.value}</p>
+                <p className="text-[11px] font-bold text-[var(--color-text-tertiary)] uppercase tracking-[0.05em] leading-none mt-2">{card.label}</p>
               </div>
             </CardContent>
           </Card>
@@ -170,7 +170,9 @@ export default function WorkOrdersPage() {
               <label className="text-[12px] font-medium text-[var(--color-text-tertiary)] ml-1">Status</label>
               <Select value={filterStatus} onValueChange={(val) => setFilterStatus(val || "all")}>
                 <SelectTrigger className="w-[150px] h-[36px] bg-white border-[var(--color-border-strong)] rounded-lg text-[13px] text-[var(--color-text-primary)] focus:ring-[var(--color-brand)]">
-                  <SelectValue placeholder="Status" />
+                  <SelectValue placeholder="Status">
+                    {filterStatus === "all" ? "Todos os status" : OS_STATUS_LABELS[filterStatus as keyof typeof OS_STATUS_LABELS] ?? filterStatus}
+                  </SelectValue>
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">Todos os status</SelectItem>
@@ -185,7 +187,9 @@ export default function WorkOrdersPage() {
               <label className="text-[12px] font-medium text-[var(--color-text-tertiary)] ml-1">Tipo</label>
               <Select value={filterType} onValueChange={(val) => setFilterType(val || "all")}>
                 <SelectTrigger className="w-[150px] h-[36px] bg-white border-[var(--color-border-strong)] rounded-lg text-[13px] text-[var(--color-text-primary)] focus:ring-[var(--color-brand)]">
-                  <SelectValue placeholder="Tipo" />
+                  <SelectValue placeholder="Tipo">
+                    {filterType === "all" ? "Todos os tipos" : OS_TYPE_LABELS[filterType as keyof typeof OS_TYPE_LABELS] ?? filterType}
+                  </SelectValue>
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">Todos os tipos</SelectItem>
@@ -200,7 +204,9 @@ export default function WorkOrdersPage() {
               <label className="text-[12px] font-medium text-[var(--color-text-tertiary)] ml-1">Prioridade</label>
               <Select value={filterPriority} onValueChange={(val) => setFilterPriority(val || "all")}>
                 <SelectTrigger className="w-[150px] h-[36px] bg-white border-[var(--color-border-strong)] rounded-lg text-[13px] text-[var(--color-text-primary)] focus:ring-[var(--color-brand)]">
-                  <SelectValue placeholder="Prioridade" />
+                  <SelectValue placeholder="Prioridade">
+                    {filterPriority === "all" ? "Todas as prioridades" : OS_PRIORITY_LABELS[filterPriority as keyof typeof OS_PRIORITY_LABELS] ?? filterPriority}
+                  </SelectValue>
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">Todas as prioridades</SelectItem>
@@ -215,7 +221,9 @@ export default function WorkOrdersPage() {
               <label className="text-[12px] font-medium text-[var(--color-text-tertiary)] ml-1">Técnico</label>
               <Select value={filterAssignee} onValueChange={(val) => setFilterAssignee(val || "all")}>
                 <SelectTrigger className="w-[190px] h-[36px] bg-white border-[var(--color-border-strong)] rounded-lg text-[13px] text-[var(--color-text-primary)] focus:ring-[var(--color-brand)]">
-                  <SelectValue placeholder="Técnico" />
+                  <SelectValue placeholder="Técnico">
+                    {filterAssignee === "all" ? "Todos os técnicos" : users.find(u => u.id === filterAssignee)?.full_name ?? filterAssignee}
+                  </SelectValue>
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">Todos os técnicos</SelectItem>
@@ -230,7 +238,9 @@ export default function WorkOrdersPage() {
               <label className="text-[12px] font-medium text-[var(--color-text-tertiary)] ml-1">Ativo</label>
               <Select value={filterAsset} onValueChange={(val) => setFilterAsset(val || "all")}>
                 <SelectTrigger className="w-[190px] h-[36px] bg-white border-[var(--color-border-strong)] rounded-lg text-[13px] text-[var(--color-text-primary)] focus:ring-[var(--color-brand)]">
-                  <SelectValue placeholder="Ativo" />
+                  <SelectValue placeholder="Ativo">
+                    {filterAsset === "all" ? "Todos os ativos" : (() => { const a = assets.find(a => a.id === filterAsset); return a ? `${a.tag} - ${a.name}` : filterAsset; })()}
+                  </SelectValue>
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">Todos os ativos</SelectItem>
@@ -294,7 +304,46 @@ export default function WorkOrdersPage() {
         />
       ) : (
         <div className="space-y-4">
-          <Card className="bg-white border-[var(--color-border)] shadow-card overflow-hidden">
+          {/* Mobile Card View */}
+          <div className="md:hidden space-y-3">
+            {workOrders.map((wo) => {
+              const Icon = IconMap[OS_TYPE_ICONS[wo.os_type]] || Wrench;
+              return (
+                <Card
+                  key={wo.id}
+                  className="bg-white border-[var(--color-border)] shadow-card cursor-pointer hover:border-primary/30 transition-colors"
+                  onClick={() => router.push(`/work-orders/${wo.id}`)}
+                >
+                  <CardContent className="p-4 space-y-3">
+                    <div className="flex items-start justify-between gap-2">
+                      <div className="space-y-1 min-w-0">
+                        <p className="font-mono text-xs font-semibold text-muted-foreground">{wo.wo_number}</p>
+                        <p className="font-semibold text-sm text-[var(--color-text-primary)] line-clamp-2">{wo.title}</p>
+                      </div>
+                      <OsStatusBadge status={wo.status} />
+                    </div>
+                    <div className="flex flex-wrap items-center gap-2 text-xs">
+                      <div className="flex items-center gap-1 text-[var(--color-text-secondary)]">
+                        <Icon className="h-3.5 w-3.5" />
+                        <span>{OS_TYPE_LABELS[wo.os_type]}</span>
+                      </div>
+                      <span className="text-border">|</span>
+                      <span className="font-mono font-semibold text-[var(--color-text-primary)]">{(wo as any).asset?.tag}</span>
+                      <span className="text-border">|</span>
+                      <OsPriorityBadge priority={wo.priority} />
+                    </div>
+                    <div className="flex items-center justify-between text-xs text-[var(--color-text-tertiary)]">
+                      <span>{(wo as any).assignee?.full_name || "Sem técnico"}</span>
+                      <span>{wo.scheduled_date ? format(new Date(wo.scheduled_date), "dd/MM/yy") : "—"}</span>
+                    </div>
+                  </CardContent>
+                </Card>
+              );
+            })}
+          </div>
+
+          {/* Desktop Table View */}
+          <Card className="hidden md:block bg-white border-[var(--color-border)] shadow-card overflow-hidden">
             <Table>
               <TableHeader>
                 <TableRow>
@@ -305,7 +354,7 @@ export default function WorkOrdersPage() {
                   <TableHead>Técnico</TableHead>
                   <TableHead>Prioridade</TableHead>
                   <TableHead>Status</TableHead>
-                  <TableHead>Agenda</TableHead>
+                  <TableHead>Data</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>

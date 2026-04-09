@@ -23,7 +23,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import type { WorkOrder, OsStatus } from "@/lib/types/database";
 import { cn } from "@/lib/utils";
-import { OS_STATUS_LABELS, OS_STATUS_COLORS, OS_TYPE_LABELS, OS_TYPE_ICONS } from "@/lib/constants";
+import { OS_STATUS_LABELS, OS_STATUS_COLORS, OS_TYPE_LABELS, OS_TYPE_ICONS, OS_PRIORITY_LABELS } from "@/lib/constants";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { updateWorkOrderStatus } from "@/hooks/use-work-orders";
@@ -108,7 +108,7 @@ export function WOExecutionHeader({ workOrder, onStatusChange, onFinalize }: WOE
              
              <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-muted/30 border border-border/20">
                 <Clock className="h-4 w-4 text-secondary" />
-                <span className="font-bold opacity-90 uppercase tracking-tighter italic">Prioridade {workOrder.priority}</span>
+                <span className="font-bold opacity-90 uppercase tracking-tighter italic">Prioridade {OS_PRIORITY_LABELS[workOrder.priority as keyof typeof OS_PRIORITY_LABELS] || workOrder.priority}</span>
              </div>
           </div>
         </div>

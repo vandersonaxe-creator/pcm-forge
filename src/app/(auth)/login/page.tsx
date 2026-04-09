@@ -8,7 +8,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Wrench, Loader2, AlertCircle } from "lucide-react";
+import { Loader2, AlertCircle } from "lucide-react";
+import { BrandLogo } from "@/components/shared/logo";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -41,8 +42,8 @@ export default function LoginPage() {
   return (
     <Card className="glass-card amber-glow border-border/50">
       <CardHeader className="text-center space-y-4">
-        <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-xl bg-primary/10 border border-primary/20">
-          <Wrench className="h-7 w-7 text-primary" />
+        <div className="mx-auto">
+          <BrandLogo collapsed size="lg" />
         </div>
         <div>
           <CardTitle className="text-2xl font-bold tracking-tight">

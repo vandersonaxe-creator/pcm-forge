@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import type { WorkOrder, WorkOrderItem } from "@/lib/types/database";
 import { WOChecklistItem } from "./wo-checklist-item";
 import { ChevronDown, ChevronRight, ListChecks } from "lucide-react";
@@ -28,8 +28,7 @@ export function WOChecklist({ workOrder, items, onItemUpdate, isReadOnly }: WOCh
 
   const groupNames = Object.keys(groupedItems);
 
-  // Initialize all groups as expanded
-  useMemo(() => {
+  useEffect(() => {
     const initial: Record<string, boolean> = {};
     groupNames.forEach(name => {
       initial[name] = true;
