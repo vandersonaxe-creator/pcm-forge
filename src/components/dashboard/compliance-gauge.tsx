@@ -18,19 +18,17 @@ export function ComplianceGauge({ percentage = 0, loading }: ComplianceGaugeProp
   const strokeDashoffset = circumference - (percentage / 100) * circumference;
 
   const getColor = (pct: number) => {
-    if (pct >= 80) return "text-success";
-    if (pct >= 60) return "text-warning";
-    return "text-destructive";
+    if (pct === 0) return "text-[var(--color-danger-text)]";
+    if (pct >= 80) return "text-[var(--color-success-icon)]";
+    if (pct >= 60) return "text-[var(--color-warning-text)]";
+    return "text-[var(--color-danger-text)]";
   };
 
   if (loading) {
     return (
-      <Card className="bg-card border-border shadow-card h-full">
-        <CardHeader className="pb-2">
-           <Skeleton className="h-5 w-32 mx-auto" />
-        </CardHeader>
-        <CardContent className="flex flex-col items-center justify-center p-8">
-           <Skeleton className="h-44 w-44 rounded-full" />
+      <Card className="bg-white border-[var(--color-border)] shadow-card h-full">
+        <CardContent className="flex flex-col items-center justify-center p-8 h-full">
+           <Skeleton className="h-40 w-40 rounded-full" />
            <Skeleton className="h-4 w-40 mt-6" />
         </CardContent>
       </Card>
@@ -38,14 +36,8 @@ export function ComplianceGauge({ percentage = 0, loading }: ComplianceGaugeProp
   }
 
   return (
-    <Card className="bg-card border-border shadow-card h-full flex flex-col items-center overflow-hidden">
-      <CardHeader className="w-full pb-0 pt-6 px-6">
-        <CardTitle className="text-[14px] font-bold text-foreground text-center">
-          Conformidade de Manutenção
-        </CardTitle>
-      </CardHeader>
-      
-      <CardContent className="relative flex-1 flex flex-col items-center justify-center pt-10 pb-6 w-full px-6">
+    <Card className="bg-white border-[var(--color-border)] shadow-card h-full flex flex-col items-center overflow-hidden">
+      <CardContent className="relative flex-1 flex flex-col items-center justify-center pt-8 pb-6 w-full px-6">
         <div className="relative">
           <svg
             height={radius * 2}
@@ -59,7 +51,7 @@ export function ComplianceGauge({ percentage = 0, loading }: ComplianceGaugeProp
               strokeWidth={strokeWidth}
               strokeDasharray={circumference + " " + circumference}
               style={{ strokeDashoffset: 0 }}
-              className="text-muted/40"
+              className="text-[#F1F5F9]"
               r={normalizedRadius}
               cx={radius}
               cy={radius}
@@ -72,7 +64,7 @@ export function ComplianceGauge({ percentage = 0, loading }: ComplianceGaugeProp
               strokeDasharray={circumference + " " + circumference}
               style={{ strokeDashoffset }}
               strokeLinecap="round"
-              className={cn("transition-all duration-1000 drop-shadow-[0_0_8px_rgba(var(--primary),0.2)]", getColor(percentage))}
+              className={cn("transition-all duration-1000", getColor(percentage))}
               r={normalizedRadius}
               cx={radius}
               cy={radius}
@@ -80,17 +72,16 @@ export function ComplianceGauge({ percentage = 0, loading }: ComplianceGaugeProp
           </svg>
 
           <div className="absolute inset-0 flex flex-col items-center justify-center">
-              <span className={cn("text-3xl font-black tracking-tighter leading-none", getColor(percentage))}>
-                {percentage.toFixed(0)}<span className="text-lg opacity-80">%</span>
+              <span className={cn("text-[32px] font-bold tracking-tight leading-none", getColor(percentage))}>
+                {percentage || 0}<span className="text-xl ml-0.5">%</span>
               </span>
-              <p className="text-[9px] font-black uppercase tracking-widest text-muted-foreground mt-1">META</p>
           </div>
         </div>
 
-        <div className="mt-10 space-y-1.5 text-center">
-           <p className="text-xs font-bold text-foreground uppercase tracking-wide">Plano Preventivo</p>
-           <p className="text-[11px] text-muted-foreground leading-relaxed max-w-[200px] mx-auto opacity-80 italic">
-              Percentual de planos executados dentro do prazo regulamentar.
+        <div className="mt-8 text-center">
+           <p className="text-[14px] font-semibold text-[var(--color-text-primary)]">Conformidade de Manutenção</p>
+           <p className="text-[12px] text-[var(--color-text-tertiary)] mt-1">
+              Planos preventivos executados no prazo
            </p>
         </div>
       </CardContent>

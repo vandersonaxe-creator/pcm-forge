@@ -42,11 +42,6 @@ export function useDashboard() {
         if (profile) companyId = profile.company_id;
       }
 
-      // Auditor Mode Fallback: if no session or profile, use specific company ID
-      if (!companyId) {
-        companyId = "5782213c-5bc5-419b-8b98-01ad9f25beaf"; // IPB-GR Indústria
-      }
-
       if (!companyId) throw new Error("Empresa não encontrada");
 
       // 1. Parallel Fetching for RPCs and simple queries

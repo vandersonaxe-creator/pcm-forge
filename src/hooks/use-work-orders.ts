@@ -305,11 +305,6 @@ export async function getWorkOrderCounters() {
       if (profile) companyId = profile.company_id;
     }
 
-    // Fallback for Auditor Mode: use specific ID provided
-    if (!companyId) {
-      companyId = "5782213c-5bc5-419b-8b98-01ad9f25beaf"; // IPB-GR Indústria
-    }
-
     if (!companyId) return null;
 
     const startOfMonth = new Date();

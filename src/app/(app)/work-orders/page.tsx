@@ -173,7 +173,7 @@ export default function WorkOrdersPage() {
                   <SelectValue placeholder="Status" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all">Todos Status</SelectItem>
+                  <SelectItem value="all">Todos os status</SelectItem>
                   {Object.entries(OS_STATUS_LABELS).map(([val, label]) => (
                     <SelectItem key={val} value={val}>{label}</SelectItem>
                   ))}
@@ -188,7 +188,7 @@ export default function WorkOrdersPage() {
                   <SelectValue placeholder="Tipo" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all">Todos Tipos</SelectItem>
+                  <SelectItem value="all">Todos os tipos</SelectItem>
                   {Object.entries(OS_TYPE_LABELS).map(([val, label]) => (
                     <SelectItem key={val} value={val}>{label}</SelectItem>
                   ))}
@@ -203,7 +203,7 @@ export default function WorkOrdersPage() {
                   <SelectValue placeholder="Prioridade" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all">Todas Prioridades</SelectItem>
+                  <SelectItem value="all">Todas as prioridades</SelectItem>
                   {Object.entries(OS_PRIORITY_LABELS).map(([val, label]) => (
                     <SelectItem key={val} value={val}>{label}</SelectItem>
                   ))}
@@ -218,7 +218,7 @@ export default function WorkOrdersPage() {
                   <SelectValue placeholder="Técnico" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all">Todos Técnicos</SelectItem>
+                  <SelectItem value="all">Todos os técnicos</SelectItem>
                   {users.map((u) => (
                     <SelectItem key={u.id} value={u.id}>{u.full_name}</SelectItem>
                   ))}
@@ -233,7 +233,7 @@ export default function WorkOrdersPage() {
                   <SelectValue placeholder="Ativo" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all">Todos Ativos</SelectItem>
+                  <SelectItem value="all">Todos os ativos</SelectItem>
                   {assets.map((a) => (
                     <SelectItem key={a.id} value={a.id}>{a.tag} - {a.name}</SelectItem>
                   ))}

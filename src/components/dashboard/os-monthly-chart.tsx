@@ -12,6 +12,8 @@ import {
 } from "recharts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
+import { BarChart3 } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface OSMonthlyChartProps {
   data: any[];
@@ -41,11 +43,16 @@ export function OSMonthlyChart({ data, loading }: OSMonthlyChartProps) {
           Ordens de Serviço — Últimos 6 Meses
         </CardTitle>
       </CardHeader>
-      <CardContent className="h-[320px]">
+      <CardContent className="h-[320px] flex flex-col items-center justify-center">
         {!hasData ? (
-          <div className="h-full flex flex-col items-center justify-center text-center space-y-2 opacity-50">
-            <p className="text-sm font-bold">Nenhuma OS concluída</p>
-            <p className="text-[10px] uppercase tracking-widest text-muted-foreground">Dados insuficientes para gerar o gráfico</p>
+          <div className="flex flex-col items-center justify-center text-center">
+            <BarChart3 className="h-12 w-12 text-[#D1D5DB] mb-4" />
+            <p className="text-[14px] font-medium text-[var(--color-text-tertiary)]">
+              Nenhuma OS concluída nos últimos 6 meses
+            </p>
+            <p className="text-[13px] text-[var(--color-text-muted)] mt-1">
+              Os dados aparecerão conforme as ordens forem finalizadas.
+            </p>
           </div>
         ) : (
           <ResponsiveContainer width="100%" height="100%">

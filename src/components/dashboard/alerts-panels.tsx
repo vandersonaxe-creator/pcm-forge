@@ -21,12 +21,12 @@ export function OverdueAlerts({ items }: { items: OverdueMaintenance[] }) {
 
   return (
     <Card className={cn(
-      "bg-card border-border shadow-card border-l-4", 
-      hasItems ? "border-l-destructive" : "border-l-success"
+      "bg-white border-[var(--color-border)] shadow-card overflow-hidden", 
+      hasItems ? "border-l-[3px] border-l-[var(--color-danger-text)]" : "border-l-0"
     )}>
       <CardHeader className="flex flex-row items-center justify-between pb-6 pt-6 px-6">
-        <CardTitle className="text-[15px] font-semibold text-foreground flex items-center gap-2">
-           <AlertTriangle className={cn("h-4 w-4", hasItems ? "text-destructive" : "text-success")} />
+        <CardTitle className="text-[14px] font-semibold text-[var(--color-text-primary)] flex items-center gap-2">
+           <AlertTriangle className={cn("h-4 w-4", hasItems ? "text-[var(--color-danger-text)]" : "text-[var(--color-success-icon)]")} />
            Preventivas Atrasadas
         </CardTitle>
         {hasItems && (
@@ -38,11 +38,9 @@ export function OverdueAlerts({ items }: { items: OverdueMaintenance[] }) {
       
       <CardContent>
         {!hasItems ? (
-          <div className="flex flex-col items-center py-8 text-center space-y-3 opacity-60">
-             <div className="h-12 w-12 rounded-full bg-success/10 flex items-center justify-center text-success">
-                <CheckCircle2 className="h-6 w-6" />
-             </div>
-             <p className="text-xs font-bold uppercase tracking-widest text-success">Todas as preventivas em dia</p>
+          <div className="flex flex-col items-center justify-center py-10 px-6 rounded-xl bg-[#F0FDF4] border border-[#DCFCE7] text-center space-y-3">
+             <CheckCircle2 className="h-8 w-8 text-[#22C55E]" />
+             <p className="text-[14px] font-medium text-[#166534]">Todas as preventivas estão em dia</p>
           </div>
         ) : (
           <div className="space-y-3">
@@ -81,12 +79,12 @@ export function CalibrationAlerts({ items }: { items: CalibrationAlert[] }) {
 
   return (
     <Card className={cn(
-      "bg-card border-border shadow-card border-l-4", 
-      hasItems ? "border-l-warning" : "border-l-success"
+      "bg-white border-[var(--color-border)] shadow-card overflow-hidden", 
+      hasItems ? "border-l-[3px] border-l-[var(--color-warning-text)]" : "border-l-0"
     )}>
       <CardHeader className="flex flex-row items-center justify-between pb-6 pt-6 px-6">
-        <CardTitle className="text-[15px] font-semibold text-foreground flex items-center gap-2">
-           <Gauge className={cn("h-4 w-4", hasItems ? "text-warning" : "text-success")} />
+        <CardTitle className="text-[14px] font-semibold text-[var(--color-text-primary)] flex items-center gap-2">
+           <Gauge className={cn("h-4 w-4", hasItems ? "text-[var(--color-warning-text)]" : "text-[var(--color-success-icon)]")} />
            Calibrações Próximas
         </CardTitle>
         {hasItems && (
@@ -98,11 +96,9 @@ export function CalibrationAlerts({ items }: { items: CalibrationAlert[] }) {
       
       <CardContent>
         {!hasItems ? (
-          <div className="flex flex-col items-center py-8 text-center space-y-3 opacity-60">
-             <div className="h-12 w-12 rounded-full bg-success/10 flex items-center justify-center text-success">
-                <CheckCircle2 className="h-6 w-6" />
-             </div>
-             <p className="text-xs font-bold uppercase tracking-widest text-success">Todos os instrumentos calibrados</p>
+          <div className="flex flex-col items-center justify-center py-10 px-6 rounded-xl bg-[#F0FDF4] border border-[#DCFCE7] text-center space-y-3">
+             <CheckCircle2 className="h-8 w-8 text-[#22C55E]" />
+             <p className="text-[14px] font-medium text-[#166534]">Todas as calibrações estão em dia</p>
           </div>
         ) : (
           <div className="space-y-3">

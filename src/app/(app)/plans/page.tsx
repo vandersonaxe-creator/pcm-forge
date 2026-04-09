@@ -184,7 +184,7 @@ export default function PlansPage() {
                     <SelectValue placeholder="Frequência" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="all">Todas</SelectItem>
+                    <SelectItem value="all">Todas as frequências</SelectItem>
                     {Object.entries(FREQUENCY_LABELS).map(([value, label]) => (
                       <SelectItem key={value} value={value}>
                         {label}

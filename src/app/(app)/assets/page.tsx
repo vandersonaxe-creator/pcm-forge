@@ -170,7 +170,7 @@ export default function AssetsPage() {
                     <SelectValue placeholder="Criticidade" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="all">Todas</SelectItem>
+                    <SelectItem value="all">Todas as criticidades</SelectItem>
                     <SelectItem value="A">Crítico (A)</SelectItem>
                     <SelectItem value="B">Importante (B)</SelectItem>
                     <SelectItem value="C">Secundário (C)</SelectItem>
@@ -186,7 +186,7 @@ export default function AssetsPage() {
                       <SelectValue placeholder="Categoria" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="all">Todas categorias</SelectItem>
+                      <SelectItem value="all">Todas as categorias</SelectItem>
                       {categories.map((cat) => (
                         <SelectItem key={cat.id} value={cat.id}>
                           {cat.name}
@@ -205,7 +205,7 @@ export default function AssetsPage() {
                       <SelectValue placeholder="Localização" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="all">Todas localizações</SelectItem>
+                      <SelectItem value="all">Todas as localizações</SelectItem>
                       {locations.map((loc) => (
                         <SelectItem key={loc.id} value={loc.id}>
                           {loc.name}

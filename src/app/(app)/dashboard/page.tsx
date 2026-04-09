@@ -29,9 +29,15 @@ export default function DashboardPage() {
 
   const getGreeting = () => {
     const hour = new Date().getHours();
-    if (hour < 12) return "Bom dia";
-    if (hour < 18) return "Boa tarde";
-    return "Boa noite";
+    let greeting = "Bom dia";
+    if (hour >= 12 && hour < 18) greeting = "Boa tarde";
+    if (hour >= 18 || hour < 5) greeting = "Boa noite";
+
+    if (!user?.full_name || user.full_name === "Seu Nome" || user.full_name.trim() === "") {
+      return greeting;
+    }
+
+    return `${greeting}, ${user.full_name.split(" ")[0]}`;
   };
 
   const currentDateFormatted = format(new Date(), "EEEE, dd 'de' MMMM 'de' yyyy", { locale: ptBR });
@@ -43,7 +49,7 @@ export default function DashboardPage() {
       <header className="flex flex-col lg:flex-row lg:items-center justify-between gap-5">
         <div className="space-y-1">
           <h1 className="text-[24px] font-bold tracking-tight text-[var(--color-text-primary)]">
-            {getGreeting()}, {user?.full_name?.split(" ")[0] || "Gestor"}
+            {getGreeting()}
           </h1>
           <p className="text-[14px] text-[var(--color-text-tertiary)] flex items-center gap-1.5">
             <Building2 className="h-4 w-4" />
@@ -87,11 +93,8 @@ export default function DashboardPage() {
       </section>
 
       <footer className="pt-8 flex flex-col items-center gap-2 border-t border-border/40">
-          <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-[0.3em] opacity-40">
-             PCM Forge v1.5 · Painel de Gestão Industrial
-          </p>
-          <p className="text-[10px] text-primary/40 font-semibold mb-2">
-             {currentDateFormatted}
+          <p className="text-[11px] text-[var(--color-text-muted)] opacity-60">
+             PCM Forge v1.5
           </p>
       </footer>
 
