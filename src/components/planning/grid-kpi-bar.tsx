@@ -1,7 +1,6 @@
 "use client";
 
 import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { 
   Calendar, CheckCircle2, AlertCircle, 
   TrendingUp, TrendingDown 
@@ -15,83 +14,102 @@ interface GridKPIBarProps {
 }
 
 export function GridKPIBar({ summary, loading }: GridKPIBarProps) {
-  const getComplianceColor = (rate: number) => {
-    if (rate >= 80) return "text-success border-success/30 bg-success/5";
-    if (rate >= 60) return "text-warning border-warning/30 bg-warning/5";
-    return "text-destructive border-destructive/30 bg-destructive/5";
-  };
-
-  const getComplianceIcon = (rate: number) => {
-    if (rate >= 80) return <TrendingUp className="h-4 w-4 text-success" />;
-    return <TrendingDown className="h-4 w-4" />;
-  };
+  const hasOverdue = summary.overdue > 0;
+  const complianceRate = summary.compliance_rate;
 
   const kpis = [
     {
       label: "Programadas",
       value: summary.total_planned,
-      icon: <Calendar className="h-4 w-4 text-primary" />,
-      color: "text-primary",
-      borderColor: "border-primary/20",
-      bgColor: "bg-primary/5",
+      icon: <Calendar className="h-5 w-5 text-[#2563EB]" />,
+      iconBg: "bg-[#EFF6FF]",
+      valueColor: "text-[#0F172A]",
+      borderClass: "border-[#E2E8F0]",
     },
     {
       label: "Executadas",
       value: summary.completed,
-      icon: <CheckCircle2 className="h-4 w-4 text-success" />,
-      color: "text-success",
-      borderColor: "border-success/20",
-      bgColor: "bg-success/5",
+      icon: <CheckCircle2 className="h-5 w-5 text-[#22C55E]" />,
+      iconBg: "bg-[#F0FDF4]",
+      valueColor: "text-[#0F172A]",
+      borderClass: "border-[#E2E8F0]",
     },
     {
       label: "Atrasadas",
       value: summary.overdue,
-      icon: <AlertCircle className="h-4 w-4 text-destructive" />,
-      color: "text-destructive",
-      borderColor: "border-destructive/20",
-      bgColor: "bg-destructive/5",
+      icon: <AlertCircle className="h-5 w-5 text-[#EF4444]" />,
+      iconBg: "bg-[#FEF2F2]",
+      valueColor: hasOverdue ? "text-[#EF4444]" : "text-[#0F172A]",
+      borderClass: hasOverdue
+        ? "border-[#E2E8F0] border-l-[3px] border-l-[#EF4444]"
+        : "border-[#E2E8F0]",
     },
   ];
+
+  const complianceColor = complianceRate >= 80
+    ? "text-[#22C55E]"
+    : complianceRate >= 60
+      ? "text-[#F59E0B]"
+      : "text-[#EF4444]";
+
+  const complianceIconBg = complianceRate >= 80
+    ? "bg-[#F0FDF4]"
+    : complianceRate >= 60
+      ? "bg-[#FFFBEB]"
+      : "bg-[#FEF2F2]";
+
+  const complianceIcon = complianceRate >= 80
+    ? <TrendingUp className="h-5 w-5 text-[#22C55E]" />
+    : <TrendingDown className="h-5 w-5 text-[#EF4444]" />;
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
       {kpis.map((kpi) => (
-        <Card key={kpi.label} className={cn("overflow-hidden border", kpi.borderColor, kpi.bgColor, loading && "opacity-50 transition-opacity")}>
-          <div className={cn("h-1.5 w-full", kpi.bgColor.replace("/5", "/50"))} />
-          <CardContent className="p-4 flex items-center justify-between">
+        <Card
+          key={kpi.label}
+          className={cn(
+            "overflow-hidden bg-white",
+            kpi.borderClass,
+            loading && "opacity-50 transition-opacity"
+          )}
+        >
+          <CardContent className="p-5 flex items-center justify-between">
             <div className="space-y-1">
-              <p className="text-[11px] font-bold uppercase tracking-widest text-muted-foreground">
+              <p className="text-[11px] font-bold uppercase tracking-widest text-[#64748B]">
                 {kpi.label}
               </p>
               <div className="flex items-baseline gap-2">
-                <span className={cn("text-2xl font-black font-technical tracking-tighter", kpi.color)}>
+                <span className={cn("text-2xl font-black tracking-tighter", kpi.valueColor)}>
                   {loading ? "---" : kpi.value}
                 </span>
-                <span className="text-[10px] text-muted-foreground font-medium">OS</span>
+                <span className="text-[11px] text-[#475569] font-medium">OS</span>
               </div>
             </div>
-            <div className={cn("p-2.5 rounded-lg border bg-white/60", kpi.borderColor)}>
+            <div className={cn("h-10 w-10 rounded-full flex items-center justify-center shrink-0", kpi.iconBg)}>
               {kpi.icon}
             </div>
           </CardContent>
         </Card>
       ))}
 
-      <Card className={cn("overflow-hidden border", getComplianceColor(summary.compliance_rate), loading && "opacity-50 transition-opacity")}>
-        <div className={cn("h-1.5 w-full", summary.compliance_rate >= 80 ? "bg-success/50" : summary.compliance_rate >= 60 ? "bg-warning/50" : "bg-destructive/50")} />
-        <CardContent className="p-4 flex items-center justify-between">
+      {/* Conformidade */}
+      <Card className={cn(
+        "overflow-hidden bg-white border-[#E2E8F0]",
+        loading && "opacity-50 transition-opacity"
+      )}>
+        <CardContent className="p-5 flex items-center justify-between">
           <div className="space-y-1">
-            <p className="text-[11px] font-bold uppercase tracking-widest text-muted-foreground">
+            <p className="text-[11px] font-bold uppercase tracking-widest text-[#64748B]">
               Conformidade
             </p>
-            <div className="flex items-baseline gap-2">
-              <span className={cn("text-2xl font-black font-technical tracking-tighter", summary.compliance_rate >= 80 ? "text-success" : summary.compliance_rate >= 60 ? "text-warning" : "text-destructive")}>
-                {loading ? "---" : `${summary.compliance_rate.toFixed(1)}%`}
+            <div className="flex items-baseline gap-1">
+              <span className={cn("text-2xl font-black tracking-tighter", complianceColor)}>
+                {loading ? "---" : `${complianceRate.toFixed(1)}%`}
               </span>
             </div>
           </div>
-          <div className={cn("p-2.5 rounded-lg border bg-white/60", getComplianceColor(summary.compliance_rate))}>
-            {getComplianceIcon(summary.compliance_rate)}
+          <div className={cn("h-10 w-10 rounded-full flex items-center justify-center shrink-0", complianceIconBg)}>
+            {complianceIcon}
           </div>
         </CardContent>
       </Card>
