@@ -1,7 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
-import Link from "next/link";
+import { useState, useRef, useLayoutEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { useAssets, useCategories, useLocations } from "@/hooks/use-assets";
 import { Button } from "@/components/ui/button";
@@ -48,6 +47,25 @@ export default function AssetsPage() {
   const [debouncedSearch, setDebouncedSearch] = useState("");
   const searchTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
+  /** Scroll horizontal no topo da tabela (sincronizado com o de baixo) */
+  const tableTopScrollRef = useRef<HTMLDivElement>(null);
+  const tableBottomScrollRef = useRef<HTMLDivElement>(null);
+  const [tableScrollWidth, setTableScrollWidth] = useState(0);
+  const [showTableTopScroll, setShowTableTopScroll] = useState(false);
+  const scrollSyncLock = useRef(false);
+
+  const syncTableScroll = useCallback((source: "top" | "bottom") => {
+    const top = tableTopScrollRef.current;
+    const bottom = tableBottomScrollRef.current;
+    if (!top || !bottom || scrollSyncLock.current) return;
+    scrollSyncLock.current = true;
+    if (source === "top") bottom.scrollLeft = top.scrollLeft;
+    else top.scrollLeft = bottom.scrollLeft;
+    queueMicrotask(() => {
+      scrollSyncLock.current = false;
+    });
+  }, []);
+
   const { assets, loading } = useAssets({
     assetType: filterType,
     status: filterStatus,
@@ -56,6 +74,21 @@ export default function AssetsPage() {
     locationId: filterLocation,
     search: debouncedSearch,
   });
+
+  useLayoutEffect(() => {
+    const el = tableBottomScrollRef.current;
+    if (!el) return;
+
+    const update = () => {
+      setTableScrollWidth(el.scrollWidth);
+      setShowTableTopScroll(el.scrollWidth > el.clientWidth + 2);
+    };
+
+    update();
+    const ro = new ResizeObserver(update);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, [assets, loading]);
 
   const { categories } = useCategories();
   const { locations } = useLocations();
@@ -247,71 +280,87 @@ export default function AssetsPage() {
           }
         />
       ) : (
-        <Card className="bg-white border-[var(--color-border)] shadow-card overflow-hidden">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Tag</TableHead>
-                <TableHead>Nome</TableHead>
-                <TableHead className="hidden md:table-cell">Tipo</TableHead>
-                <TableHead className="hidden lg:table-cell">Categoria</TableHead>
-                <TableHead className="hidden lg:table-cell">Localização</TableHead>
-                <TableHead className="text-center">Criticidade</TableHead>
-                <TableHead className="text-center">Status</TableHead>
-                <TableHead className="text-center hidden md:table-cell">Calibração</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {assets.map((asset) => (
-                <TableRow
-                  key={asset.id}
-                  className="cursor-pointer"
-                  onClick={() => router.push(`/assets/${asset.id}`)}
-                >
-                  <TableCell className="font-mono text-[14px] font-semibold text-[var(--color-text-primary)]">
-                    {asset.tag}
-                  </TableCell>
-                  <TableCell>
-                    <div className="flex items-center gap-2">
-                      {asset.photo_url && (
-                        <img
-                          src={asset.photo_url}
-                          alt=""
-                          className="h-8 w-8 rounded-md object-cover border border-border/30"
-                        />
-                      )}
-                      <span className="font-medium">{asset.name}</span>
-                    </div>
-                  </TableCell>
-                  <TableCell className="hidden md:table-cell">
-                    <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
-                      {asset.asset_type === "equipment" ? (
-                        <Wrench className="h-3.5 w-3.5" />
-                      ) : (
-                        <Gauge className="h-3.5 w-3.5" />
-                      )}
-                      {ASSET_TYPE_LABELS[asset.asset_type]}
-                    </div>
-                  </TableCell>
-                  <TableCell className="hidden lg:table-cell text-sm text-muted-foreground">
-                    {asset.category?.name || "—"}
-                  </TableCell>
-                  <TableCell className="hidden lg:table-cell text-sm text-muted-foreground">
-                    {asset.location?.name || "—"}
-                  </TableCell>
-                  <TableCell className="text-center">
-                    <CriticalityBadge level={asset.criticality} />
-                  </TableCell>
-                  <TableCell className="text-center">
-                    <StatusBadge status={asset.status} />
-                  </TableCell>
-                  <TableCell className="text-center hidden md:table-cell">
-                    <CalibrationBadge status={asset.calibration_status} />
-                  </TableCell>
+        <Card className="bg-white border-[var(--color-border)] shadow-card overflow-hidden p-0">
+          {showTableTopScroll && (
+            <div
+              ref={tableTopScrollRef}
+              className="overflow-x-auto overflow-y-hidden min-h-[14px] border-b border-[var(--color-border)] [scrollbar-width:thin]"
+              onScroll={() => syncTableScroll("top")}
+              aria-hidden
+            >
+              <div style={{ width: tableScrollWidth, minHeight: 1 }} />
+            </div>
+          )}
+          <div
+            ref={tableBottomScrollRef}
+            className="overflow-x-auto [scrollbar-width:thin]"
+            onScroll={() => syncTableScroll("bottom")}
+          >
+            <Table className="min-w-[880px] w-full">
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Tag</TableHead>
+                  <TableHead>Nome</TableHead>
+                  <TableHead className="hidden md:table-cell">Tipo</TableHead>
+                  <TableHead className="hidden lg:table-cell">Categoria</TableHead>
+                  <TableHead className="hidden lg:table-cell">Localização</TableHead>
+                  <TableHead className="text-center">Criticidade</TableHead>
+                  <TableHead className="text-center">Status</TableHead>
+                  <TableHead className="text-center hidden md:table-cell">Calibração</TableHead>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+              </TableHeader>
+              <TableBody>
+                {assets.map((asset) => (
+                  <TableRow
+                    key={asset.id}
+                    className="cursor-pointer"
+                    onClick={() => router.push(`/assets/${asset.id}`)}
+                  >
+                    <TableCell className="font-mono text-[14px] font-semibold text-[var(--color-text-primary)]">
+                      {asset.tag}
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex items-center gap-2">
+                        {asset.photo_url && (
+                          <img
+                            src={asset.photo_url}
+                            alt=""
+                            className="h-8 w-8 rounded-md object-cover border border-border/30"
+                          />
+                        )}
+                        <span className="font-medium">{asset.name}</span>
+                      </div>
+                    </TableCell>
+                    <TableCell className="hidden md:table-cell">
+                      <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
+                        {asset.asset_type === "equipment" ? (
+                          <Wrench className="h-3.5 w-3.5" />
+                        ) : (
+                          <Gauge className="h-3.5 w-3.5" />
+                        )}
+                        {ASSET_TYPE_LABELS[asset.asset_type]}
+                      </div>
+                    </TableCell>
+                    <TableCell className="hidden lg:table-cell text-sm text-muted-foreground">
+                      {asset.category?.name || "—"}
+                    </TableCell>
+                    <TableCell className="hidden lg:table-cell text-sm text-muted-foreground">
+                      {asset.location?.name || "—"}
+                    </TableCell>
+                    <TableCell className="text-center">
+                      <CriticalityBadge level={asset.criticality} />
+                    </TableCell>
+                    <TableCell className="text-center">
+                      <StatusBadge status={asset.status} />
+                    </TableCell>
+                    <TableCell className="text-center hidden md:table-cell">
+                      <CalibrationBadge status={asset.calibration_status} />
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
         </Card>
       )}
     </div>
