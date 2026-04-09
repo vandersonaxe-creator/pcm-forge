@@ -8,7 +8,7 @@ import { ComplianceGauge } from "@/components/dashboard/compliance-gauge";
 import { RecentActivity } from "@/components/dashboard/recent-activity";
 import { OverdueAlerts, CalibrationAlerts } from "@/components/dashboard/alerts-panels";
 import { Button } from "@/components/ui/button";
-import { RefreshCw, Clock, LayoutDashboard } from "lucide-react";
+import { RefreshCw, Clock, LayoutDashboard, Building2 } from "lucide-react";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { cn } from "@/lib/utils";
@@ -42,52 +42,25 @@ export default function DashboardPage() {
       {/* Header Section */}
       <header className="flex flex-col lg:flex-row lg:items-center justify-between gap-5">
         <div className="space-y-1">
-          <div className="flex items-center gap-3">
-             <div className="h-10 w-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary shadow-lg shadow-primary/10">
-                <LayoutDashboard className="h-5 w-5" />
-             </div>
-             <h1 className="text-2xl font-bold tracking-tight text-foreground">
-               {getGreeting()}, {user?.full_name || "Gestor"}
-             </h1>
-          </div>
-          <p className="text-xs text-muted-foreground flex items-center gap-2 pl-1.5 border-l-2 border-primary/20 ml-1">
-            <span className="text-primary font-bold uppercase tracking-widest text-[10px]">
-               {company?.name || "PCM Forge"}
+          <h1 className="text-[24px] font-bold tracking-tight text-[var(--color-text-primary)]">
+            {getGreeting()}, {user?.full_name?.split(" ")[0] || "Gestor"}
+          </h1>
+          <p className="text-[14px] text-[var(--color-text-tertiary)] flex items-center gap-1.5">
+            <Building2 className="h-4 w-4" />
+            <span>
+               {company?.name || "Empresa"} · Painel de Manutenção
             </span>
-            <span className="opacity-40 select-none">|</span>
-            <span>Painel de Manutenção Industrial</span>
           </p>
         </div>
 
-        <div className="flex items-center justify-between lg:justify-end gap-5 bg-card py-2 px-4 rounded-xl border border-border shadow-sm">
-          <div className="space-y-0 text-right hidden sm:block">
-             <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-muted-foreground leading-none mb-1">Status</p>
-             <div className="flex items-center gap-1.5 justify-end">
-                <div className="h-1.5 w-1.5 rounded-full bg-success animate-pulse" />
-                <p className="text-[11px] font-bold text-foreground">ONLINE</p>
-             </div>
-          </div>
-          
-          <div className="w-px h-6 bg-border hidden sm:block" />
-
-          <div className="space-y-0 text-right">
-            <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-muted-foreground flex items-center gap-1 justify-end leading-none mb-1">
-               <Clock className="h-2.5 w-2.5" />
-               Hora Local
-            </p>
-            <p className="text-xs font-bold font-mono text-primary leading-none uppercase">
-               {format(new Date(), "HH:mm")}
-            </p>
-          </div>
-
+        <div className="flex items-center gap-3">
           <Button 
-            variant="ghost" 
-            size="icon" 
-            className="h-8 w-8 rounded-lg border border-border bg-background hover:bg-muted transition-all"
+            variant="secondary" 
+            className="h-10 w-10 rounded-lg bg-white border border-[var(--color-border)] text-[var(--color-text-secondary)] shadow-sm hover:bg-[var(--color-bg-muted)] transition-all"
             onClick={() => refetch()}
             disabled={loading}
           >
-            <RefreshCw className={cn("h-3.5 w-3.5", loading && "animate-spin")} />
+            <RefreshCw className={cn("h-4 w-4", loading && "animate-spin")} />
           </Button>
         </div>
       </header>

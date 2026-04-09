@@ -24,7 +24,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { OsStatusBadge, OsPriorityBadge } from "@/components/shared/badges";
 import { EmptyState } from "@/components/shared/empty-state";
 import { 
   OS_STATUS_LABELS, 
@@ -143,19 +143,19 @@ export default function WorkOrdersPage() {
       {/* Counters */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {[
-          { label: "Planejadas", value: counters?.planned || 0, color: "text-zinc-500", icon: Calendar },
-          { label: "Abertas", value: counters?.open || 0, color: "text-blue-600", icon: CircleDot },
-          { label: "Em Andamento", value: counters?.inProgress || 0, color: "text-amber-600", icon: Loader2 },
-          { label: "Concluídas (Mês)", value: counters?.completedMonth || 0, color: "text-emerald-600", icon: ClipboardList },
+          { label: "Planejadas", value: counters?.planned || 0, bgClass: "bg-[var(--color-bg-muted)]", textClass: "text-[var(--color-text-secondary)]", icon: Calendar },
+          { label: "Abertas", value: counters?.open || 0, bgClass: "bg-[var(--color-brand-light)]", textClass: "text-[var(--color-brand)]", icon: CircleDot },
+          { label: "Em Andamento", value: counters?.inProgress || 0, bgClass: "bg-[var(--color-warning-bg)]", textClass: "text-[var(--color-warning-text)]", icon: Loader2 },
+          { label: "Concluídas (Mês)", value: counters?.completedMonth || 0, bgClass: "bg-[var(--color-success-bg)]", textClass: "text-[var(--color-success-icon)]", icon: ClipboardList },
         ].map((card) => (
-          <Card key={card.label} className="bg-card border-border shadow-card">
+          <Card key={card.label} className="bg-white border-[var(--color-border)] shadow-card">
             <CardContent className="flex items-center gap-4 p-5">
-              <div className={cn("p-2 rounded-lg", card.color.replace("text-", "bg-").replace("]", "/10]"))}>
-                <card.icon className={cn("h-5 w-5", card.color, card.label === "Em Andamento" && "animate-spin-slow")} />
+              <div className={cn("p-2.5 rounded-full", card.bgClass)}>
+                <card.icon className={cn("h-5 w-5", card.textClass, card.label === "Em Andamento" && "animate-spin-slow")} />
               </div>
               <div>
-                <p className="text-2xl font-bold tracking-tight">{card.value}</p>
-                <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-widest leading-none mt-1">{card.label}</p>
+                <p className="text-[24px] font-bold tracking-tight leading-none text-[var(--color-text-primary)]">{card.value}</p>
+                <p className="text-[12px] font-medium text-[var(--color-text-tertiary)] uppercase tracking-[0.05em] leading-none mt-2">{card.label}</p>
               </div>
             </CardContent>
           </Card>
@@ -165,78 +165,93 @@ export default function WorkOrdersPage() {
       {/* Filters */}
       <Card className="bg-card border-border shadow-sm">
         <CardContent className="p-4 space-y-4">
-          <div className="flex flex-wrap gap-3">
-            <Select value={filterStatus} onValueChange={(val) => setFilterStatus(val || "all")}>
-              <SelectTrigger className="w-[150px] bg-background border-border text-sm">
-                <SelectValue placeholder="Status" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">Todos Status</SelectItem>
-                {Object.entries(OS_STATUS_LABELS).map(([val, label]) => (
-                  <SelectItem key={val} value={val}>{label}</SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+          <div className="flex flex-wrap items-end gap-3">
+            <div className="space-y-1">
+              <label className="text-[12px] font-medium text-[var(--color-text-tertiary)] ml-1">Status</label>
+              <Select value={filterStatus} onValueChange={(val) => setFilterStatus(val || "all")}>
+                <SelectTrigger className="w-[150px] h-[36px] bg-white border-[var(--color-border-strong)] rounded-lg text-[13px] text-[var(--color-text-primary)] focus:ring-[var(--color-brand)]">
+                  <SelectValue placeholder="Status" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">Todos Status</SelectItem>
+                  {Object.entries(OS_STATUS_LABELS).map(([val, label]) => (
+                    <SelectItem key={val} value={val}>{label}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
 
-            <Select value={filterType} onValueChange={(val) => setFilterType(val || "all")}>
-              <SelectTrigger className="w-[150px] bg-background border-border text-sm">
-                <SelectValue placeholder="Tipo" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">Todos Tipos</SelectItem>
-                {Object.entries(OS_TYPE_LABELS).map(([val, label]) => (
-                  <SelectItem key={val} value={val}>{label}</SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+            <div className="space-y-1">
+              <label className="text-[12px] font-medium text-[var(--color-text-tertiary)] ml-1">Tipo</label>
+              <Select value={filterType} onValueChange={(val) => setFilterType(val || "all")}>
+                <SelectTrigger className="w-[150px] h-[36px] bg-white border-[var(--color-border-strong)] rounded-lg text-[13px] text-[var(--color-text-primary)] focus:ring-[var(--color-brand)]">
+                  <SelectValue placeholder="Tipo" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">Todos Tipos</SelectItem>
+                  {Object.entries(OS_TYPE_LABELS).map(([val, label]) => (
+                    <SelectItem key={val} value={val}>{label}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
 
-            <Select value={filterPriority} onValueChange={(val) => setFilterPriority(val || "all")}>
-              <SelectTrigger className="w-[150px] bg-background border-border text-sm">
-                <SelectValue placeholder="Prioridade" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">Todas Prioridades</SelectItem>
-                {Object.entries(OS_PRIORITY_LABELS).map(([val, label]) => (
-                  <SelectItem key={val} value={val}>{label}</SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+            <div className="space-y-1">
+              <label className="text-[12px] font-medium text-[var(--color-text-tertiary)] ml-1">Prioridade</label>
+              <Select value={filterPriority} onValueChange={(val) => setFilterPriority(val || "all")}>
+                <SelectTrigger className="w-[150px] h-[36px] bg-white border-[var(--color-border-strong)] rounded-lg text-[13px] text-[var(--color-text-primary)] focus:ring-[var(--color-brand)]">
+                  <SelectValue placeholder="Prioridade" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">Todas Prioridades</SelectItem>
+                  {Object.entries(OS_PRIORITY_LABELS).map(([val, label]) => (
+                    <SelectItem key={val} value={val}>{label}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
 
-            <Select value={filterAssignee} onValueChange={(val) => setFilterAssignee(val || "all")}>
-              <SelectTrigger className="w-[190px] bg-background border-border text-sm">
-                <SelectValue placeholder="Técnico" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">Todos Técnicos</SelectItem>
-                {users.map((u) => (
-                  <SelectItem key={u.id} value={u.id}>{u.full_name}</SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+            <div className="space-y-1">
+              <label className="text-[12px] font-medium text-[var(--color-text-tertiary)] ml-1">Técnico</label>
+              <Select value={filterAssignee} onValueChange={(val) => setFilterAssignee(val || "all")}>
+                <SelectTrigger className="w-[190px] h-[36px] bg-white border-[var(--color-border-strong)] rounded-lg text-[13px] text-[var(--color-text-primary)] focus:ring-[var(--color-brand)]">
+                  <SelectValue placeholder="Técnico" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">Todos Técnicos</SelectItem>
+                  {users.map((u) => (
+                    <SelectItem key={u.id} value={u.id}>{u.full_name}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
 
-            <Select value={filterAsset} onValueChange={(val) => setFilterAsset(val || "all")}>
-              <SelectTrigger className="w-[190px] bg-background border-border text-sm">
-                <SelectValue placeholder="Ativo" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">Todos Ativos</SelectItem>
-                {assets.map((a) => (
-                  <SelectItem key={a.id} value={a.id}>{a.tag} - {a.name}</SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+            <div className="space-y-1">
+              <label className="text-[12px] font-medium text-[var(--color-text-tertiary)] ml-1">Ativo</label>
+              <Select value={filterAsset} onValueChange={(val) => setFilterAsset(val || "all")}>
+                <SelectTrigger className="w-[190px] h-[36px] bg-white border-[var(--color-border-strong)] rounded-lg text-[13px] text-[var(--color-text-primary)] focus:ring-[var(--color-brand)]">
+                  <SelectValue placeholder="Ativo" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">Todos Ativos</SelectItem>
+                  {assets.map((a) => (
+                    <SelectItem key={a.id} value={a.id}>{a.tag} - {a.name}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
 
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 mb-[2px]">
                <Input 
                 type="date" 
-                className="w-[145px] bg-background border-border h-9 text-sm" 
+                className="w-[145px] bg-white border-[var(--color-border-strong)] h-[36px] text-[13px] rounded-lg" 
                 value={filterDateStart}
                 onChange={(e) => setFilterDateStart(e.target.value)}
               />
-               <ArrowRight className="h-4 w-4 text-muted-foreground" />
+               <ArrowRight className="h-4 w-4 text-[var(--color-text-muted)]" />
                <Input 
                 type="date" 
-                className="w-[140px] bg-background border-border h-9 text-xs" 
+                className="w-[145px] bg-white border-[var(--color-border-strong)] h-[36px] text-[13px] rounded-lg" 
                 value={filterDateEnd}
                 onChange={(e) => setFilterDateEnd(e.target.value)}
               />
@@ -245,7 +260,7 @@ export default function WorkOrdersPage() {
             <Button 
               variant="ghost" 
               size="sm" 
-              className="h-9 text-muted-foreground hover:bg-muted"
+              className="h-[36px] text-[var(--color-text-tertiary)] hover:bg-[var(--color-bg-muted)] mb-[2px]"
               onClick={clearFilters}
             >
               <X className="mr-1 h-3.5 w-3.5" />
@@ -279,18 +294,18 @@ export default function WorkOrdersPage() {
         />
       ) : (
         <div className="space-y-4">
-          <Card className="bg-card border-border shadow-card overflow-hidden">
+          <Card className="bg-white border-[var(--color-border)] shadow-card overflow-hidden">
             <Table>
               <TableHeader>
-                <TableRow className="border-border hover:bg-transparent bg-[#F8FAFC]">
-                  <TableHead className="text-[#374151] font-bold text-xs uppercase tracking-wider">OS Nº</TableHead>
-                  <TableHead className="text-[#374151] font-bold text-xs uppercase tracking-wider">Título</TableHead>
-                  <TableHead className="text-[#374151] font-bold text-xs uppercase tracking-wider">Tipo</TableHead>
-                  <TableHead className="text-[#374151] font-bold text-xs uppercase tracking-wider">Ativo</TableHead>
-                  <TableHead className="text-[#374151] font-bold text-xs uppercase tracking-wider">Técnico</TableHead>
-                  <TableHead className="text-[#374151] font-bold text-xs uppercase tracking-wider">Prioridade</TableHead>
-                  <TableHead className="text-[#374151] font-bold text-xs uppercase tracking-wider">Status</TableHead>
-                  <TableHead className="text-[#374151] font-bold text-xs uppercase tracking-wider">Agenda</TableHead>
+                <TableRow>
+                  <TableHead>OS Nº</TableHead>
+                  <TableHead>Título</TableHead>
+                  <TableHead>Tipo</TableHead>
+                  <TableHead>Ativo</TableHead>
+                  <TableHead>Técnico</TableHead>
+                  <TableHead>Prioridade</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead>Agenda</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -299,43 +314,34 @@ export default function WorkOrdersPage() {
                   return (
                     <TableRow
                       key={wo.id}
-                      className="border-border cursor-pointer hover:bg-[#F1F5F9] transition-colors"
+                      className="cursor-pointer"
                       onClick={() => router.push(`/work-orders/${wo.id}`)}
                     >
-                      <TableCell className="font-mono font-bold text-primary">
+                      <TableCell className="font-mono font-semibold text-[var(--color-text-primary)]">
                         {wo.wo_number}
                       </TableCell>
-                      <TableCell className="font-semibold">{wo.title}</TableCell>
+                      <TableCell className="font-semibold text-[14px] text-[var(--color-text-primary)]">{wo.title}</TableCell>
                       <TableCell>
-                        <div className="flex items-center gap-1.5">
-                          <Icon className="h-3 w-3 text-muted-foreground" />
-                          <span className="text-xs">{OS_TYPE_LABELS[wo.os_type]}</span>
+                        <div className="flex items-center gap-1.5 align-middle">
+                          <Icon className="h-4 w-4 text-[var(--color-text-tertiary)]" />
+                          <span className="text-[13px] text-[var(--color-text-secondary)]">{OS_TYPE_LABELS[wo.os_type]}</span>
                         </div>
                       </TableCell>
                       <TableCell>
-                        <Badge variant="outline" className="font-mono text-[10px]">
+                        <span className="font-mono text-[13px] font-semibold text-[var(--color-text-primary)]">
                            {(wo as any).asset?.tag}
-                        </Badge>
+                        </span>
                       </TableCell>
-                      <TableCell className="text-xs text-muted-foreground">
+                      <TableCell className="text-[13px] text-[var(--color-text-secondary)]">
                         {(wo as any).assignee?.full_name || "—"}
                       </TableCell>
                       <TableCell>
-                        <Badge className={cn("text-[10px] py-0", OS_PRIORITY_COLORS[wo.priority])}>
-                           {OS_PRIORITY_LABELS[wo.priority]}
-                        </Badge>
+                        <OsPriorityBadge priority={wo.priority} />
                       </TableCell>
                       <TableCell>
-                        <Badge className={cn(
-                          "text-[10px] py-0", 
-                          OS_STATUS_COLORS[wo.status],
-                          wo.status === "in_progress" && "animate-pulse",
-                          wo.status === "cancelled" && "line-through opacity-50"
-                        )}>
-                           {OS_STATUS_LABELS[wo.status]}
-                        </Badge>
+                        <OsStatusBadge status={wo.status} />
                       </TableCell>
-                      <TableCell className="text-xs text-muted-foreground">
+                      <TableCell className="text-[13px] text-[var(--color-text-secondary)]">
                         {wo.scheduled_date ? format(new Date(wo.scheduled_date), "dd/MM/yy") : "—"}
                       </TableCell>
                     </TableRow>

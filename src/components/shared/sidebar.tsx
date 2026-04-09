@@ -42,14 +42,17 @@ function NavLink({
       href={item.href}
       onClick={onClick}
       className={cn(
-        "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-all duration-300 group no-underline animate-in-fade",
+        "relative flex items-center gap-3 rounded-lg px-3 py-2 text-[14px] transition-all duration-200 group no-underline",
         isActive
-          ? "bg-primary text-white shadow-lg shadow-primary/20 scale-[1.02]"
-          : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-white hover:translate-x-1",
-        collapsed && "justify-center px-1 hover:translate-x-0"
+          ? "bg-[var(--color-bg-sidebar-active)] text-white font-semibold"
+          : "text-[var(--color-text-on-dark-muted)] hover:bg-[var(--color-bg-sidebar-hover)] hover:text-[var(--color-text-on-dark)] font-medium",
+        collapsed && "justify-center px-0"
       )}
     >
-      <Icon className={cn("h-4.5 w-4.5 shrink-0 transition-colors", isActive ? "text-white" : "text-sidebar-foreground group-hover:text-white")} />
+      {isActive && (
+        <div className="absolute left-0 top-1/2 -translate-y-1/2 h-4 w-[3px] bg-white rounded-r-md" />
+      )}
+      <Icon className={cn("h-[18px] w-[18px] shrink-0 transition-colors", isActive ? "text-white" : "text-inherit")} />
       {!collapsed && <span className="truncate">{item.label}</span>}
     </Link>
   );
@@ -62,33 +65,29 @@ import { BrandLogo } from "./logo";
 function SidebarContent({
   collapsed,
   onNavigate,
+  setCollapsed
 }: {
   collapsed: boolean;
   onNavigate?: () => void;
+  setCollapsed?: (val: boolean) => void;
 }) {
   return (
-    <div className="flex h-full flex-col">
+    <div className="flex h-full flex-col bg-[var(--color-bg-sidebar)] text-[var(--color-text-on-dark)]">
       {/* Logo Section */}
       <div className={cn(
-        "flex items-center px-6 py-12 border-b border-sidebar-border bg-sidebar transition-all overflow-hidden",
-        collapsed ? "justify-center px-0 py-8" : "justify-start"
+        "flex items-center px-4 py-6 border-b border-[var(--color-bg-sidebar-hover)] transition-all overflow-hidden h-[72px]",
+        collapsed ? "justify-center" : "justify-start gap-3"
       )}>
-        {collapsed ? (
-          <div className="flex items-center justify-center">
-            <span className="text-xl font-black tracking-tighter text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]">
-              P
+        <div className="flex items-center justify-center h-8 w-8 bg-[var(--color-brand)] rounded-lg shrink-0 shadow-sm">
+          <Wrench className="h-[18px] w-[18px] text-white" />
+        </div>
+        {!collapsed && (
+          <div className="flex flex-col items-start select-none">
+            <span className="text-[15px] font-bold tracking-tight leading-none text-white focus:outline-none focus:ring-0">
+              PCM Forge
             </span>
-            <span className="text-xl font-bold tracking-tighter text-amber-500">
-              F
-            </span>
-          </div>
-        ) : (
-          <div className="flex items-baseline select-none">
-            <span className="text-2xl font-[800] tracking-tighter text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.4)]">
-              PCM
-            </span>
-            <span className="text-2xl font-medium tracking-tighter text-amber-500 ml-1.5">
-              Forge
+            <span className="mt-1 px-1.5 py-0.5 rounded bg-[var(--color-bg-sidebar-hover)] text-[10px] font-bold tracking-widest uppercase text-[var(--color-text-muted)] leading-none">
+              Industrial
             </span>
           </div>
         )}
@@ -102,17 +101,37 @@ function SidebarContent({
           ))}
         </nav>
 
-        <Separator className="my-4 bg-sidebar-border" />
+        <div className="my-6">
+          {!collapsed ? (
+             <p className="px-3 pb-2 text-[10px] font-bold uppercase tracking-[0.05em] text-[var(--color-text-tertiary)] border-b border-[var(--color-bg-sidebar-hover)]">
+               Administração
+             </p>
+          ) : (
+             <Separator className="my-4 bg-[var(--color-bg-sidebar-hover)]" />
+          )}
+        </div>
 
-          <p className="px-3 pb-2 pt-6 text-[11px] font-bold uppercase tracking-widest text-sidebar-foreground/50">
-            Administração
-          </p>
         <nav className="flex flex-col gap-1">
           {NAV_SETTINGS_ITEMS.map((item) => (
             <NavLink key={item.href} item={item} collapsed={collapsed} onClick={onNavigate} />
           ))}
         </nav>
       </ScrollArea>
+
+      {/* Footer / Toggle */}
+      <div className="border-t border-[var(--color-bg-sidebar-hover)] p-3 flex items-center justify-between">
+         {!collapsed && <span className="text-[11px] text-[var(--color-text-secondary)] pl-2">v1.5</span>}
+         {setCollapsed && (
+           <Button
+             variant="ghost"
+             size="icon"
+             onClick={() => setCollapsed(!collapsed)}
+             className="h-8 w-8 rounded-lg hover:bg-[var(--color-bg-sidebar-hover)] text-[var(--color-text-muted)] hover:text-white"
+           >
+             {collapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
+           </Button>
+         )}
+      </div>
     </div>
   );
 }
@@ -125,35 +144,21 @@ export function Sidebar() {
       {/* Desktop sidebar */}
       <aside
         className={cn(
-          "hidden lg:flex flex-col glass-morphism-dark transition-all duration-500 ease-in-out",
-          collapsed ? "w-[68px]" : "w-[260px]"
+          "hidden lg:flex flex-col bg-[var(--color-bg-sidebar)] border-r border-[#1E293B] transition-all duration-300 ease-in-out z-40 h-full overflow-hidden",
+          collapsed ? "w-[64px]" : "w-[240px]"
         )}
       >
-        <div className="flex-1 relative">
-          <SidebarContent collapsed={collapsed} />
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => setCollapsed(!collapsed)}
-            className="absolute -right-3 top-7 z-10 h-6 w-6 rounded-full border border-sidebar-border bg-sidebar text-sidebar-foreground/60 hover:text-sidebar-foreground hover:bg-sidebar-accent"
-          >
-            {collapsed ? (
-              <ChevronRight className="h-3 w-3" />
-            ) : (
-              <ChevronLeft className="h-3 w-3" />
-            )}
-          </Button>
-        </div>
+        <SidebarContent collapsed={collapsed} setCollapsed={setCollapsed} />
       </aside>
 
       {/* Mobile sidebar (Sheet) */}
       <Sheet>
         <SheetTrigger
-          className="lg:hidden fixed top-3 left-3 z-40 h-10 w-10 flex items-center justify-center rounded-lg bg-sidebar border border-sidebar-border hover:bg-sidebar-accent transition-colors text-sidebar-foreground/70 hover:text-sidebar-foreground cursor-pointer outline-none select-none"
+          className="lg:hidden fixed top-3 left-3 z-40 h-10 w-10 flex items-center justify-center rounded-lg bg-[var(--color-bg-sidebar)] border border-[var(--color-bg-sidebar-hover)] focus:outline-none transition-colors text-[var(--color-text-on-dark-muted)] hover:text-white cursor-pointer select-none"
         >
           <Menu className="h-5 w-5" />
         </SheetTrigger>
-        <SheetContent side="left" className="w-[260px] p-0 bg-sidebar border-sidebar-border">
+        <SheetContent side="left" className="w-[240px] p-0 bg-[var(--color-bg-sidebar)] border-[#1E293B]">
           <SheetTitle className="sr-only">Menu de navegação</SheetTitle>
           <SidebarContent collapsed={false} />
         </SheetContent>

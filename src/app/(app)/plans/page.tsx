@@ -123,19 +123,19 @@ export default function PlansPage() {
       {/* Counters */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {[
-          { label: "Planos Ativos", value: activePlans.length, icon: CalendarCheck2, color: "text-emerald-600" },
-          { label: "Em Atraso", value: overduePlans.length, icon: AlertCircle, color: "text-red-600" },
-          { label: "A Vencer (7d)", value: dueSoonPlans.length, icon: CalendarClock, color: "text-amber-600" },
-          { label: "Inativos", value: inactivePlans.length, icon: CalendarRange, color: "text-zinc-500" },
+          { label: "Planos Ativos", value: activePlans.length, bgClass: "bg-[var(--color-success-bg)]", textClass: "text-[var(--color-success-icon)]", icon: CalendarCheck2 },
+          { label: "Em Atraso", value: overduePlans.length, bgClass: "bg-[var(--color-danger-bg)]", textClass: "text-[var(--color-danger-text)]", icon: AlertCircle },
+          { label: "A Vencer (7d)", value: dueSoonPlans.length, bgClass: "bg-[var(--color-warning-bg)]", textClass: "text-[var(--color-warning-text)]", icon: CalendarClock },
+          { label: "Inativos", value: inactivePlans.length, bgClass: "bg-[var(--color-bg-muted)]", textClass: "text-[var(--color-text-secondary)]", icon: CalendarRange },
         ].map((counter) => (
-          <Card key={counter.label} className="bg-card border-border shadow-card">
+          <Card key={counter.label} className="bg-white border-[var(--color-border)] shadow-card">
             <CardContent className="flex items-center gap-4 p-5">
-              <div className={cn("p-2 rounded-lg", counter.color.replace("text-", "bg-").replace("]", "/10]"))}>
-                <counter.icon className={cn("h-5 w-5", counter.color)} />
+              <div className={cn("p-2.5 rounded-full", counter.bgClass)}>
+                <counter.icon className={cn("h-5 w-5", counter.textClass)} />
               </div>
               <div>
-                <p className="text-2xl font-bold tracking-tight">{counter.value}</p>
-                <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-widest leading-none mt-1">{counter.label}</p>
+                <p className="text-[24px] font-bold tracking-tight leading-none text-[var(--color-text-primary)]">{counter.value}</p>
+                <p className="text-[12px] font-medium text-[var(--color-text-tertiary)] uppercase tracking-[0.05em] leading-none mt-2">{counter.label}</p>
               </div>
             </CardContent>
           </Card>
@@ -148,45 +148,51 @@ export default function PlansPage() {
           <div className="flex flex-col lg:flex-row gap-3">
             {/* Search */}
             <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[var(--color-text-muted)]" />
               <Input
                 placeholder="Buscar por nome do plano..."
                 value={search}
                 onChange={(e) => handleSearch(e.target.value)}
-                className="pl-9 bg-background border-border"
+                className="pl-9 h-[36px] bg-white border-[var(--color-border-strong)] rounded-lg text-[13px] text-[var(--color-text-primary)] focus-visible:ring-[var(--color-brand)] placeholder:text-[var(--color-text-muted)] w-full block"
               />
             </div>
 
             {/* Filter dropdowns */}
-            <div className="flex flex-wrap gap-2">
-              <Select value={filterStatus} onValueChange={(v) => setFilterStatus(v ?? "all")}>
-                <SelectTrigger className="w-[180px] bg-background border-border text-xs">
-                  <Filter className="mr-1 h-3.5 w-3.5" />
-                  <SelectValue placeholder="Status Operacional" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">Todos os status</SelectItem>
-                  <SelectItem value="on_track">Em dia</SelectItem>
-                  <SelectItem value="due_soon">A vencer (7d)</SelectItem>
-                  <SelectItem value="overdue">Atrasado</SelectItem>
-                  <SelectItem value="inactive">Inativo</SelectItem>
-                  <SelectItem value="no_date">Sem data</SelectItem>
-                </SelectContent>
-              </Select>
+            <div className="flex flex-wrap items-end gap-3">
+              <div className="space-y-1">
+                <label className="text-[12px] font-medium text-[var(--color-text-tertiary)] ml-1">Status Operacional</label>
+                <Select value={filterStatus} onValueChange={(v) => setFilterStatus(v ?? "all")}>
+                  <SelectTrigger className="w-[180px] h-[36px] bg-white border-[var(--color-border-strong)] rounded-lg text-[13px] text-[var(--color-text-primary)] focus:ring-[var(--color-brand)]">
+                    <Filter className="mr-1 h-3.5 w-3.5" />
+                    <SelectValue placeholder="Status" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">Todos os status</SelectItem>
+                    <SelectItem value="on_track">Em dia</SelectItem>
+                    <SelectItem value="due_soon">A vencer (7d)</SelectItem>
+                    <SelectItem value="overdue">Atrasado</SelectItem>
+                    <SelectItem value="inactive">Inativo</SelectItem>
+                    <SelectItem value="no_date">Sem data</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
 
-              <Select value={filterFrequency} onValueChange={(v) => setFilterFrequency(v ?? "all")}>
-                <SelectTrigger className="w-[160px] bg-background border-border text-xs">
-                  <SelectValue placeholder="Frequência" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">Todas</SelectItem>
-                  {Object.entries(FREQUENCY_LABELS).map(([value, label]) => (
-                    <SelectItem key={value} value={value}>
-                      {label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <div className="space-y-1">
+                <label className="text-[12px] font-medium text-[var(--color-text-tertiary)] ml-1">Frequência</label>
+                <Select value={filterFrequency} onValueChange={(v) => setFilterFrequency(v ?? "all")}>
+                  <SelectTrigger className="w-[160px] h-[36px] bg-white border-[var(--color-border-strong)] rounded-lg text-[13px] text-[var(--color-text-primary)] focus:ring-[var(--color-brand)]">
+                    <SelectValue placeholder="Frequência" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">Todas</SelectItem>
+                    {Object.entries(FREQUENCY_LABELS).map(([value, label]) => (
+                      <SelectItem key={value} value={value}>
+                        {label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
           </div>
         </CardContent>
@@ -219,61 +225,53 @@ export default function PlansPage() {
           }
         />
       ) : (
-        <Card className="bg-card border-border shadow-card overflow-hidden">
+        <Card className="bg-white border-[var(--color-border)] shadow-card overflow-hidden">
           <Table>
             <TableHeader>
-              <TableRow className="border-border hover:bg-transparent bg-[#F8FAFC]">
-                <TableHead className="text-[#374151] font-bold text-[11px] uppercase tracking-wider">Plano</TableHead>
-                <TableHead className="text-[#374151] font-bold text-[11px] uppercase tracking-wider">Ativo</TableHead>
-                <TableHead className="text-[#374151] font-bold text-[11px] uppercase tracking-wider hidden md:table-cell">
-                  Frequência
-                </TableHead>
-                <TableHead className="text-[#374151] font-bold text-[11px] uppercase tracking-wider">
-                  Próxima Execução
-                </TableHead>
-                <TableHead className="text-[#374151] font-bold text-[11px] uppercase tracking-wider hidden lg:table-cell">
-                  Duração Est.
-                </TableHead>
-                <TableHead className="text-[#374151] font-bold text-[11px] uppercase tracking-wider text-center">
-                  Status
-                </TableHead>
+              <TableRow>
+                <TableHead>Plano</TableHead>
+                <TableHead>Ativo</TableHead>
+                <TableHead className="hidden md:table-cell">Frequência</TableHead>
+                <TableHead>Próxima Execução</TableHead>
+                <TableHead className="hidden lg:table-cell">Duração Est.</TableHead>
+                <TableHead className="text-center">Status</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {plans.map((plan) => (
                 <TableRow
                   key={plan.id}
-                  className="border-border cursor-pointer hover:bg-[#F1F5F9] transition-colors"
+                  className="cursor-pointer"
                   onClick={() => router.push(`/plans/${plan.id}`)}
                 >
                   <TableCell>
-                    <div className="font-semibold text-primary">{plan.name}</div>
+                    <div className="font-semibold text-[14px] text-[var(--color-text-primary)]">{plan.name}</div>
                     {plan.description && (
-                      <div className="text-xs text-muted-foreground line-clamp-1 max-w-[200px]">
+                      <div className="text-[13px] text-[var(--color-text-secondary)] line-clamp-1 max-w-[200px]">
                         {plan.description}
                       </div>
                     )}
                   </TableCell>
                   <TableCell>
                     <div className="flex flex-col">
-                      <span className="font-mono text-xs font-semibold">{plan.asset?.tag}</span>
-                      <span className="text-sm truncate max-w-[150px]">{plan.asset?.name}</span>
+                      <span className="font-mono text-[13px] font-semibold text-[var(--color-brand)]">{plan.asset?.tag}</span>
+                      <span className="text-[13px] truncate max-w-[150px] text-[var(--color-text-primary)]">{plan.asset?.name}</span>
                     </div>
                   </TableCell>
-                  <TableCell className="hidden md:table-cell text-sm text-muted-foreground">
+                  <TableCell className="hidden md:table-cell text-[13px] text-[var(--color-text-secondary)]">
                     {FREQUENCY_LABELS[plan.frequency]}
                     {plan.frequency === "custom" && plan.frequency_days && ` (${plan.frequency_days}d)`}
                   </TableCell>
                   <TableCell>
                     {plan.next_due_date ? (
-                      <div className="text-sm font-medium">
+                      <div className="text-[13px] font-semibold text-[var(--color-text-primary)]">
                         {format(new Date(plan.next_due_date), "dd/MM/yyyy")}
                       </div>
                     ) : (
-                      <div className="text-sm text-muted-foreground">—</div>
+                      <div className="text-[13px] text-[var(--color-text-muted)]">—</div>
                     )}
                   </TableCell>
-                  <TableCell className="hidden lg:table-cell text-sm text-muted-foreground">
+                  <TableCell className="hidden lg:table-cell text-[13px] text-[var(--color-text-secondary)]">
                     {formatDuration(plan.estimated_duration_min)}
                   </TableCell>
                   <TableCell className="text-center">

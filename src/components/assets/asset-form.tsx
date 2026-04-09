@@ -162,14 +162,14 @@ export function AssetForm({ asset, mode }: AssetFormProps) {
       )}
 
       {/* Tipo e Identificação */}
-      <Card className="bg-card border-border/50">
-        <CardHeader>
-          <CardTitle className="text-base">Identificação</CardTitle>
+      <Card className="bg-white border-[var(--color-border)] shadow-sm overflow-hidden">
+        <CardHeader className="bg-[#F8FAFC] border-b border-[var(--color-border)] p-4">
+          <CardTitle className="text-[13px] font-bold uppercase tracking-wider text-[var(--color-text-primary)]">Identificação do Ativo</CardTitle>
         </CardHeader>
-        <CardContent className="space-y-4">
+        <CardContent className="space-y-4 p-5">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="asset_type">Tipo de Ativo *</Label>
+            <div className="space-y-1.5">
+              <Label htmlFor="asset_type" className="text-[12px] font-medium text-[var(--color-text-secondary)]">Tipo de Ativo *</Label>
               <Select
                 value={form.asset_type}
                 onValueChange={(v) => {
@@ -177,7 +177,7 @@ export function AssetForm({ asset, mode }: AssetFormProps) {
                   updateField("category_id", "");
                 }}
               >
-                <SelectTrigger id="asset_type" className="bg-muted/50 border-border/50">
+                <SelectTrigger id="asset_type" className="h-[36px] bg-white border-[var(--color-border-strong)] rounded-lg text-[13px] text-[var(--color-text-primary)] focus:ring-[var(--color-brand)]">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -190,60 +190,60 @@ export function AssetForm({ asset, mode }: AssetFormProps) {
               </Select>
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="tag">Tag (Código Interno) *</Label>
+            <div className="space-y-1.5">
+              <Label htmlFor="tag" className="text-[12px] font-medium text-[var(--color-text-secondary)]">Tag (Código Interno) *</Label>
               <Input
                 id="tag"
                 value={form.tag}
                 onChange={(e) => updateField("tag", e.target.value)}
                 placeholder="Ex: FUR-001, PAQ-015"
                 required
-                className="bg-muted/50 border-border/50"
+                className="h-[36px] bg-white border-[var(--color-border-strong)] rounded-lg text-[13px] text-[var(--color-text-primary)] focus-visible:ring-[var(--color-brand)]"
               />
             </div>
           </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="name">Nome do Ativo *</Label>
+          <div className="space-y-1.5">
+            <Label htmlFor="name" className="text-[12px] font-medium text-[var(--color-text-secondary)]">Nome do Ativo *</Label>
             <Input
               id="name"
               value={form.name}
               onChange={(e) => updateField("name", e.target.value)}
               placeholder="Ex: Furadeira de Bancada, Paquímetro Digital"
               required
-              className="bg-muted/50 border-border/50"
+              className="h-[36px] bg-white border-[var(--color-border-strong)] rounded-lg text-[13px] text-[var(--color-text-primary)] focus-visible:ring-[var(--color-brand)] max-w-[800px]"
             />
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="manufacturer">Fabricante</Label>
+            <div className="space-y-1.5">
+              <Label htmlFor="manufacturer" className="text-[12px] font-medium text-[var(--color-text-secondary)]">Fabricante</Label>
               <Input
                 id="manufacturer"
                 value={form.manufacturer}
                 onChange={(e) => updateField("manufacturer", e.target.value)}
                 placeholder="Ex: Bosch, Mitutoyo"
-                className="bg-muted/50 border-border/50"
+                className="h-[36px] bg-white border-[var(--color-border-strong)] rounded-lg text-[13px] text-[var(--color-text-primary)] focus-visible:ring-[var(--color-brand)]"
               />
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="model">Modelo</Label>
+            <div className="space-y-1.5">
+              <Label htmlFor="model" className="text-[12px] font-medium text-[var(--color-text-secondary)]">Modelo</Label>
               <Input
                 id="model"
                 value={form.model}
                 onChange={(e) => updateField("model", e.target.value)}
                 placeholder="Ex: GBM 13-2 RE"
-                className="bg-muted/50 border-border/50"
+                className="h-[36px] bg-white border-[var(--color-border-strong)] rounded-lg text-[13px] text-[var(--color-text-primary)] focus-visible:ring-[var(--color-brand)]"
               />
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="serial_number">Nº de Série</Label>
+            <div className="space-y-1.5">
+              <Label htmlFor="serial_number" className="text-[12px] font-medium text-[var(--color-text-secondary)]">Nº de Série</Label>
               <Input
                 id="serial_number"
                 value={form.serial_number}
                 onChange={(e) => updateField("serial_number", e.target.value)}
                 placeholder="Ex: SN-2024-00123"
-                className="bg-muted/50 border-border/50"
+                className="h-[36px] bg-white border-[var(--color-border-strong)] rounded-lg text-[13px] text-[var(--color-text-primary)] focus-visible:ring-[var(--color-brand)]"
               />
             </div>
           </div>
@@ -251,19 +251,19 @@ export function AssetForm({ asset, mode }: AssetFormProps) {
       </Card>
 
       {/* Classificação */}
-      <Card className="bg-card border-border/50">
-        <CardHeader>
-          <CardTitle className="text-base">Classificação</CardTitle>
+      <Card className="bg-white border-[var(--color-border)] shadow-sm overflow-hidden">
+        <CardHeader className="bg-[#F8FAFC] border-b border-[var(--color-border)] p-4">
+          <CardTitle className="text-[13px] font-bold uppercase tracking-wider text-[var(--color-text-primary)]">Classificação e Localização</CardTitle>
         </CardHeader>
-        <CardContent className="space-y-4">
+        <CardContent className="space-y-4 p-5">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="category_id">Categoria</Label>
+            <div className="space-y-1.5">
+              <Label htmlFor="category_id" className="text-[12px] font-medium text-[var(--color-text-secondary)]">Categoria</Label>
               <Select
                 value={form.category_id}
                 onValueChange={(v) => updateField("category_id", v ?? "")}
               >
-                <SelectTrigger id="category_id" className="bg-muted/50 border-border/50">
+                <SelectTrigger id="category_id" className="h-[36px] bg-white border-[var(--color-border-strong)] rounded-lg text-[13px] text-[var(--color-text-primary)] focus:ring-[var(--color-brand)]">
                   <SelectValue placeholder="Selecionar..." />
                 </SelectTrigger>
                 <SelectContent>
@@ -299,13 +299,13 @@ export function AssetForm({ asset, mode }: AssetFormProps) {
               </Select>
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="location_id">Localização</Label>
+            <div className="space-y-1.5">
+              <Label htmlFor="location_id" className="text-[12px] font-medium text-[var(--color-text-secondary)]">Localização</Label>
               <Select
                 value={form.location_id}
                 onValueChange={(v) => updateField("location_id", v ?? "")}
               >
-                <SelectTrigger id="location_id" className="bg-muted/50 border-border/50">
+                <SelectTrigger id="location_id" className="h-[36px] bg-white border-[var(--color-border-strong)] rounded-lg text-[13px] text-[var(--color-text-primary)] focus:ring-[var(--color-brand)]">
                   <SelectValue placeholder="Selecionar..." />
                 </SelectTrigger>
                 <SelectContent>
@@ -341,13 +341,13 @@ export function AssetForm({ asset, mode }: AssetFormProps) {
               </Select>
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="criticality">Criticidade</Label>
+            <div className="space-y-1.5">
+              <Label htmlFor="criticality" className="text-[12px] font-medium text-[var(--color-text-secondary)]">Criticidade</Label>
               <Select
                 value={form.criticality}
                 onValueChange={(v) => updateField("criticality", v ?? "")}
               >
-                <SelectTrigger id="criticality" className="bg-muted/50 border-border/50">
+                <SelectTrigger id="criticality" className="h-[36px] bg-white border-[var(--color-border-strong)] rounded-lg text-[13px] text-[var(--color-text-primary)] focus:ring-[var(--color-brand)]">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -362,13 +362,13 @@ export function AssetForm({ asset, mode }: AssetFormProps) {
           </div>
 
           {mode === "edit" && (
-            <div className="space-y-2">
-              <Label htmlFor="status">Status</Label>
+            <div className="space-y-1.5 mt-4">
+              <Label htmlFor="status" className="text-[12px] font-medium text-[var(--color-text-secondary)]">Status</Label>
               <Select
                 value={form.status}
                 onValueChange={(v) => updateField("status", v ?? "")}
               >
-                <SelectTrigger id="status" className="bg-muted/50 border-border/50">
+                <SelectTrigger id="status" className="w-[300px] h-[36px] bg-white border-[var(--color-border-strong)] rounded-lg text-[13px] text-[var(--color-text-primary)] focus:ring-[var(--color-brand)]">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -385,52 +385,51 @@ export function AssetForm({ asset, mode }: AssetFormProps) {
 
       {/* Campos Metrológicos (Instrumento) */}
       {isInstrument && (
-        <Card className="bg-card border-primary/20 border">
-          <CardHeader>
-            <CardTitle className="text-base flex items-center gap-2">
-              <span className="inline-block h-2 w-2 rounded-full bg-primary" />
-              Dados Metrológicos
+        <Card className="bg-[#F0F9FF] border-[var(--color-info-border)] shadow-sm overflow-hidden">
+          <CardHeader className="bg-[#E0F2FE] border-b border-[var(--color-info-border)] p-4">
+            <CardTitle className="text-[13px] font-bold uppercase tracking-wider text-[var(--color-info-text)] flex items-center gap-2">
+              Dados Metrológicos Específicos
             </CardTitle>
           </CardHeader>
-          <CardContent className="space-y-4">
+          <CardContent className="space-y-4 p-5">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="measurement_range">Faixa de Medição</Label>
+              <div className="space-y-1.5">
+                <Label htmlFor="measurement_range" className="text-[12px] font-medium text-[var(--color-info-text)] opacity-80">Faixa de Medição</Label>
                 <Input
                   id="measurement_range"
                   value={form.measurement_range}
                   onChange={(e) => updateField("measurement_range", e.target.value)}
                   placeholder="Ex: 0-150mm"
-                  className="bg-muted/50 border-border/50"
+                  className="h-[36px] bg-white border-[#bae6fd] rounded-lg text-[13px] text-[var(--color-text-primary)] focus-visible:ring-[#bae6fd]"
                 />
               </div>
-              <div className="space-y-2">
-                <Label htmlFor="resolution">Resolução</Label>
+              <div className="space-y-1.5">
+                <Label htmlFor="resolution" className="text-[12px] font-medium text-[var(--color-info-text)] opacity-80">Resolução</Label>
                 <Input
                   id="resolution"
                   value={form.resolution}
                   onChange={(e) => updateField("resolution", e.target.value)}
                   placeholder="Ex: 0.01mm"
-                  className="bg-muted/50 border-border/50"
+                  className="h-[36px] bg-white border-[#bae6fd] rounded-lg text-[13px] text-[var(--color-text-primary)] focus-visible:ring-[#bae6fd]"
                 />
               </div>
-              <div className="space-y-2">
-                <Label htmlFor="accuracy">Precisão</Label>
+              <div className="space-y-1.5">
+                <Label htmlFor="accuracy" className="text-[12px] font-medium text-[var(--color-info-text)] opacity-80">Precisão</Label>
                 <Input
                   id="accuracy"
                   value={form.accuracy}
                   onChange={(e) => updateField("accuracy", e.target.value)}
                   placeholder="Ex: ±0.02mm"
-                  className="bg-muted/50 border-border/50"
+                  className="h-[36px] bg-white border-[#bae6fd] rounded-lg text-[13px] text-[var(--color-text-primary)] focus-visible:ring-[#bae6fd]"
                 />
               </div>
             </div>
 
-            <Separator className="bg-border/50" />
+            <Separator className="bg-[#bae6fd]" />
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="calibration_frequency_days">
+              <div className="space-y-1.5">
+                <Label htmlFor="calibration_frequency_days" className="text-[12px] font-medium text-[var(--color-info-text)] opacity-80">
                   Frequência de Calibração (dias) *
                 </Label>
                 <Input
@@ -441,17 +440,17 @@ export function AssetForm({ asset, mode }: AssetFormProps) {
                   onChange={(e) => updateField("calibration_frequency_days", e.target.value)}
                   placeholder="Ex: 365"
                   required={isInstrument}
-                  className="bg-muted/50 border-border/50"
+                  className="h-[36px] bg-white border-[#bae6fd] rounded-lg text-[13px] text-[var(--color-text-primary)] focus-visible:ring-[#bae6fd]"
                 />
               </div>
-              <div className="space-y-2">
-                <Label htmlFor="calibration_provider">Empresa Calibradora</Label>
+              <div className="space-y-1.5">
+                <Label htmlFor="calibration_provider" className="text-[12px] font-medium text-[var(--color-info-text)] opacity-80">Empresa Calibradora</Label>
                 <Input
                   id="calibration_provider"
                   value={form.calibration_provider}
                   onChange={(e) => updateField("calibration_provider", e.target.value)}
                   placeholder="Ex: Calibra Instrumentos Ltda"
-                  className="bg-muted/50 border-border/50"
+                  className="h-[36px] bg-white border-[#bae6fd] rounded-lg text-[13px] text-[var(--color-text-primary)] focus-visible:ring-[#bae6fd]"
                 />
               </div>
             </div>
@@ -460,12 +459,12 @@ export function AssetForm({ asset, mode }: AssetFormProps) {
       )}
 
       {/* Foto */}
-      <Card className="bg-card border-border/50">
-        <CardHeader>
-          <CardTitle className="text-base">Foto</CardTitle>
+      <Card className="bg-white border-[var(--color-border)] shadow-sm overflow-hidden">
+        <CardHeader className="bg-[#F8FAFC] border-b border-[var(--color-border)] p-4">
+          <CardTitle className="text-[13px] font-bold uppercase tracking-wider text-[var(--color-text-primary)]">Foto do Ativo</CardTitle>
         </CardHeader>
-        <CardContent>
-          <div className="flex items-start gap-4">
+        <CardContent className="p-5">
+          <div className="flex flex-col sm:flex-row items-start gap-4">
             {photoPreview ? (
               <div className="relative h-32 w-32 rounded-lg overflow-hidden border border-border/50">
                 <img
@@ -503,17 +502,17 @@ export function AssetForm({ asset, mode }: AssetFormProps) {
       </Card>
 
       {/* Observações */}
-      <Card className="bg-card border-border/50">
-        <CardHeader>
-          <CardTitle className="text-base">Observações</CardTitle>
+      <Card className="bg-white border-[var(--color-border)] shadow-sm overflow-hidden">
+        <CardHeader className="bg-[#F8FAFC] border-b border-[var(--color-border)] p-4">
+          <CardTitle className="text-[13px] font-bold uppercase tracking-wider text-[var(--color-text-primary)]">Observações Adicionais</CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="p-5">
           <Textarea
             value={form.notes}
             onChange={(e) => updateField("notes", e.target.value)}
-            placeholder="Observações adicionais sobre o ativo..."
-            rows={3}
-            className="bg-muted/50 border-border/50 resize-none"
+            placeholder="Documentação, avisos, etc..."
+            rows={4}
+            className="bg-white border-[var(--color-border-strong)] rounded-lg text-[13px] text-[var(--color-text-primary)] focus-visible:ring-[var(--color-brand)] p-3 resize-y"
           />
         </CardContent>
       </Card>

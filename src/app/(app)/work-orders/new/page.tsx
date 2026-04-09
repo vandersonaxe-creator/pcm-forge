@@ -156,7 +156,7 @@ export default function NewWorkOrderPage() {
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-          <Card className="bg-card/50 border-border/30">
+          <Card className="bg-white border-[var(--color-border)] shadow-sm">
             <CardContent className="p-6 space-y-8">
               
               {/* Seção Type & Priority */}
@@ -262,7 +262,7 @@ export default function NewWorkOrderPage() {
                           defaultValue={field.value}
                         >
                           <FormControl>
-                            <SelectTrigger className="bg-muted/30">
+                            <SelectTrigger className="h-[36px] bg-white border-[var(--color-border-strong)] rounded-lg text-[13px] text-[var(--color-text-primary)] focus:ring-[var(--color-brand)]">
                               <SelectValue placeholder="Selecione um ativo" />
                             </SelectTrigger>
                           </FormControl>
@@ -314,7 +314,7 @@ export default function NewWorkOrderPage() {
                           defaultValue={field.value}
                         >
                           <FormControl>
-                            <SelectTrigger className="bg-muted/30">
+                            <SelectTrigger className="h-[36px] bg-white border-[var(--color-border-strong)] rounded-lg text-[13px] text-[var(--color-text-primary)] focus:ring-[var(--color-brand)]">
                               <SelectValue placeholder="Selecione um template" />
                             </SelectTrigger>
                           </FormControl>
@@ -348,7 +348,7 @@ export default function NewWorkOrderPage() {
                           <FormLabel>Plano Preventivo Vínculo (opcional)</FormLabel>
                           <Select onValueChange={(val) => field.onChange(val || "")} defaultValue={field.value}>
                             <FormControl>
-                              <SelectTrigger>
+                              <SelectTrigger className="h-[36px] bg-white border-[var(--color-border-strong)] rounded-lg text-[13px] text-[var(--color-text-primary)] focus:ring-[var(--color-brand)]">
                                 <SelectValue placeholder="Vincular a um plano..." />
                               </SelectTrigger>
                             </FormControl>
@@ -379,7 +379,7 @@ export default function NewWorkOrderPage() {
                         <Input 
                           placeholder={osType === "corrective" ? "Descreva o problema brevemente..." : "Título da atividade..."} 
                           {...field} 
-                          className="bg-muted/30"
+                          className="h-[36px] bg-white border-[var(--color-border-strong)] rounded-lg text-[13px] text-[var(--color-text-primary)] focus-visible:ring-[var(--color-brand)]"
                         />
                       </FormControl>
                       <FormMessage />
@@ -397,7 +397,7 @@ export default function NewWorkOrderPage() {
                         <FormControl>
                           <Textarea 
                             placeholder="Instruções específicas para o técnico..." 
-                            className="bg-muted/20 min-h-[100px]"
+                            className="bg-white border-[var(--color-border-strong)] rounded-lg text-[13px] text-[var(--color-text-primary)] focus-visible:ring-[var(--color-brand)] p-3 resize-y min-h-[100px]"
                             {...field} 
                           />
                         </FormControl>
@@ -415,7 +415,7 @@ export default function NewWorkOrderPage() {
                           <FormControl>
                             <Textarea 
                               placeholder="O que aconteceu? Quando percebeu?" 
-                              className="bg-background border-border min-h-[100px] focus:bg-red-500/5 focus:border-red-500/50 transition-colors"
+                              className="bg-white border-[var(--color-border-strong)] rounded-lg text-[13px] text-[var(--color-text-primary)] focus-visible:ring-[var(--color-danger-border)] p-3 resize-y min-h-[100px]"
                               {...field} 
                             />
                           </FormControl>
@@ -441,7 +441,7 @@ export default function NewWorkOrderPage() {
                       </FormLabel>
                       <Select onValueChange={(val) => field.onChange(val || "")} defaultValue={field.value}>
                         <FormControl>
-                          <SelectTrigger className="bg-muted/30">
+                          <SelectTrigger className="h-[36px] bg-white border-[var(--color-border-strong)] rounded-lg text-[13px] text-[var(--color-text-primary)] focus:ring-[var(--color-brand)]">
                             <SelectValue placeholder="Selecione um técnico" />
                           </SelectTrigger>
                         </FormControl>
@@ -462,7 +462,7 @@ export default function NewWorkOrderPage() {
                     <FormItem>
                       <FormLabel>Solicitante</FormLabel>
                       <FormControl>
-                        <Input placeholder="Nome de quem solicitou" {...field} className="bg-muted/30" />
+                        <Input placeholder="Nome de quem solicitou" {...field} className="h-[36px] bg-white border-[var(--color-border-strong)] rounded-lg text-[13px] text-[var(--color-text-primary)] focus-visible:ring-[var(--color-brand)]" />
                       </FormControl>
                     </FormItem>
                   )}
@@ -478,7 +478,7 @@ export default function NewWorkOrderPage() {
                          Data Programada
                       </FormLabel>
                       <FormControl>
-                         <Input type="date" {...field} className="bg-muted/30 h-10" />
+                         <Input type="date" {...field} className="h-[36px] bg-white border-[var(--color-border-strong)] rounded-lg text-[13px] text-[var(--color-text-primary)] focus-visible:ring-[var(--color-brand)]" />
                       </FormControl>
                     </FormItem>
                   )}
@@ -491,7 +491,7 @@ export default function NewWorkOrderPage() {
                     <FormItem>
                       <FormLabel>Data Limite</FormLabel>
                       <FormControl>
-                        <Input type="date" {...field} className="bg-muted/30 h-10" />
+                        <Input type="date" {...field} className="h-[36px] bg-white border-[var(--color-border-strong)] rounded-lg text-[13px] text-[var(--color-text-primary)] focus-visible:ring-[var(--color-brand)]" />
                       </FormControl>
                       <FormMessage />
                     </FormItem>

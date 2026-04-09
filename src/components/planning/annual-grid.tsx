@@ -127,13 +127,13 @@ function AssetRows({ asset, onCellClick }: {
           </td>
 
           {/* Criticality Badge */}
-          <td className="px-3 py-2 text-center border-r border-border/10">
+          <td className="px-3 py-2 text-center border-r border-[var(--color-border)]">
              {pIdx === 0 && (
                <div className={cn(
                  "w-6 h-6 rounded flex items-center justify-center text-[10px] font-bold mx-auto",
-                 asset.criticality === "A" ? "bg-[#FEF2F2] text-[#DC2626] border border-[#FECACA]" :
-                 asset.criticality === "B" ? "bg-[#FFFBEB] text-[#D97706] border border-[#FDE68A]" :
-                 "bg-[#EFF6FF] text-[#2563EB] border border-[#BFDBFE]"
+                 asset.criticality === "A" ? "bg-[var(--color-danger-bg)] text-[var(--color-danger-text)] border border-[var(--color-danger-border)]" :
+                 asset.criticality === "B" ? "bg-[var(--color-warning-bg)] text-[var(--color-warning-text)] border border-[var(--color-warning-border)]" :
+                 "bg-[var(--color-info-bg)] text-[var(--color-info-text)] border border-[var(--color-info-border)]"
                )}>
                  {asset.criticality}
                </div>

@@ -16,50 +16,50 @@ import { getPlanOperationalStatus, PLAN_STATUS_COLORS, PLAN_STATUS_LABELS } from
 
 export function StatusBadge({ status }: { status: AssetStatus }) {
   return (
-    <Badge variant="outline" className={cn("text-xs font-medium", ASSET_STATUS_COLORS[status])}>
+    <div className={cn("inline-flex items-center rounded-md px-2 py-0.5 text-[11px] font-semibold border uppercase tracking-[0.03em]", ASSET_STATUS_COLORS[status])}>
       {ASSET_STATUS_LABELS[status]}
-    </Badge>
+    </div>
   );
 }
 
 export function CriticalityBadge({ level }: { level: CriticalityLevel }) {
   return (
-    <Badge variant="outline" className={cn("text-xs font-semibold", CRITICALITY_COLORS[level])}>
+    <div className={cn("inline-flex items-center rounded-md px-2 py-0.5 text-[11px] font-semibold border uppercase tracking-[0.03em]", CRITICALITY_COLORS[level])}>
       {level}
-    </Badge>
+    </div>
   );
 }
 
 export function CalibrationBadge({ status }: { status: CalibrationStatus }) {
   if (status === "not_applicable") return null;
   return (
-    <Badge variant="outline" className={cn("text-xs font-medium", CALIBRATION_STATUS_COLORS[status])}>
+    <div className={cn("inline-flex items-center rounded-md px-2 py-0.5 text-[11px] font-semibold border uppercase tracking-[0.03em]", CALIBRATION_STATUS_COLORS[status])}>
       {CALIBRATION_STATUS_LABELS[status]}
-    </Badge>
+    </div>
   );
 }
 
 export function OsStatusBadge({ status }: { status: OsStatus }) {
   return (
-    <Badge variant="outline" className={cn("text-xs font-medium", OS_STATUS_COLORS[status])}>
+    <div className={cn("inline-flex items-center rounded-md px-2 py-0.5 text-[11px] font-semibold border uppercase tracking-[0.03em]", OS_STATUS_COLORS[status])}>
       {OS_STATUS_LABELS[status]}
-    </Badge>
+    </div>
   );
 }
 
 export function OsPriorityBadge({ priority }: { priority: OsPriority }) {
   return (
-    <Badge variant="outline" className={cn("text-xs font-medium", OS_PRIORITY_COLORS[priority])}>
+    <div className={cn("inline-flex items-center rounded-md px-2 py-0.5 text-[11px] font-semibold border uppercase tracking-[0.03em]", OS_PRIORITY_COLORS[priority])}>
       {OS_PRIORITY_LABELS[priority]}
-    </Badge>
+    </div>
   );
 }
 
 export function OsTypeBadge({ type }: { type: OsType }) {
   return (
-    <Badge variant="outline" className={cn("text-xs font-medium", OS_TYPE_COLORS[type])}>
+    <div className={cn("inline-flex items-center rounded-md px-2 py-0.5 text-[11px] font-semibold border uppercase tracking-[0.03em]", OS_TYPE_COLORS[type])}>
       {OS_TYPE_LABELS[type]}
-    </Badge>
+    </div>
   );
 }
 
@@ -69,8 +69,8 @@ export function PlanStatusBadge({ plan, className }: { plan: Pick<MaintenancePla
   const label = PLAN_STATUS_LABELS[status];
 
   return (
-    <Badge variant="outline" className={cn("text-xs font-medium", colorClass, className)}>
+    <div className={cn("inline-flex items-center rounded-md px-2 py-0.5 text-[11px] font-semibold border uppercase tracking-[0.03em]", colorClass, className)}>
       {label}
-    </Badge>
+    </div>
   );
 }

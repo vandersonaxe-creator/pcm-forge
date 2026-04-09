@@ -23,10 +23,10 @@ export const ASSET_STATUS_LABELS: Record<AssetStatus, string> = {
 }
 
 export const ASSET_STATUS_COLORS: Record<AssetStatus, string> = {
-  active: 'bg-[#ECFDF5] text-[#065F46] border-[#A7F3D0]',
-  inactive: 'bg-[#F3F4F6] text-[#374151] border-[#D1D5DB]',
-  maintenance: 'bg-[#FFFBEB] text-[#92400E] border-[#FDE68A]',
-  disposed: 'bg-[#FEF2F2] text-[#991B1B] border-[#FECACA]',
+  active: 'badge-success',
+  inactive: 'badge-neutral',
+  maintenance: 'badge-warning',
+  disposed: 'badge-danger',
 }
 
 // Criticality Labels
@@ -37,9 +37,9 @@ export const CRITICALITY_LABELS: Record<CriticalityLevel, string> = {
 }
 
 export const CRITICALITY_COLORS: Record<CriticalityLevel, string> = {
-  A: 'bg-[#FEF2F2] text-[#DC2626] border-[#FECACA]',
-  B: 'bg-[#FFFBEB] text-[#D97706] border-[#FDE68A]',
-  C: 'bg-[#EFF6FF] text-[#2563EB] border-[#BFDBFE]',
+  A: 'bg-[var(--color-crit-a-bg)] text-[var(--color-crit-a-text)] border-[var(--color-crit-a-border)]',
+  B: 'bg-[var(--color-crit-b-bg)] text-[var(--color-crit-b-text)] border-[var(--color-crit-b-border)]',
+  C: 'bg-[var(--color-crit-c-bg)] text-[var(--color-crit-c-text)] border-[var(--color-crit-c-border)]',
 }
 
 // Calibration Status Labels
@@ -52,11 +52,11 @@ export const CALIBRATION_STATUS_LABELS: Record<CalibrationStatus, string> = {
 }
 
 export const CALIBRATION_STATUS_COLORS: Record<CalibrationStatus, string> = {
-  valid: 'bg-[#ECFDF5] text-[#065F46] border-[#A7F3D0]',
-  expiring: 'bg-[#FFFBEB] text-[#92400E] border-[#FDE68A]',
-  expired: 'bg-[#FEF2F2] text-[#991B1B] border-[#FECACA]',
-  pending: 'bg-[#EFF6FF] text-[#1E40AF] border-[#BFDBFE]',
-  not_applicable: 'bg-[#F3F4F6] text-[#374151] border-[#D1D5DB]',
+  valid: 'badge-success',
+  expiring: 'badge-warning',
+  expired: 'badge-danger',
+  pending: 'badge-info',
+  not_applicable: 'badge-neutral',
 }
 
 // Calibration Result Labels
@@ -105,10 +105,10 @@ export const OS_TYPE_LABELS: Record<OsType, string> = {
 }
 
 export const OS_TYPE_COLORS: Record<OsType, string> = {
-  preventive: 'bg-[#EFF6FF] text-[#1E40AF] border-[#BFDBFE]',
-  corrective: 'bg-[#FEF2F2] text-[#991B1B] border-[#FECACA]',
-  inspection: 'bg-[#F0FDF4] text-[#166534] border-[#BBF7D0]',
-  calibration: 'bg-[#F5F3FF] text-[#5B21B6] border-[#DDD6FE]',
+  preventive: 'badge-info',
+  corrective: 'badge-danger',
+  inspection: 'badge-success',
+  calibration: 'badge-warning',
 }
 
 export const OS_TYPE_ICONS: Record<OsType, string> = {
@@ -128,11 +128,11 @@ export const OS_STATUS_LABELS: Record<OsStatus, string> = {
 }
 
 export const OS_STATUS_COLORS: Record<OsStatus, string> = {
-  planned: 'bg-[#EFF6FF] text-[#1E40AF] border-[#BFDBFE]',
-  open: 'bg-[#F9FAFB] text-[#374151] border-[#D1D5DB]',
-  in_progress: 'bg-[#FFFBEB] text-[#92400E] border-[#FDE68A]',
-  completed: 'bg-[#ECFDF5] text-[#065F46] border-[#A7F3D0]',
-  cancelled: 'bg-[#FEF2F2] text-[#991B1B] border-[#FECACA]',
+  planned: 'badge-info',
+  open: 'badge-info',
+  in_progress: 'badge-warning',
+  completed: 'badge-success',
+  cancelled: 'badge-neutral',
 }
 
 // OS Priority Labels
@@ -144,10 +144,10 @@ export const OS_PRIORITY_LABELS: Record<OsPriority, string> = {
 }
 
 export const OS_PRIORITY_COLORS: Record<OsPriority, string> = {
-  low: 'bg-[#F3F4F6] text-[#374151] border-[#D1D5DB]',
-  medium: 'bg-[#EFF6FF] text-[#1E40AF] border-[#BFDBFE]',
-  high: 'bg-[#FFFBEB] text-[#92400E] border-[#FDE68A]',
-  critical: 'bg-[#FEF2F2] text-[#991B1B] border-[#FECACA]',
+  low: 'badge-neutral',
+  medium: 'badge-info',
+  high: 'badge-warning',
+  critical: 'badge-danger',
 }
 
 // User Role Labels

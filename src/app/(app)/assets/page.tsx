@@ -96,19 +96,19 @@ export default function AssetsPage() {
       {/* Counters */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {[
-          { label: "Total Geral", value: assets.length, icon: Package, color: "text-primary" },
-          { label: "Equipamentos", value: totalEquipments, icon: Wrench, color: "text-primary" },
-          { label: "Instrumentos", value: totalInstruments, icon: Gauge, color: "text-primary" },
-          { label: "Ativos Operantes", value: totalActive, icon: CheckCircle2, color: "text-success" },
+          { label: "Total Geral", value: assets.length, icon: Package, bgClass: "bg-[var(--color-brand-light)]", textClass: "text-[var(--color-brand)]" },
+          { label: "Equipamentos", value: totalEquipments, icon: Wrench, bgClass: "bg-[var(--color-bg-muted)]", textClass: "text-[var(--color-text-secondary)]" },
+          { label: "Instrumentos", value: totalInstruments, icon: Gauge, bgClass: "bg-[var(--color-warning-bg)]", textClass: "text-[var(--color-warning-text)]" },
+          { label: "Ativos Operantes", value: totalActive, icon: CheckCircle2, bgClass: "bg-[var(--color-success-bg)]", textClass: "text-[var(--color-success-icon)]" },
         ].map((counter) => (
-          <Card key={counter.label} className="bg-card border-border shadow-card">
+          <Card key={counter.label} className="bg-white border-[var(--color-border)] shadow-card">
             <CardContent className="flex items-center gap-4 p-5">
-              <div className={cn("p-2 rounded-lg", counter.color.replace("text-", "bg-").replace("]", "/10]"))}>
-                <counter.icon className={cn("h-5 w-5", counter.color)} />
+              <div className={cn("p-2.5 rounded-full", counter.bgClass)}>
+                <counter.icon className={cn("h-5 w-5", counter.textClass)} />
               </div>
               <div>
-                <p className="text-2xl font-bold tracking-tight">{counter.value}</p>
-                <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-widest leading-none mt-1">{counter.label}</p>
+                <p className="text-[24px] font-bold tracking-tight leading-none text-[var(--color-text-primary)]">{counter.value}</p>
+                <p className="text-[12px] font-medium text-[var(--color-text-tertiary)] uppercase tracking-[0.05em] leading-none mt-2">{counter.label}</p>
               </div>
             </CardContent>
           </Card>
@@ -121,21 +121,21 @@ export default function AssetsPage() {
           <div className="flex flex-col lg:flex-row gap-3">
             {/* Search */}
             <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[var(--color-text-muted)]" />
               <Input
-                placeholder="Buscar por tag ou nome..."
+                placeholder="Buscar por tag o nome..."
                 value={search}
                 onChange={(e) => handleSearch(e.target.value)}
-                className="pl-9 bg-background border-border"
+                className="pl-9 h-[36px] bg-white border-[var(--color-border-strong)] rounded-lg text-[13px] text-[var(--color-text-primary)] focus-visible:ring-[var(--color-brand)] placeholder:text-[var(--color-text-muted)] w-full block"
               />
             </div>
 
             {/* Filter dropdowns */}
             <div className="flex flex-wrap items-end gap-4">
-              <div className="space-y-1.5">
-                <label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground ml-1">Tipo</label>
+              <div className="space-y-1">
+                <label className="text-[12px] font-medium text-[var(--color-text-tertiary)] ml-1">Tipo</label>
                 <Select value={filterType} onValueChange={(v) => setFilterType(v ?? "all")}>
-                  <SelectTrigger className="w-[150px] bg-background border-border text-sm">
+                  <SelectTrigger className="w-[150px] h-[36px] bg-white border-[var(--color-border-strong)] rounded-lg text-[13px] text-[var(--color-text-primary)] focus:ring-[var(--color-brand)]">
                     <Filter className="mr-1 h-3.5 w-3.5" />
                     <SelectValue placeholder="Tipo" />
                   </SelectTrigger>
@@ -147,10 +147,10 @@ export default function AssetsPage() {
                 </Select>
               </div>
 
-              <div className="space-y-1.5">
-                <label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground ml-1">Status</label>
+              <div className="space-y-1">
+                <label className="text-[12px] font-medium text-[var(--color-text-tertiary)] ml-1">Status</label>
                 <Select value={filterStatus} onValueChange={(v) => setFilterStatus(v ?? "all")}>
-                  <SelectTrigger className="w-[150px] bg-background border-border text-sm">
+                  <SelectTrigger className="w-[150px] h-[36px] bg-white border-[var(--color-border-strong)] rounded-lg text-[13px] text-[var(--color-text-primary)] focus:ring-[var(--color-brand)]">
                     <SelectValue placeholder="Status" />
                   </SelectTrigger>
                   <SelectContent>
@@ -163,10 +163,10 @@ export default function AssetsPage() {
                 </Select>
               </div>
 
-              <div className="space-y-1.5">
-                <label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground ml-1">Criticidade</label>
+              <div className="space-y-1">
+                <label className="text-[12px] font-medium text-[var(--color-text-tertiary)] ml-1">Criticidade</label>
                 <Select value={filterCriticality} onValueChange={(v) => setFilterCriticality(v ?? "all")}>
-                  <SelectTrigger className="w-[150px] bg-background border-border text-sm">
+                  <SelectTrigger className="w-[150px] h-[36px] bg-white border-[var(--color-border-strong)] rounded-lg text-[13px] text-[var(--color-text-primary)] focus:ring-[var(--color-brand)]">
                     <SelectValue placeholder="Criticidade" />
                   </SelectTrigger>
                   <SelectContent>
@@ -179,10 +179,10 @@ export default function AssetsPage() {
               </div>
 
               {categories.length > 0 && (
-                <div className="space-y-1.5">
-                  <label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground ml-1">Categoria</label>
+                <div className="space-y-1">
+                  <label className="text-[12px] font-medium text-[var(--color-text-tertiary)] ml-1">Categoria</label>
                   <Select value={filterCategory} onValueChange={(v) => setFilterCategory(v ?? "all")}>
-                    <SelectTrigger className="w-[160px] bg-background border-border text-sm">
+                    <SelectTrigger className="w-[160px] h-[36px] bg-white border-[var(--color-border-strong)] rounded-lg text-[13px] text-[var(--color-text-primary)] focus:ring-[var(--color-brand)]">
                       <SelectValue placeholder="Categoria" />
                     </SelectTrigger>
                     <SelectContent>
@@ -198,10 +198,10 @@ export default function AssetsPage() {
               )}
 
               {locations.length > 0 && (
-                <div className="space-y-1.5">
-                  <label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground ml-1">Localização</label>
+                <div className="space-y-1">
+                  <label className="text-[12px] font-medium text-[var(--color-text-tertiary)] ml-1">Localização</label>
                   <Select value={filterLocation} onValueChange={(v) => setFilterLocation(v ?? "all")}>
-                    <SelectTrigger className="w-[160px] bg-background border-border text-sm">
+                    <SelectTrigger className="w-[160px] h-[36px] bg-white border-[var(--color-border-strong)] rounded-lg text-[13px] text-[var(--color-text-primary)] focus:ring-[var(--color-brand)]">
                       <SelectValue placeholder="Localização" />
                     </SelectTrigger>
                     <SelectContent>
@@ -247,40 +247,28 @@ export default function AssetsPage() {
           }
         />
       ) : (
-        <Card className="bg-card border-border shadow-card overflow-hidden">
+        <Card className="bg-white border-[var(--color-border)] shadow-card overflow-hidden">
           <Table>
             <TableHeader>
-              <TableRow className="border-border hover:bg-transparent bg-[#F8FAFC]">
-                <TableHead className="text-[#374151] font-bold text-xs uppercase tracking-wider">Tag</TableHead>
-                <TableHead className="text-[#374151] font-bold text-xs uppercase tracking-wider">Nome</TableHead>
-                <TableHead className="text-[#374151] font-bold text-xs uppercase tracking-wider hidden md:table-cell">
-                  Tipo
-                </TableHead>
-                <TableHead className="text-[#374151] font-bold text-xs uppercase tracking-wider hidden lg:table-cell">
-                  Categoria
-                </TableHead>
-                <TableHead className="text-[#374151] font-bold text-xs uppercase tracking-wider hidden lg:table-cell">
-                  Localização
-                </TableHead>
-                <TableHead className="text-[#374151] font-bold text-xs uppercase tracking-wider text-center">
-                  Criticidade
-                </TableHead>
-                <TableHead className="text-[#374151] font-bold text-xs uppercase tracking-wider text-center">
-                  Status
-                </TableHead>
-                <TableHead className="text-[#374151] font-bold text-xs uppercase tracking-wider text-center hidden md:table-cell">
-                  Calibração
-                </TableHead>
+              <TableRow>
+                <TableHead>Tag</TableHead>
+                <TableHead>Nome</TableHead>
+                <TableHead className="hidden md:table-cell">Tipo</TableHead>
+                <TableHead className="hidden lg:table-cell">Categoria</TableHead>
+                <TableHead className="hidden lg:table-cell">Localização</TableHead>
+                <TableHead className="text-center">Criticidade</TableHead>
+                <TableHead className="text-center">Status</TableHead>
+                <TableHead className="text-center hidden md:table-cell">Calibração</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {assets.map((asset) => (
                 <TableRow
                   key={asset.id}
-                  className="border-border cursor-pointer hover:bg-[#F1F5F9] transition-colors"
+                  className="cursor-pointer"
                   onClick={() => router.push(`/assets/${asset.id}`)}
                 >
-                  <TableCell className="font-mono text-sm font-bold text-primary">
+                  <TableCell className="font-mono text-[14px] font-semibold text-[var(--color-text-primary)]">
                     {asset.tag}
                   </TableCell>
                   <TableCell>

@@ -1,110 +1,132 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap');
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
-@custom-variant dark (&:is(.dark *));
-
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-sans);
-  --font-mono: var(--font-technical);
-  --font-technical: "JetBrains Mono", monospace;
-  --font-heading: var(--font-sans);
+  --color-background: var(--color-bg-page);
+  --color-foreground: var(--color-text-primary);
   
-  --color-primary: #2563EB;
-  --color-primary-hover: #1D4ED8;
-  --color-secondary: #D97706;
+  --font-sans: "Inter", system-ui, -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono", "Fira Code", monospace;
+  --font-technical: "JetBrains Mono", "Fira Code", monospace;
   
-  --color-success: #059669;
-  --color-warning: #D97706;
-  --color-destructive: #DC2626;
-  --color-info: #2563EB;
+  /* Brand */
+  --color-primary: var(--color-brand);
+  --color-primary-hover: var(--color-brand-hover);
+  --color-primary-foreground: #FFFFFF;
   
-  --color-border: #E5E7EB;
-  --color-border-hover: #D1D5DB;
+  --color-secondary: var(--color-bg-muted);
+  --color-secondary-foreground: var(--color-text-secondary);
   
-  --color-card: #FFFFFF;
-  --color-card-foreground: #111827;
+  --color-muted: var(--color-bg-muted);
+  --color-muted-foreground: var(--color-text-muted);
   
-  --color-popover: #FFFFFF;
-  --color-popover-foreground: #111827;
+  --color-border: var(--color-border);
+  --color-input: var(--color-bg-card);
+  --color-ring: var(--color-brand);
   
+  --color-card: var(--color-bg-card);
+  --color-card-foreground: var(--color-text-primary);
+  
+  --color-popover: var(--color-bg-elevated);
+  --color-popover-foreground: var(--color-text-primary);
+  
+  --color-success: var(--color-success-bg);
+  --color-success-foreground: var(--color-success-text);
+  
+  --color-warning: var(--color-warning-bg);
+  --color-warning-foreground: var(--color-warning-text);
+  
+  --color-danger: var(--color-danger-bg);
+  --color-danger-foreground: var(--color-danger-text);
+  --color-destructive: var(--color-danger-bg);
+  --color-destructive-foreground: var(--color-danger-text);
+  
+  --color-info: var(--color-info-bg);
+  --color-info-foreground: var(--color-info-text);
+
+  /* Sidebar */
+  --color-sidebar: var(--color-bg-sidebar);
+  --color-sidebar-foreground: var(--color-text-on-dark-muted);
+  --color-sidebar-primary: var(--color-brand);
+  --color-sidebar-accent: var(--color-bg-sidebar-hover);
+  --color-sidebar-border: #1E293B;
+
   --radius-sm: 6px;
   --radius-md: 8px;
   --radius-lg: 12px;
   --radius-xl: 16px;
-
-  /* Sidebar remain dark */
-  --color-sidebar: #1B2A4A;
-  --color-sidebar-foreground: #94A3B8;
-  --color-sidebar-primary: #2563EB;
-  --color-sidebar-accent: #243B5E;
-  --color-sidebar-border: #2D3D5A;
 }
 
 :root {
-  --background: #F5F6F8;
-  --foreground: #111827;
-  
-  --muted: #F3F4F6;
-  --muted-foreground: #6B7280;
-  
-  --accent: #F1F5F9;
-  --accent-foreground: #111827;
-  
-  --popover: #FFFFFF;
-  --popover-foreground: #111827;
-  
-  --card: #FFFFFF;
-  --card-foreground: #111827;
-  
-  --primary: #2563EB;
-  --primary-foreground: #FFFFFF;
-  
-  --secondary: #D97706;
-  --secondary-foreground: #FFFFFF;
-  
-  --destructive: #DC2626;
-  --destructive-foreground: #FFFFFF;
-  
-  --border: #E5E7EB;
-  --input: #FFFFFF;
-  --ring: #2563EB;
-  
-  --radius: 0.75rem;
+  /* ─── Foundations ─── */
+  --color-bg-page: #F8F9FB;
+  --color-bg-card: #FFFFFF;
+  --color-bg-card-hover: #F8FAFC;
+  --color-bg-elevated: #FFFFFF;
+  --color-bg-muted: #F1F3F5;
+  --color-bg-sidebar: #0F172A;
+  --color-bg-sidebar-hover: #1E293B;
+  --color-bg-sidebar-active: #2563EB;
 
-  --font-sans: "Inter", system-ui, -apple-system, sans-serif;
-}
+  /* ─── Borders ─── */
+  --color-border: #E2E8F0;
+  --color-border-light: #F1F5F9;
+  --color-border-strong: #CBD5E1;
+  --color-border-focus: #2563EB;
 
-.dark {
-  --background: #111827;
-  --foreground: #F8FAFC;
-  
-  --muted: #1E293B;
-  --muted-foreground: #94A3B8;
-  
-  --accent: #1E293B;
-  --accent-foreground: #F8FAFC;
-  
-  --popover: #1E293B;
-  --popover-foreground: #F8FAFC;
-  
-  --card: #1E293B;
-  --card-foreground: #F8FAFC;
-  
-  --primary: #3B82F6;
-  --primary-foreground: #FFFFFF;
-  
-  --secondary: #F59E0B;
-  --secondary-foreground: #000000;
-  
-  --destructive: #EF4444;
-  --destructive-foreground: #FFFFFF;
-  
-  --border: #334155;
-  --input: #0F172A;
-  --ring: #3B82F6;
+  /* ─── Text ─── */
+  --color-text-primary: #0F172A;
+  --color-text-secondary: #475569;
+  --color-text-tertiary: #64748B;
+  --color-text-muted: #94A3B8;
+  --color-text-on-dark: #F1F5F9;
+  --color-text-on-dark-muted: #94A3B8;
+
+  /* ─── Brand ─── */
+  --color-brand: #2563EB;
+  --color-brand-hover: #1D4ED8;
+  --color-brand-light: #EFF6FF;
+  --color-brand-muted: #BFDBFE;
+
+  /* ─── Status ─── */
+  --color-success-bg: #F0FDF4;
+  --color-success-text: #15803D;
+  --color-success-border: #BBF7D0;
+  --color-success-icon: #22C55E;
+
+  --color-warning-bg: #FFFBEB;
+  --color-warning-text: #A16207;
+  --color-warning-border: #FDE68A;
+  --color-warning-icon: #EAB308;
+
+  --color-danger-bg: #FEF2F2;
+  --color-danger-text: #B91C1C;
+  --color-danger-border: #FECACA;
+  --color-danger-icon: #EF4444;
+
+  --color-info-bg: #EFF6FF;
+  --color-info-text: #1E40AF;
+  --color-info-border: #BFDBFE;
+  --color-info-icon: #3B82F6;
+
+  --color-neutral-bg: #F8FAFC;
+  --color-neutral-text: #475569;
+  --color-neutral-border: #E2E8F0;
+
+  /* ─── Criticidade ─── */
+  --color-crit-a-bg: #FEF2F2;
+  --color-crit-a-text: #DC2626;
+  --color-crit-a-border: #FECACA;
+
+  --color-crit-b-bg: #FFFBEB;
+  --color-crit-b-text: #D97706;
+  --color-crit-b-border: #FDE68A;
+
+  --color-crit-c-bg: #F0FDF4;
+  --color-crit-c-text: #15803D;
+  --color-crit-c-border: #BBF7D0;
 }
 
 @layer base {
@@ -113,11 +135,12 @@
   }
   body {
     @apply bg-background text-foreground antialiased;
+    font-family: var(--font-sans);
     font-size: 14px;
     line-height: 1.6;
   }
   h1, h2, h3, h4, h5, h6 {
-    @apply font-bold tracking-tight;
+    @apply font-bold tracking-tight text-[var(--color-text-primary)];
     letter-spacing: -0.01em;
   }
 }
@@ -131,62 +154,29 @@
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: #D1D5DB;
+  background: var(--color-border-strong);
   border-radius: 4px;
 }
-.dark ::-webkit-scrollbar-thumb {
-  background: #334155;
-}
 ::-webkit-scrollbar-thumb:hover {
-  background: #9CA3AF;
-}
-.dark ::-webkit-scrollbar-thumb:hover {
-  background: #475569;
+  background: var(--color-text-muted);
 }
 
 /* Card elevations */
 .shadow-card {
-  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
-}
-.dark .shadow-card {
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2), 0 2px 4px -1px rgba(0, 0, 0, 0.1);
-}
-
-.shadow-header {
-  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
-}
-.dark .shadow-header {
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-}
-
-/* Glassmorphism */
-.glass-morphism {
-  @apply bg-white/70 backdrop-blur-md border border-white/20;
-}
-
-.dark .glass-morphism {
-  @apply bg-[#1E293B]/70 backdrop-blur-md border border-white/10;
-}
-
-.glass-morphism-dark {
-  @apply bg-[#1B2A4A]/80 backdrop-blur-xl border-r border-[#2D3D5A];
+  box-shadow: 0 1px 2px rgba(0,0,0,0.03);
 }
 
 /* Micro-animations */
 .hover-lift {
-  @apply transition-transform duration-300 hover:-translate-y-1;
-}
-
-.hover-glow {
-  @apply transition-all duration-300 hover:shadow-[0_0_15px_rgba(37,99,235,0.2)];
+  @apply transition-transform duration-300 hover:-translate-y-[2px];
 }
 
 .animate-in-fade {
-  @apply animate-in fade-in duration-500;
+  @apply animate-in fade-in duration-300;
 }
 
 .animate-in-slide-up {
-  @apply animate-in fade-in slide-in-from-bottom-4 duration-500;
+  @apply animate-in fade-in slide-in-from-bottom-4 duration-300;
 }
 
 @keyframes pulse-status {
@@ -198,7 +188,24 @@
   animation: pulse-status 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
-/* Printing styles for the grid */
+/* Utilities for Badges / Status */
+.badge-success {
+  @apply bg-[var(--color-success-bg)] text-[var(--color-success-text)] border-[var(--color-success-border)];
+}
+.badge-warning {
+  @apply bg-[var(--color-warning-bg)] text-[var(--color-warning-text)] border-[var(--color-warning-border)];
+}
+.badge-danger {
+  @apply bg-[var(--color-danger-bg)] text-[var(--color-danger-text)] border-[var(--color-danger-border)];
+}
+.badge-info {
+  @apply bg-[var(--color-info-bg)] text-[var(--color-info-text)] border-[var(--color-info-border)];
+}
+.badge-neutral {
+  @apply bg-[var(--color-neutral-bg)] text-[var(--color-neutral-text)] border-[var(--color-neutral-border)];
+}
+
+/* Printing styles */
 @media print {
   .no-print {
     display: none !important;

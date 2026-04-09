@@ -117,31 +117,34 @@ export default function TemplatesPage() {
           <div className="flex flex-col lg:flex-row gap-3">
             {/* Search */}
             <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[var(--color-text-muted)]" />
               <Input
                 placeholder="Buscar por nome ou descrição..."
                 value={search}
                 onChange={(e) => handleSearch(e.target.value)}
-                className="pl-9 bg-background border-border"
+                className="pl-9 h-[36px] bg-white border-[var(--color-border-strong)] rounded-lg text-[13px] text-[var(--color-text-primary)] focus-visible:ring-[var(--color-brand)] placeholder:text-[var(--color-text-muted)] w-full block"
               />
             </div>
 
             {/* Filter dropdowns */}
-            <div className="flex flex-wrap gap-2">
-              <Select value={filterCategory} onValueChange={(val) => setFilterCategory(val || "all")}>
-                <SelectTrigger className="w-[180px] bg-background border-border text-sm">
-                  <Filter className="mr-1 h-3.5 w-3.5" />
-                  <SelectValue placeholder="Categoria" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">Todas as categorias</SelectItem>
-                  {CHECKLIST_CATEGORIES.map((cat) => (
-                    <SelectItem key={cat} value={cat}>
-                      {cat}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+            <div className="flex flex-wrap items-end gap-3">
+              <div className="space-y-1">
+                <label className="text-[12px] font-medium text-[var(--color-text-tertiary)] ml-1">Categoria</label>
+                <Select value={filterCategory} onValueChange={(val) => setFilterCategory(val || "all")}>
+                  <SelectTrigger className="w-[180px] h-[36px] bg-white border-[var(--color-border-strong)] rounded-lg text-[13px] text-[var(--color-text-primary)] focus:ring-[var(--color-brand)]">
+                    <Filter className="mr-1 h-3.5 w-3.5" />
+                    <SelectValue placeholder="Categoria" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">Todas as categorias</SelectItem>
+                    {CHECKLIST_CATEGORIES.map((cat) => (
+                      <SelectItem key={cat} value={cat}>
+                        {cat}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
           </div>
         </CardContent>
@@ -174,15 +177,15 @@ export default function TemplatesPage() {
           }
         />
       ) : (
-        <Card className="bg-card border-border shadow-card overflow-hidden">
+        <Card className="bg-white border-[var(--color-border)] shadow-card overflow-hidden">
           <Table>
             <TableHeader>
-              <TableRow className="border-border hover:bg-transparent bg-[#F8FAFC]">
-                <TableHead className="text-[#374151] font-bold text-[11px] uppercase tracking-wider">Template</TableHead>
-                <TableHead className="text-[#374151] font-bold text-[11px] uppercase tracking-wider">Categoria</TableHead>
-                <TableHead className="text-[#374151] font-bold text-[11px] uppercase tracking-wider text-center">Itens</TableHead>
-                <TableHead className="text-[#374151] font-bold text-[11px] uppercase tracking-wider text-center">Tipo</TableHead>
-                <TableHead className="text-[#374151] font-bold text-[11px] uppercase tracking-wider">Criado em</TableHead>
+              <TableRow>
+                <TableHead>Template</TableHead>
+                <TableHead>Categoria</TableHead>
+                <TableHead className="text-center">Itens</TableHead>
+                <TableHead className="text-center">Tipo</TableHead>
+                <TableHead>Criado em</TableHead>
                 <TableHead className="w-[80px]"></TableHead>
               </TableRow>
             </TableHeader>
@@ -190,38 +193,38 @@ export default function TemplatesPage() {
               {templates.map((template) => (
                 <TableRow
                   key={template.id}
-                  className="border-border/20 cursor-pointer hover:bg-muted/30 transition-colors"
+                  className="cursor-pointer"
                   onClick={() => router.push(`/templates/${template.id}`)}
                 >
                   <TableCell>
                     <div className="flex flex-col">
-                      <span className="font-semibold text-primary">{template.name}</span>
+                      <span className="font-semibold text-[14px] text-[var(--color-text-primary)]">{template.name}</span>
                       {template.description && (
-                         <span className="text-xs text-muted-foreground line-clamp-1 max-w-[300px]">
+                         <span className="text-[13px] text-[var(--color-text-secondary)] line-clamp-1 max-w-[300px]">
                            {template.description}
                          </span>
                       )}
                     </div>
                   </TableCell>
                   <TableCell>
-                    <Badge variant="secondary" className="bg-muted text-muted-foreground">
+                    <Badge variant="secondary" className="bg-[var(--color-bg-muted)] text-[var(--color-text-secondary)] font-semibold shadow-none border-[var(--color-border-light)] hover:bg-[var(--color-bg-muted)] uppercase text-[10px]">
                        {template.category || "Geral"}
                     </Badge>
                   </TableCell>
-                  <TableCell className="text-center font-mono font-bold text-muted-foreground">
+                  <TableCell className="text-center font-mono font-bold text-[var(--color-text-tertiary)]">
                     {template.items_count}
                   </TableCell>
                   <TableCell className="text-center">
                     {template.is_global ? (
-                      <Badge className="bg-[#EFF6FF] text-[#2563EB] border-[#BFDBFE] shadow-none gap-1 py-0.5">
+                      <Badge className="bg-[var(--color-info-bg)] text-[var(--color-info-text)] border-[var(--color-info-border)] shadow-none gap-1 py-0.5 pointer-events-none uppercase text-[10px] tracking-wider font-bold hover:bg-[var(--color-info-bg)]">
                         <Globe className="h-3 w-3" />
                         GLOBAL
                       </Badge>
                     ) : (
-                      <Badge variant="secondary" className="bg-muted text-muted-foreground py-0.5 shadow-none border-[#E5E7EB]">Customizado</Badge>
+                      <Badge variant="secondary" className="bg-[var(--color-bg-muted)] text-[var(--color-text-secondary)] py-0.5 shadow-none border-[var(--color-border-light)] pointer-events-none uppercase text-[10px] tracking-wider font-bold hover:bg-[var(--color-bg-muted)]">Custom</Badge>
                     )}
                   </TableCell>
-                  <TableCell className="text-sm text-muted-foreground">
+                  <TableCell className="text-[13px] text-[var(--color-text-secondary)]">
                     {format(new Date(template.created_at), "dd/MM/yyyy", { locale: ptBR })}
                   </TableCell>
                   <TableCell onClick={(e) => e.stopPropagation()}>

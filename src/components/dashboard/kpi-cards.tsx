@@ -26,40 +26,64 @@ interface KPICardProps {
 }
 
 function KPICard({ title, value, subtext, icon: Icon, color, href, loading }: KPICardProps) {
+  // Determine if this is an "alert/danger" card
+  const isAlert = (color === "text-[var(--color-danger-text)]" || color === "text-destructive") && Number(value) > 0;
+  
+  // Icon bg parsing (quick helper)
+  const getBgClass = () => {
+    if (color.includes("danger") || color.includes("destructive")) return "bg-[var(--color-danger-bg)] text-[var(--color-danger-text)]";
+    if (color.includes("warning")) return "bg-[var(--color-warning-bg)] text-[var(--color-warning-text)]";
+    if (color.includes("success")) return "bg-[var(--color-success-bg)] text-[var(--color-success-icon)]";
+    if (color.includes("primary")) return "bg-[var(--color-brand-light)] text-[var(--color-brand)]";
+    if (color.includes("secondary")) return "bg-[var(--color-warning-bg)] text-[var(--color-warning-text)]";
+    return "bg-[var(--color-bg-muted)] text-[var(--color-text-tertiary)]";
+  };
+
   return (
-    <Card className="glass-morphism border-border shadow-card hover:shadow-xl transition-all duration-300 group overflow-hidden hover-lift hover-glow animate-in-slide-up">
-      <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-        <CardTitle className="text-[13px] font-semibold text-muted-foreground">
-          {title}
-        </CardTitle>
-        <div className={cn("p-2.5 rounded-full", color.replace("text-", "bg-").replace("]", "/15]"))}>
-          <Icon className={cn("h-4 w-4", color)} />
-        </div>
-      </CardHeader>
-      <CardContent>
-        {loading ? (
-          <div className="space-y-2">
-            <Skeleton className="h-8 w-16" />
-            <Skeleton className="h-4 w-24" />
+    <div className={cn(
+      "group relative flex flex-col justify-between rounded-xl bg-white p-5 border shadow-card transition-all duration-200 hover:-translate-y-[2px]",
+      isAlert ? "border-l-[3px] border-l-[var(--color-danger-text)] border-y-[var(--color-border)] border-r-[var(--color-border)]" : "border-[var(--color-border)]"
+    )}>
+      {loading ? (
+        <div className="space-y-4">
+          <div className="flex items-center gap-3">
+            <Skeleton className="h-10 w-10 rounded-full" />
+            <Skeleton className="h-5 w-24" />
           </div>
-        ) : (
-          <>
-            <div className={cn("text-2xl font-bold tracking-tight text-foreground")}>
-              {value}
+          <Skeleton className="h-10 w-16" />
+        </div>
+      ) : (
+        <>
+          <div className="flex items-center gap-4 mb-4">
+            <div className={cn("flex h-10 w-10 shrink-0 items-center justify-center rounded-full", getBgClass(), isAlert && "animate-status-pulse")}>
+              <Icon className="h-5 w-5" />
             </div>
-            <p className="text-xs font-medium text-muted-foreground mt-1 truncate">
+            <h3 className="text-[13px] font-semibold text-[var(--color-text-tertiary)] uppercase tracking-[0.05em] leading-tight">
+              {title}
+            </h3>
+          </div>
+          
+          <div className="flex flex-col">
+            <span className={cn(
+              "text-[28px] font-bold leading-none mb-1",
+              isAlert ? "text-[var(--color-danger-text)]" : "text-[var(--color-text-primary)]"
+            )}>
+              {value}
+            </span>
+            <span className="text-[13px] font-medium text-[var(--color-text-tertiary)] truncate">
               {subtext}
-            </p>
-          </>
-        )}
-        <Link 
-          href={href} 
-          className="flex items-center gap-1 text-[11px] font-semibold text-primary mt-4 opacity-0 group-hover:opacity-100 transition-all no-underline"
-        >
-          Ver detalhes <ChevronRight className="h-3 w-3" />
-        </Link>
-      </CardContent>
-    </Card>
+            </span>
+          </div>
+
+          <Link 
+            href={href} 
+            className="absolute right-5 bottom-5 opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1 text-[12px] font-semibold text-[var(--color-brand)] no-underline"
+          >
+            Detalhes <ChevronRight className="h-3 w-3" />
+          </Link>
+        </>
+      )}
+    </div>
   );
 }
 
@@ -80,7 +104,7 @@ export function GridKPIBar({ kpis, loading }: { kpis: DashboardKPIs | null, load
         value={kpis?.total_assets}
         subtext={`${kpis?.total_instruments || 0} instrumentos`}
         icon={Settings}
-        color="text-primary"
+        color="primary"
         href="/assets"
         loading={loading}
       />
@@ -90,7 +114,7 @@ export function GridKPIBar({ kpis, loading }: { kpis: DashboardKPIs | null, load
         value={kpis?.open_work_orders}
         subtext={osSubtext}
         icon={ClipboardList}
-        color="text-secondary"
+        color="secondary"
         href="/work-orders"
         loading={loading}
       />
@@ -100,7 +124,7 @@ export function GridKPIBar({ kpis, loading }: { kpis: DashboardKPIs | null, load
         value={kpis?.preventives_overdue}
         subtext={kpis?.preventives_overdue ? "Requerem atenção imediata" : "Tudo em dia"}
         icon={AlertTriangle}
-        color={prevColor}
+        color={(kpis?.preventives_overdue || 0) > 0 ? "danger" : "success"}
         href="/planning"
         loading={loading}
       />
@@ -110,7 +134,7 @@ export function GridKPIBar({ kpis, loading }: { kpis: DashboardKPIs | null, load
         value={kpis?.calibrations_expired}
         subtext={`${kpis?.calibrations_expiring_30d || 0} vencem em 30 dias`}
         icon={Gauge}
-        color={calibColor}
+        color={(kpis?.calibrations_expired || 0) > 0 ? "danger" : (kpis?.calibrations_expiring_30d || 0) > 0 ? "warning" : "success"}
         href="/calibrations"
         loading={loading}
       />

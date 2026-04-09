@@ -40,15 +40,15 @@ export const GridCell = memo(function GridCell({
   const getStatusStyles = () => {
     switch (status) {
       case "completed":
-        return "bg-[#ECFDF5] border-[#A7F3D0] text-[#065F46]";
+        return "bg-[var(--color-success-bg)] border-[var(--color-success-border)] text-[var(--color-success-icon)]";
       case "in_progress":
-        return "bg-[#FFFBEB] border-[#FDE68A] text-[#92400E]";
+        return "bg-[var(--color-warning-bg)] border-[var(--color-warning-border)] text-[var(--color-warning-text)]";
       case "planned":
-        return "bg-[#EFF6FF] border-[#BFDBFE] text-[#1E40AF]";
+        return "bg-[var(--color-info-bg)] border-[var(--color-info-border)] text-[var(--color-info-text)]";
       case "overdue":
-        return "bg-[#FEF2F2] border-[#FECACA] text-[#991B1B]";
+        return "bg-[var(--color-danger-bg)] border-[var(--color-danger-border)] text-[var(--color-danger-text)]";
       case "due_not_generated":
-        return "bg-transparent border-[#D1D5DB] border-dashed text-[#6B7280]";
+        return "bg-transparent border-[var(--color-border-strong)] border-dashed text-[var(--color-text-muted)]";
       default:
         return "bg-transparent border-transparent opacity-10 cursor-default";
     }
@@ -87,19 +87,19 @@ export const GridCell = memo(function GridCell({
         <div className="h-px bg-border my-2" />
         
         {status === "completed" && (
-           <p className="text-xs text-[#065F46] font-medium">Concluída em <span className="font-bold">{formattedDate}</span></p>
+           <p className="text-[12px] text-[var(--color-success-text)] font-medium">Concluída em <span className="font-bold">{formattedDate}</span></p>
         )}
         {status === "in_progress" && (
-           <p className="text-xs text-[#92400E] font-medium">Atendimento em andamento</p>
+           <p className="text-[12px] text-[var(--color-warning-text)] font-medium">Atendimento em andamento</p>
         )}
         {status === "planned" && (
-           <p className="text-xs text-[#1E40AF] font-medium">Programada para <span className="font-bold">{formattedDate}</span></p>
+           <p className="text-[12px] text-[var(--color-info-text)] font-medium">Programada para <span className="font-bold">{formattedDate}</span></p>
         )}
         {status === "overdue" && (
-           <p className="text-xs text-[#991B1B] font-bold uppercase">Atrasada — Prevista para {formattedDate}</p>
+           <p className="text-[12px] text-[var(--color-danger-text)] font-bold uppercase">Atrasada — Prevista para {formattedDate}</p>
         )}
         {status === "due_not_generated" && (
-           <p className="text-xs text-muted-foreground">Previsão automática — OS ainda não gerada</p>
+           <p className="text-[12px] text-[var(--color-text-muted)]">Previsão automática — OS ainda não gerada</p>
         )}
 
         {wo_number && (

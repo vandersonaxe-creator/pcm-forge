@@ -31,8 +31,6 @@ export const metadata: Metadata = {
   ],
 };
 
-import { ThemeProvider } from "@/components/shared/theme-provider";
-
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -41,17 +39,10 @@ export default function RootLayout({
   return (
     <html lang="pt-BR" suppressHydrationWarning className={`${inter.variable} ${jetbrainsMono.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col bg-background text-foreground">
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="light"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <TooltipProvider delay={300}>
-            {children}
-            <Toaster position="top-right" richColors closeButton />
-          </TooltipProvider>
-        </ThemeProvider>
+        <TooltipProvider delay={300}>
+          {children}
+          <Toaster position="top-right" richColors closeButton />
+        </TooltipProvider>
       </body>
     </html>
   );
