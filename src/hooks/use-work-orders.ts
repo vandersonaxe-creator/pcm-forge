@@ -318,11 +318,11 @@ export async function getWorkOrderCounters() {
     startOfMonth.setHours(0, 0, 0, 0);
 
     const [planned, open, inProgress, completedMonth] = await Promise.all([
-      supabase.from("work_orders").select("*", { count: "exact", head: true }).eq("company_id", profile.company_id).eq("status", "planned"),
-      supabase.from("work_orders").select("*", { count: "exact", head: true }).eq("company_id", profile.company_id).eq("status", "open"),
-      supabase.from("work_orders").select("*", { count: "exact", head: true }).eq("company_id", profile.company_id).eq("status", "in_progress"),
+      supabase.from("work_orders").select("*", { count: "exact", head: true }).eq("company_id", companyId).eq("status", "planned"),
+      supabase.from("work_orders").select("*", { count: "exact", head: true }).eq("company_id", companyId).eq("status", "open"),
+      supabase.from("work_orders").select("*", { count: "exact", head: true }).eq("company_id", companyId).eq("status", "in_progress"),
       supabase.from("work_orders").select("*", { count: "exact", head: true })
-        .eq("company_id", profile.company_id)
+        .eq("company_id", companyId)
         .eq("status", "completed")
         .gte("completed_at", startOfMonth.toISOString())
     ]);
