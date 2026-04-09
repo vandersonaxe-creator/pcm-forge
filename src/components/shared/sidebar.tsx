@@ -55,6 +55,10 @@ function NavLink({
   );
 }
 
+import { BrandLogo } from "./logo";
+
+// ... (skipping unchanged code)
+
 function SidebarContent({
   collapsed,
   onNavigate,
@@ -64,28 +68,27 @@ function SidebarContent({
 }) {
   return (
     <div className="flex h-full flex-col">
-      {/* Logo */}
+      {/* Logo Section */}
       <div className={cn(
-        "flex items-center gap-3 px-4 py-8 border-b border-sidebar-border bg-sidebar transition-all",
-        collapsed && "justify-center px-1 py-6"
+        "flex items-center px-6 py-12 border-b border-sidebar-border bg-sidebar transition-all overflow-hidden",
+        collapsed ? "justify-center px-0 py-8" : "justify-start"
       )}>
-        <div className={cn(
-          "flex shrink-0 items-center justify-center rounded-xl transition-all shadow-sm",
-          collapsed ? "h-11 w-11" : "h-12 w-12"
-        )}>
-          <img 
-            src="/logo.png" 
-            alt="PCM Forge Logo" 
-            className="h-full w-full object-contain"
-          />
-        </div>
-        {!collapsed && (
-          <div className="flex flex-col min-w-0">
-            <span className="text-[17px] font-black tracking-tight text-white leading-tight">
-              PCM Forge
+        {collapsed ? (
+          <div className="flex items-center justify-center">
+            <span className="text-xl font-black tracking-tighter text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]">
+              P
             </span>
-            <span className="text-[9px] font-black text-primary tracking-[0.3em] uppercase mt-0.5 opacity-90">
-              INDUSTRIAL
+            <span className="text-xl font-bold tracking-tighter text-amber-500">
+              F
+            </span>
+          </div>
+        ) : (
+          <div className="flex items-baseline select-none">
+            <span className="text-2xl font-[800] tracking-tighter text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.4)]">
+              PCM
+            </span>
+            <span className="text-2xl font-medium tracking-tighter text-amber-500 ml-1.5">
+              Forge
             </span>
           </div>
         )}
