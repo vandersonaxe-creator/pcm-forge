@@ -27,7 +27,7 @@ interface KPICardProps {
 
 function KPICard({ title, value, subtext, icon: Icon, color, href, loading }: KPICardProps) {
   return (
-    <Card className="bg-card border-border shadow-card hover:shadow-md transition-shadow group overflow-hidden">
+    <Card className="glass-morphism border-border shadow-card hover:shadow-xl transition-all duration-300 group overflow-hidden hover-lift hover-glow animate-in-slide-up">
       <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
         <CardTitle className="text-[13px] font-semibold text-muted-foreground">
           {title}

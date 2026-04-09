@@ -131,74 +131,89 @@ export default function AssetsPage() {
             </div>
 
             {/* Filter dropdowns */}
-            <div className="flex flex-wrap gap-2">
-              <Select value={filterType} onValueChange={(v) => setFilterType(v ?? "all")}>
-                <SelectTrigger className="w-[150px] bg-background border-border text-sm">
-                  <Filter className="mr-1 h-3.5 w-3.5" />
-                  <SelectValue placeholder="Tipo" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">Todos os tipos</SelectItem>
-                  <SelectItem value="equipment">Equipamento</SelectItem>
-                  <SelectItem value="instrument">Instrumento</SelectItem>
-                </SelectContent>
-              </Select>
-
-              <Select value={filterStatus} onValueChange={(v) => setFilterStatus(v ?? "all")}>
-                <SelectTrigger className="w-[150px] bg-background border-border text-sm">
-                  <SelectValue placeholder="Status" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">Todos os status</SelectItem>
-                  <SelectItem value="active">Ativo</SelectItem>
-                  <SelectItem value="inactive">Inativo</SelectItem>
-                  <SelectItem value="maintenance">Em Manutenção</SelectItem>
-                  <SelectItem value="disposed">Descartado</SelectItem>
-                </SelectContent>
-              </Select>
-
-              <Select value={filterCriticality} onValueChange={(v) => setFilterCriticality(v ?? "all")}>
-                <SelectTrigger className="w-[150px] bg-background border-border text-sm">
-                  <SelectValue placeholder="Criticidade" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">Todas</SelectItem>
-                  <SelectItem value="A">Crítico (A)</SelectItem>
-                  <SelectItem value="B">Importante (B)</SelectItem>
-                  <SelectItem value="C">Secundário (C)</SelectItem>
-                </SelectContent>
-              </Select>
-
-              {categories.length > 0 && (
-                <Select value={filterCategory} onValueChange={(v) => setFilterCategory(v ?? "all")}>
-                  <SelectTrigger className="w-[160px] bg-background border-border text-sm">
-                    <SelectValue placeholder="Categoria" />
+            <div className="flex flex-wrap items-end gap-4">
+              <div className="space-y-1.5">
+                <label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground ml-1">Tipo</label>
+                <Select value={filterType} onValueChange={(v) => setFilterType(v ?? "all")}>
+                  <SelectTrigger className="w-[150px] bg-background border-border text-sm">
+                    <Filter className="mr-1 h-3.5 w-3.5" />
+                    <SelectValue placeholder="Tipo" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="all">Todas categorias</SelectItem>
-                    {categories.map((cat) => (
-                      <SelectItem key={cat.id} value={cat.id}>
-                        {cat.name}
-                      </SelectItem>
-                    ))}
+                    <SelectItem value="all">Todos os tipos</SelectItem>
+                    <SelectItem value="equipment">Equipamento</SelectItem>
+                    <SelectItem value="instrument">Instrumento</SelectItem>
                   </SelectContent>
                 </Select>
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground ml-1">Status</label>
+                <Select value={filterStatus} onValueChange={(v) => setFilterStatus(v ?? "all")}>
+                  <SelectTrigger className="w-[150px] bg-background border-border text-sm">
+                    <SelectValue placeholder="Status" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">Todos os status</SelectItem>
+                    <SelectItem value="active">Ativo</SelectItem>
+                    <SelectItem value="inactive">Inativo</SelectItem>
+                    <SelectItem value="maintenance">Em Manutenção</SelectItem>
+                    <SelectItem value="disposed">Descartado</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground ml-1">Criticidade</label>
+                <Select value={filterCriticality} onValueChange={(v) => setFilterCriticality(v ?? "all")}>
+                  <SelectTrigger className="w-[150px] bg-background border-border text-sm">
+                    <SelectValue placeholder="Criticidade" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">Todas</SelectItem>
+                    <SelectItem value="A">Crítico (A)</SelectItem>
+                    <SelectItem value="B">Importante (B)</SelectItem>
+                    <SelectItem value="C">Secundário (C)</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {categories.length > 0 && (
+                <div className="space-y-1.5">
+                  <label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground ml-1">Categoria</label>
+                  <Select value={filterCategory} onValueChange={(v) => setFilterCategory(v ?? "all")}>
+                    <SelectTrigger className="w-[160px] bg-background border-border text-sm">
+                      <SelectValue placeholder="Categoria" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">Todas categorias</SelectItem>
+                      {categories.map((cat) => (
+                        <SelectItem key={cat.id} value={cat.id}>
+                          {cat.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
               )}
 
               {locations.length > 0 && (
-                <Select value={filterLocation} onValueChange={(v) => setFilterLocation(v ?? "all")}>
-                  <SelectTrigger className="w-[160px] bg-background border-border text-sm">
-                    <SelectValue placeholder="Localização" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">Todas localizações</SelectItem>
-                    {locations.map((loc) => (
-                      <SelectItem key={loc.id} value={loc.id}>
-                        {loc.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                <div className="space-y-1.5">
+                  <label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground ml-1">Localização</label>
+                  <Select value={filterLocation} onValueChange={(v) => setFilterLocation(v ?? "all")}>
+                    <SelectTrigger className="w-[160px] bg-background border-border text-sm">
+                      <SelectValue placeholder="Localização" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">Todas localizações</SelectItem>
+                      {locations.map((loc) => (
+                        <SelectItem key={loc.id} value={loc.id}>
+                          {loc.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
               )}
             </div>
           </div>
@@ -236,24 +251,24 @@ export default function AssetsPage() {
           <Table>
             <TableHeader>
               <TableRow className="border-border hover:bg-transparent bg-[#F8FAFC]">
-                <TableHead className="text-[#374151] font-bold text-[11px] uppercase tracking-wider">Tag</TableHead>
-                <TableHead className="text-[#374151] font-bold text-[11px] uppercase tracking-wider">Nome</TableHead>
-                <TableHead className="text-[#374151] font-bold text-[11px] uppercase tracking-wider hidden md:table-cell">
+                <TableHead className="text-[#374151] font-bold text-xs uppercase tracking-wider">Tag</TableHead>
+                <TableHead className="text-[#374151] font-bold text-xs uppercase tracking-wider">Nome</TableHead>
+                <TableHead className="text-[#374151] font-bold text-xs uppercase tracking-wider hidden md:table-cell">
                   Tipo
                 </TableHead>
-                <TableHead className="text-[#374151] font-bold text-[11px] uppercase tracking-wider hidden lg:table-cell">
+                <TableHead className="text-[#374151] font-bold text-xs uppercase tracking-wider hidden lg:table-cell">
                   Categoria
                 </TableHead>
-                <TableHead className="text-[#374151] font-bold text-[11px] uppercase tracking-wider hidden lg:table-cell">
+                <TableHead className="text-[#374151] font-bold text-xs uppercase tracking-wider hidden lg:table-cell">
                   Localização
                 </TableHead>
-                <TableHead className="text-[#374151] font-bold text-[11px] uppercase tracking-wider text-center">
+                <TableHead className="text-[#374151] font-bold text-xs uppercase tracking-wider text-center">
                   Criticidade
                 </TableHead>
-                <TableHead className="text-[#374151] font-bold text-[11px] uppercase tracking-wider text-center">
+                <TableHead className="text-[#374151] font-bold text-xs uppercase tracking-wider text-center">
                   Status
                 </TableHead>
-                <TableHead className="text-[#374151] font-bold text-[11px] uppercase tracking-wider text-center hidden md:table-cell">
+                <TableHead className="text-[#374151] font-bold text-xs uppercase tracking-wider text-center hidden md:table-cell">
                   Calibração
                 </TableHead>
               </TableRow>

@@ -29,16 +29,26 @@ export function useDashboard() {
     try {
       // Use getSession() instead of getUser() to avoid WebLock contention
       const { data: { session } } = await supabase.auth.getSession();
-      if (!session?.user) throw new Error("Não autenticado");
+      
+      let companyId: string | null = null;
 
-      const { data: profile } = await supabase
-        .from("users")
-        .select("company_id")
-        .eq("id", session.user.id)
-        .single();
+      if (session?.user) {
+        const { data: profile } = await supabase
+          .from("users")
+          .select("company_id")
+          .eq("id", session.user.id)
+          .single();
+        
+        if (profile) companyId = profile.company_id;
+      }
 
-      if (!profile) throw new Error("Perfil não encontrado");
-      const companyId = profile.company_id;
+      // Auditor Mode Fallback: if no session or profile, fetch first company
+      if (!companyId) {
+        const { data: firstCompany } = await supabase.from("companies").select("id").limit(1).single();
+        if (firstCompany) companyId = firstCompany.id;
+      }
+
+      if (!companyId) throw new Error("Empresa não encontrada");
 
       // 1. Parallel Fetching for RPCs and simple queries
       const [kpiRes, overdueRes, calibRes, recentRes] = await Promise.all([

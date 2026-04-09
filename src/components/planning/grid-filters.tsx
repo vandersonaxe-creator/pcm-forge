@@ -151,7 +151,7 @@ export function GridFilters({ year, onYearChange, filters, onFilterChange }: Gri
               onFilterChange("assigned_to", "all");
             }}
           >
-            <span className="text-[11px] font-semibold text-primary">LIMPAR FILTROS</span>
+            <span className="text-[11px] font-semibold text-primary">Limpar filtros</span>
           </Button>
         </div>
       </div>

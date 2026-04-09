@@ -159,6 +159,36 @@
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
+/* Glassmorphism */
+.glass-morphism {
+  @apply bg-white/70 backdrop-blur-md border border-white/20;
+}
+
+.dark .glass-morphism {
+  @apply bg-[#1E293B]/70 backdrop-blur-md border border-white/10;
+}
+
+.glass-morphism-dark {
+  @apply bg-[#1B2A4A]/80 backdrop-blur-xl border-r border-[#2D3D5A];
+}
+
+/* Micro-animations */
+.hover-lift {
+  @apply transition-transform duration-300 hover:-translate-y-1;
+}
+
+.hover-glow {
+  @apply transition-all duration-300 hover:shadow-[0_0_15px_rgba(37,99,235,0.2)];
+}
+
+.animate-in-fade {
+  @apply animate-in fade-in duration-500;
+}
+
+.animate-in-slide-up {
+  @apply animate-in fade-in slide-in-from-bottom-4 duration-500;
+}
+
 @keyframes pulse-status {
   0%, 100% { opacity: 1; transform: scale(1); }
   50% { opacity: 0.8; transform: scale(1.05); }

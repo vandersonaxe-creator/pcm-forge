@@ -415,7 +415,7 @@ export default function NewWorkOrderPage() {
                           <FormControl>
                             <Textarea 
                               placeholder="O que aconteceu? Quando percebeu?" 
-                              className="bg-red-500/5 border-red-500/20 min-h-[100px]"
+                              className="bg-background border-border min-h-[100px] focus:bg-red-500/5 focus:border-red-500/50 transition-colors"
                               {...field} 
                             />
                           </FormControl>
@@ -515,7 +515,7 @@ export default function NewWorkOrderPage() {
             <Button
               type="submit"
               disabled={loading}
-              className="bg-amber-500 text-amber-950 hover:bg-amber-600 font-bold px-12 h-11"
+              className="bg-primary text-primary-foreground hover:bg-primary/90 font-bold px-12 h-11 shadow-lg shadow-primary/20 transition-all"
             >
               {loading ? (
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />

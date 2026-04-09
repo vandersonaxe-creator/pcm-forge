@@ -47,7 +47,7 @@ export default function DashboardPage() {
                 <LayoutDashboard className="h-5 w-5" />
              </div>
              <h1 className="text-2xl font-bold tracking-tight text-foreground">
-               {getGreeting()}, {user?.full_name ? user.full_name.split(' ')[0] : "Gestor"}
+               {getGreeting()}, {user?.full_name || "Gestor"}
              </h1>
           </div>
           <p className="text-xs text-muted-foreground flex items-center gap-2 pl-1.5 border-l-2 border-primary/20 ml-1">

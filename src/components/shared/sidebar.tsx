@@ -42,11 +42,11 @@ function NavLink({
       href={item.href}
       onClick={onClick}
       className={cn(
-        "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-all duration-200 group no-underline",
+        "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-all duration-300 group no-underline animate-in-fade",
         isActive
-          ? "bg-primary text-white shadow-sm"
-          : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-white",
-        collapsed && "justify-center px-1"
+          ? "bg-primary text-white shadow-lg shadow-primary/20 scale-[1.02]"
+          : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-white hover:translate-x-1",
+        collapsed && "justify-center px-1 hover:translate-x-0"
       )}
     >
       <Icon className={cn("h-4.5 w-4.5 shrink-0 transition-colors", isActive ? "text-white" : "text-sidebar-foreground group-hover:text-white")} />
@@ -125,7 +125,7 @@ export function Sidebar() {
       {/* Desktop sidebar */}
       <aside
         className={cn(
-          "hidden lg:flex flex-col border-r border-sidebar-border bg-sidebar transition-all duration-300",
+          "hidden lg:flex flex-col glass-morphism-dark transition-all duration-500 ease-in-out",
           collapsed ? "w-[68px]" : "w-[260px]"
         )}
       >

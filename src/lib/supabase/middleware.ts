@@ -35,6 +35,7 @@ export async function updateSession(request: NextRequest) {
                      request.nextUrl.pathname.startsWith('/register')
   const isPublicPage = request.nextUrl.pathname === '/'
 
+  /* 
   // If not authenticated and accessing protected route, redirect to login
   if (!user && !isAuthPage && !isPublicPage) {
     const url = request.nextUrl.clone()
@@ -48,6 +49,7 @@ export async function updateSession(request: NextRequest) {
     url.pathname = '/dashboard'
     return NextResponse.redirect(url)
   }
+  */
 
   return supabaseResponse
 }

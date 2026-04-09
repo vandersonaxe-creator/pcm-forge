@@ -23,71 +23,88 @@ export function useWorkOrders(filters: WorkOrdersFilter = {}) {
   const [totalCount, setTotalCount] = useState(0);
 
   const fetchWorkOrders = useCallback(async () => {
-    setLoading(true);
-    setError(null);
-    const supabase = createClient();
+    try {
+      setLoading(true);
+      setError(null);
+      const supabase = createClient();
 
-    let query = supabase
-      .from("work_orders")
-      .select(`
-        *,
-        asset:assets(tag, name),
-        assignee:users(full_name)
-      `, { count: "exact" });
+      let query = supabase
+        .from("work_orders")
+        .select(`
+          *,
+          asset:assets(tag, name),
+          assignee:users(full_name)
+        `, { count: "exact" });
 
-    // Status filter (single or array)
-    if (filters.status && filters.status !== "all") {
-      if (Array.isArray(filters.status)) {
-        query = query.in("status", filters.status);
-      } else {
-        query = query.eq("status", filters.status);
+      // Status filter (single or array)
+      if (filters.status && filters.status !== "all") {
+        if (Array.isArray(filters.status)) {
+          if (filters.status.length > 0) {
+            query = query.in("status", filters.status);
+          }
+        } else {
+          query = query.eq("status", filters.status);
+        }
       }
+
+      if (filters.os_type && filters.os_type !== "all") {
+        query = query.eq("os_type", filters.os_type);
+      }
+
+      if (filters.priority && filters.priority !== "all") {
+        query = query.eq("priority", filters.priority);
+      }
+
+      if (filters.assigned_to && filters.assigned_to !== "all") {
+        query = query.eq("assigned_to", filters.assigned_to);
+      }
+
+      if (filters.asset_id && filters.asset_id !== "all") {
+        query = query.eq("asset_id", filters.asset_id);
+      }
+
+      if (filters.date_start && filters.date_start.trim() !== "") {
+        query = query.gte("scheduled_date", filters.date_start);
+      }
+
+      if (filters.date_end && filters.date_end.trim() !== "") {
+        query = query.lte("scheduled_date", filters.date_end);
+      }
+
+      // Pagination
+      const pageSize = 20;
+      const page = filters.page || 1;
+      const from = (page - 1) * pageSize;
+      const to = from + pageSize - 1;
+
+      query = query
+        .order("scheduled_date", { ascending: false })
+        .range(from, to);
+
+      const { data, error: fetchError, count } = await query;
+
+      if (fetchError) {
+        throw fetchError;
+      } else {
+        setWorkOrders(data as WorkOrder[]);
+        setTotalCount(count || 0);
+      }
+    } catch (err: any) {
+      console.error("Error fetching work orders:", err);
+      setError(err.message || "Erro ao carregar ordens de serviço");
+    } finally {
+      setLoading(false);
     }
-
-    if (filters.os_type && filters.os_type !== "all") {
-      query = query.eq("os_type", filters.os_type);
-    }
-
-    if (filters.priority && filters.priority !== "all") {
-      query = query.eq("priority", filters.priority);
-    }
-
-    if (filters.assigned_to && filters.assigned_to !== "all") {
-      query = query.eq("assigned_to", filters.assigned_to);
-    }
-
-    if (filters.asset_id && filters.asset_id !== "all") {
-      query = query.eq("asset_id", filters.asset_id);
-    }
-
-    if (filters.date_start) {
-      query = query.gte("scheduled_date", filters.date_start);
-    }
-
-    if (filters.date_end) {
-      query = query.lte("scheduled_date", filters.date_end);
-    }
-
-    // Pagination
-    const pageSize = 20;
-    const page = filters.page || 1;
-    const from = (page - 1) * pageSize;
-    const to = from + pageSize - 1;
-
-    query = query
-      .order("scheduled_date", { ascending: false })
-      .range(from, to);
-
-    const { data, error: fetchError, count } = await query;
-
-    if (fetchError) {
-      setError(fetchError.message);
-    } else {
-      setWorkOrders(data as WorkOrder[]);
-      setTotalCount(count || 0);
-    }
-    setLoading(false);
-  }, [filters]);
+  }, [
+    filters.status,
+    filters.os_type,
+    filters.priority,
+    filters.assigned_to,
+    filters.asset_id,
+    filters.date_start,
+    filters.date_end,
+    filters.page
+  ]);
 
   useEffect(() => {
     fetchWorkOrders();
@@ -103,35 +120,42 @@ export function useWorkOrder(id: string) {
 
   const fetchWorkOrder = useCallback(async () => {
     if (!id) return;
-    setLoading(true);
-    const supabase = createClient();
-    
-    const { data, error: fetchError } = await supabase
-      .from("work_orders")
-      .select(`
-        *,
-        asset:assets(*),
-        plan:maintenance_plans(*),
-        template:checklist_templates(*),
-        assignee:users(*),
-        items:work_order_items(
+    try {
+      setLoading(true);
+      setError(null);
+      const supabase = createClient();
+      
+      const { data, error: fetchError } = await supabase
+        .from("work_orders")
+        .select(`
           *,
-          photos:photos(*)
-        )
-      `)
-      .eq("id", id)
-      .single();
+          asset:assets(*),
+          plan:maintenance_plans(*),
+          template:checklist_templates(*),
+          assignee:users(*),
+          items:work_order_items(
+            *,
+            photos:photos(*)
+          )
+        `)
+        .eq("id", id)
+        .single();
 
-    if (fetchError) {
-      setError(fetchError.message);
-    } else {
-      // Sort items by group and order
-      if (data.items) {
-        data.items.sort((a: any, b: any) => a.sort_order - b.sort_order);
+      if (fetchError) {
+        throw fetchError;
+      } else {
+        // Sort items by group and order
+        if (data.items) {
+          data.items.sort((a: any, b: any) => a.sort_order - b.sort_order);
+        }
+        setWorkOrder(data as WorkOrder);
       }
-      setWorkOrder(data as WorkOrder);
+    } catch (err: any) {
+      console.error("Error fetching work order:", err);
+      setError(err.message || "Erro ao carregar ordem de serviço");
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   }, [id]);
 
   useEffect(() => {
@@ -265,40 +289,54 @@ export async function deleteWorkOrder(id: string) {
 }
 
 export async function getWorkOrderCounters() {
-  const supabase = createClient();
-  // Use getSession() instead of getUser() to avoid acquiring the WebLocks API
-  // lock, which causes contention when multiple components call this simultaneously.
-  const { data: { session } } = await supabase.auth.getSession();
-  if (!session?.user) return null;
+  try {
+    const supabase = createClient();
+    // Use getSession() instead of getUser() to avoid acquiring the WebLocks API
+    // lock, which causes contention when multiple components call this simultaneously.
+    const { data: { session } } = await supabase.auth.getSession();
+    
+    let companyId: string | null = null;
+    if (session?.user) {
+      const { data: profile } = await supabase
+        .from("users")
+        .select("company_id")
+        .eq("id", session.user.id)
+        .single();
+      if (profile) companyId = profile.company_id;
+    }
 
-  const { data: profile } = await supabase
-    .from("users")
-    .select("company_id")
-    .eq("id", session.user.id)
-    .single();
+    // Fallback for Auditor Mode
+    if (!companyId) {
+      const { data: firstCompany } = await supabase.from("companies").select("id").limit(1).single();
+      if (firstCompany) companyId = firstCompany.id;
+    }
 
-  if (!profile) return null;
+    if (!companyId) return null;
 
-  const startOfMonth = new Date();
-  startOfMonth.setDate(1);
-  startOfMonth.setHours(0, 0, 0, 0);
+    const startOfMonth = new Date();
+    startOfMonth.setDate(1);
+    startOfMonth.setHours(0, 0, 0, 0);
 
-  const [planned, open, inProgress, completedMonth] = await Promise.all([
-    supabase.from("work_orders").select("*", { count: "exact", head: true }).eq("company_id", profile.company_id).eq("status", "planned"),
-    supabase.from("work_orders").select("*", { count: "exact", head: true }).eq("company_id", profile.company_id).eq("status", "open"),
-    supabase.from("work_orders").select("*", { count: "exact", head: true }).eq("company_id", profile.company_id).eq("status", "in_progress"),
-    supabase.from("work_orders").select("*", { count: "exact", head: true })
-      .eq("company_id", profile.company_id)
-      .eq("status", "completed")
-      .gte("completed_at", startOfMonth.toISOString())
-  ]);
+    const [planned, open, inProgress, completedMonth] = await Promise.all([
+      supabase.from("work_orders").select("*", { count: "exact", head: true }).eq("company_id", profile.company_id).eq("status", "planned"),
+      supabase.from("work_orders").select("*", { count: "exact", head: true }).eq("company_id", profile.company_id).eq("status", "open"),
+      supabase.from("work_orders").select("*", { count: "exact", head: true }).eq("company_id", profile.company_id).eq("status", "in_progress"),
+      supabase.from("work_orders").select("*", { count: "exact", head: true })
+        .eq("company_id", profile.company_id)
+        .eq("status", "completed")
+        .gte("completed_at", startOfMonth.toISOString())
+    ]);
 
-  return {
-    planned: planned.count || 0,
-    open: open.count || 0,
-    inProgress: inProgress.count || 0,
-    completedMonth: completedMonth.count || 0,
-  };
+    return {
+      planned: planned.count || 0,
+      open: open.count || 0,
+      inProgress: inProgress.count || 0,
+      completedMonth: completedMonth.count || 0,
+    };
+  } catch (err) {
+    console.error("Error fetching work order counters:", err);
+    return null;
+  }
 }
 
 export async function uploadWorkOrderPhoto(

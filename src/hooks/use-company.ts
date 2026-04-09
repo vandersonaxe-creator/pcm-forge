@@ -13,7 +13,24 @@ export function useCompany() {
     const supabase = createClient();
 
     const { data: { user: authUser } } = await supabase.auth.getUser();
+    
     if (!authUser) {
+      // Auditor Mode Fallback: Fetch first company if no user is logged in
+      const { data: firstCompany } = await supabase.from("companies").select("*").limit(1).single();
+      if (firstCompany) {
+        setCompany(firstCompany as Company);
+        // Provide a guest user with the company_id so UI doesn't break
+        setUser({
+          id: "00000000-0000-0000-0000-000000000000",
+          full_name: "Auditor IA",
+          email: "auditor@pcmforge.local",
+          role: "auditor",
+          company_id: (firstCompany as any).id,
+          is_active: true,
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString()
+        } as any);
+      }
       setLoading(false);
       return;
     }

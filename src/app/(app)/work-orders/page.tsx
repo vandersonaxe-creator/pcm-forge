@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useMemo } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useWorkOrders, getWorkOrderCounters } from "@/hooks/use-work-orders";
@@ -73,7 +73,7 @@ export default function WorkOrdersPage() {
   
   const [counters, setCounters] = useState<any>(null);
 
-  const { workOrders, loading, totalCount, refetch } = useWorkOrders({
+  const filters = useMemo(() => ({
     status: filterStatus,
     os_type: filterType,
     priority: filterPriority,
@@ -82,15 +82,30 @@ export default function WorkOrdersPage() {
     date_start: filterDateStart,
     date_end: filterDateEnd,
     page,
-  });
+  }), [
+    filterStatus,
+    filterType,
+    filterPriority,
+    filterAssignee,
+    filterAsset,
+    filterDateStart,
+    filterDateEnd,
+    page
+  ]);
+
+  const { workOrders, loading, error, totalCount, refetch } = useWorkOrders(filters);
 
   const { users } = useUsers();
   const { assets } = useAssets();
 
   useEffect(() => {
     async function fetchStats() {
-      const stats = await getWorkOrderCounters();
-      setCounters(stats);
+      try {
+        const stats = await getWorkOrderCounters();
+        setCounters(stats);
+      } catch (err) {
+        console.error("Failed to fetch work order counters:", err);
+      }
     }
     fetchStats();
   }, [workOrders]);
@@ -152,7 +167,7 @@ export default function WorkOrdersPage() {
         <CardContent className="p-4 space-y-4">
           <div className="flex flex-wrap gap-3">
             <Select value={filterStatus} onValueChange={(val) => setFilterStatus(val || "all")}>
-              <SelectTrigger className="w-[140px] bg-background border-border text-xs">
+              <SelectTrigger className="w-[150px] bg-background border-border text-sm">
                 <SelectValue placeholder="Status" />
               </SelectTrigger>
               <SelectContent>
@@ -164,7 +179,7 @@ export default function WorkOrdersPage() {
             </Select>
 
             <Select value={filterType} onValueChange={(val) => setFilterType(val || "all")}>
-              <SelectTrigger className="w-[140px] bg-background border-border text-xs">
+              <SelectTrigger className="w-[150px] bg-background border-border text-sm">
                 <SelectValue placeholder="Tipo" />
               </SelectTrigger>
               <SelectContent>
@@ -176,7 +191,7 @@ export default function WorkOrdersPage() {
             </Select>
 
             <Select value={filterPriority} onValueChange={(val) => setFilterPriority(val || "all")}>
-              <SelectTrigger className="w-[140px] bg-background border-border text-xs">
+              <SelectTrigger className="w-[150px] bg-background border-border text-sm">
                 <SelectValue placeholder="Prioridade" />
               </SelectTrigger>
               <SelectContent>
@@ -188,7 +203,7 @@ export default function WorkOrdersPage() {
             </Select>
 
             <Select value={filterAssignee} onValueChange={(val) => setFilterAssignee(val || "all")}>
-              <SelectTrigger className="w-[180px] bg-background border-border text-xs">
+              <SelectTrigger className="w-[190px] bg-background border-border text-sm">
                 <SelectValue placeholder="Técnico" />
               </SelectTrigger>
               <SelectContent>
@@ -200,7 +215,7 @@ export default function WorkOrdersPage() {
             </Select>
 
             <Select value={filterAsset} onValueChange={(val) => setFilterAsset(val || "all")}>
-              <SelectTrigger className="w-[180px] bg-background border-border text-xs">
+              <SelectTrigger className="w-[190px] bg-background border-border text-sm">
                 <SelectValue placeholder="Ativo" />
               </SelectTrigger>
               <SelectContent>
@@ -214,7 +229,7 @@ export default function WorkOrdersPage() {
             <div className="flex items-center gap-2">
                <Input 
                 type="date" 
-                className="w-[140px] bg-background border-border h-9 text-xs" 
+                className="w-[145px] bg-background border-border h-9 text-sm" 
                 value={filterDateStart}
                 onChange={(e) => setFilterDateStart(e.target.value)}
               />
@@ -245,6 +260,17 @@ export default function WorkOrdersPage() {
         <div className="flex items-center justify-center py-20">
           <Loader2 className="h-8 w-8 animate-spin text-primary" />
         </div>
+      ) : error ? (
+        <EmptyState
+          icon={<AlertTriangle className="h-10 w-10 text-destructive" />}
+          title="Erro ao carregar dados"
+          description={error}
+          action={
+            <Button variant="outline" onClick={() => refetch()}>
+              Tentar novamente
+            </Button>
+          }
+        />
       ) : workOrders.length === 0 ? (
         <EmptyState
           icon={<ClipboardList className="h-10 w-10" />}
@@ -257,14 +283,14 @@ export default function WorkOrdersPage() {
             <Table>
               <TableHeader>
                 <TableRow className="border-border hover:bg-transparent bg-[#F8FAFC]">
-                  <TableHead className="text-[#374151] font-bold text-[11px] uppercase tracking-wider">OS Nº</TableHead>
-                  <TableHead className="text-[#374151] font-bold text-[11px] uppercase tracking-wider">Título</TableHead>
-                  <TableHead className="text-[#374151] font-bold text-[11px] uppercase tracking-wider">Tipo</TableHead>
-                  <TableHead className="text-[#374151] font-bold text-[11px] uppercase tracking-wider">Ativo</TableHead>
-                  <TableHead className="text-[#374151] font-bold text-[11px] uppercase tracking-wider">Técnico</TableHead>
-                  <TableHead className="text-[#374151] font-bold text-[11px] uppercase tracking-wider">Prioridade</TableHead>
-                  <TableHead className="text-[#374151] font-bold text-[11px] uppercase tracking-wider">Status</TableHead>
-                  <TableHead className="text-[#374151] font-bold text-[11px] uppercase tracking-wider">Agenda</TableHead>
+                  <TableHead className="text-[#374151] font-bold text-xs uppercase tracking-wider">OS Nº</TableHead>
+                  <TableHead className="text-[#374151] font-bold text-xs uppercase tracking-wider">Título</TableHead>
+                  <TableHead className="text-[#374151] font-bold text-xs uppercase tracking-wider">Tipo</TableHead>
+                  <TableHead className="text-[#374151] font-bold text-xs uppercase tracking-wider">Ativo</TableHead>
+                  <TableHead className="text-[#374151] font-bold text-xs uppercase tracking-wider">Técnico</TableHead>
+                  <TableHead className="text-[#374151] font-bold text-xs uppercase tracking-wider">Prioridade</TableHead>
+                  <TableHead className="text-[#374151] font-bold text-xs uppercase tracking-wider">Status</TableHead>
+                  <TableHead className="text-[#374151] font-bold text-xs uppercase tracking-wider">Agenda</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
