@@ -2,9 +2,10 @@
 
 import { useState, createContext, useContext } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { NAV_ITEMS, NAV_SETTINGS_ITEMS } from "@/lib/constants";
+import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
@@ -12,7 +13,7 @@ import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/s
 import {
   LayoutDashboard, Wrench, Gauge, CalendarClock, CalendarRange,
   ClipboardList, FileCheck, Building2, Users, Tag, MapPin,
-  Settings, ChevronLeft, ChevronRight, Menu, Hammer,
+  Settings, ChevronLeft, ChevronRight, Menu, Hammer, LogOut,
 } from "lucide-react";
 
 const iconMap: Record<string, React.ElementType> = {
@@ -58,7 +59,7 @@ function NavLink({
   );
 }
 
-import { BrandLogo } from "./logo";
+import { PCMForgeLogo } from "./pcm-forge-logo";
 
 // ... (skipping unchanged code)
 
@@ -71,14 +72,23 @@ function SidebarContent({
   onNavigate?: () => void;
   setCollapsed?: (val: boolean) => void;
 }) {
+  const router = useRouter();
+
+  async function handleLogout() {
+    const supabase = createClient();
+    await supabase.auth.signOut();
+    router.push("/login");
+    router.refresh();
+  }
+
   return (
     <div className="flex h-full flex-col bg-[var(--color-bg-sidebar)] text-[var(--color-text-on-dark)]">
       {/* Logo Section */}
       <div className={cn(
-        "flex items-center px-4 py-5 border-b border-[var(--color-bg-sidebar-hover)] transition-all overflow-hidden h-[72px]",
-        collapsed ? "justify-center" : "justify-start"
+        "border-b border-[var(--color-bg-sidebar-hover)] transition-all overflow-hidden",
+        collapsed ? "flex items-center justify-center h-[72px]" : ""
       )}>
-        <BrandLogo collapsed={collapsed} size={collapsed ? "sm" : "md"} />
+        <PCMForgeLogo collapsed={collapsed} size={collapsed ? "sm" : "md"} />
       </div>
 
       {/* Navigation */}
@@ -105,6 +115,21 @@ function SidebarContent({
           ))}
         </nav>
       </ScrollArea>
+
+      {/* Logout */}
+      <div className="px-3 pb-2">
+        <button
+          onClick={handleLogout}
+          className={cn(
+            "flex items-center gap-3 rounded-lg px-3 py-2 text-[14px] w-full transition-all duration-200 font-medium",
+            "text-red-400/80 hover:bg-red-500/10 hover:text-red-400",
+            collapsed && "justify-center px-0"
+          )}
+        >
+          <LogOut className="h-[18px] w-[18px] shrink-0" />
+          {!collapsed && <span>Sair</span>}
+        </button>
+      </div>
 
       {/* Footer / Toggle */}
       <div className="border-t border-[var(--color-bg-sidebar-hover)] p-3 flex items-center justify-between">
