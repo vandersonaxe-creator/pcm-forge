@@ -40,6 +40,7 @@ import {
   CalendarRange
 } from "lucide-react";
 import { toast } from "sonner"; // Assuming sonner is the toast library
+import { cn } from "@/lib/utils";
 
 export default function PlansPage() {
   const router = useRouter();

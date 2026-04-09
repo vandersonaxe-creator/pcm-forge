@@ -256,7 +256,7 @@ export function WOReportDocument({ workOrder, company }: WOReportDocumentProps) 
             <h3 className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400">Data e Autenticação</h3>
             <div className="space-y-1">
                <p className="text-xs font-bold text-zinc-900">Finalizado em {formatDate(workOrder.completed_at || now.toISOString())}</p>
-               {workOrder.latitude && (
+               {workOrder.latitude !== null && workOrder.longitude !== null && (
                  <p className="text-[9px] font-medium text-zinc-500 flex items-center justify-end gap-1">
                    <MapPin className="h-2 w-2" />
                    GPS: {workOrder.latitude.toFixed(6)}, {workOrder.longitude.toFixed(6)}

@@ -181,11 +181,13 @@ export function TemplateForm({ initialData, isReadOnly }: TemplateFormProps) {
     if (isReadOnly) return;
     setLoading(true);
     try {
+      const { items, ...templateData } = values;
+      
       if (initialData) {
-        await updateTemplate(initialData.id, values, values.items);
+        await updateTemplate(initialData.id, templateData as any, items as any);
         toast.success("Template atualizado com sucesso!");
       } else {
-        const template = await createTemplate(values, values.items);
+        const template = await createTemplate(templateData as any, items as any);
         toast.success("Template criado com sucesso!");
         router.push(`/templates/${template.id}`);
         return;
