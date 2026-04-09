@@ -114,7 +114,7 @@ export const GridCell = memo(function GridCell({
   return (
     <TooltipProvider delay={200}>
       <Tooltip>
-        <TooltipTrigger>
+        <TooltipTrigger render={<span />}>
           <button
             onClick={status !== 'due_not_generated' || status === 'due_not_generated' ? onClick : undefined}
             className={cn(

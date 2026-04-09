@@ -266,13 +266,15 @@ export async function deleteWorkOrder(id: string) {
 
 export async function getWorkOrderCounters() {
   const supabase = createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user) return null;
+  // Use getSession() instead of getUser() to avoid acquiring the WebLocks API
+  // lock, which causes contention when multiple components call this simultaneously.
+  const { data: { session } } = await supabase.auth.getSession();
+  if (!session?.user) return null;
 
   const { data: profile } = await supabase
     .from("users")
     .select("company_id")
-    .eq("id", user.id)
+    .eq("id", session.user.id)
     .single();
 
   if (!profile) return null;

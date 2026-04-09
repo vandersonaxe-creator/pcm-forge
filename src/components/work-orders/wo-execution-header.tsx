@@ -12,7 +12,8 @@ import {
   MoreVertical,
   Ban,
   Printer,
-  ChevronLeft
+  ChevronLeft,
+  User
 } from "lucide-react";
 import { 
   DropdownMenu,
@@ -89,7 +90,7 @@ export function WOExecutionHeader({ workOrder, onStatusChange, onFinalize }: WOE
           </Button>
 
           <div className="flex flex-wrap items-center gap-3">
-            <span className="text-2xl font-black font-technical tracking-tighter text-white">
+            <span className="text-2xl font-bold font-technical tracking-tighter text-foreground">
               {workOrder.wo_number}
             </span>
             <Badge className={cn("px-2.5 py-0.5 border shadow-sm", OS_STATUS_COLORS[status as keyof typeof OS_STATUS_COLORS])}>
@@ -98,9 +99,11 @@ export function WOExecutionHeader({ workOrder, onStatusChange, onFinalize }: WOE
           </div>
 
           <div className="flex flex-wrap items-center gap-4 text-sm">
-             <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-muted/30 border border-border/20">
-                <OS_Icon className="h-4 w-4 text-primary" />
-                <span className="font-bold opacity-90">{OS_TYPE_LABELS[osType as keyof typeof OS_TYPE_LABELS]}</span>
+             <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/5 border border-primary/20">
+                <User className="h-4 w-4 text-primary" />
+                <span className="text-xs font-bold text-primary uppercase tracking-tight">
+                  Técnico: {workOrder.assignee?.full_name || "Não atribuído"}
+                </span>
              </div>
              
              <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-muted/30 border border-border/20">

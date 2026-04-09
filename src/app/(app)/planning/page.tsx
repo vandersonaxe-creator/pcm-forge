@@ -61,21 +61,21 @@ export default function PlanningPage() {
       <header className="px-6 py-6 lg:py-8 space-y-4">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
           <div className="space-y-1">
-            <h1 className="text-3xl font-black tracking-tighter text-white flex items-center gap-3">
+            <h1 className="text-3xl font-bold tracking-tighter text-foreground flex items-center gap-3">
               <CalendarRange className="h-8 w-8 text-primary" />
               Planejamento Anual
             </h1>
             <p className="text-sm text-muted-foreground font-medium flex items-center gap-2">
               Ano <span className="text-primary font-bold">{year}</span> — 
-              <span className="text-white">{totalAssetsWithPlans}</span> ativos com planos preventivos
+              <span className="text-foreground font-semibold">{totalAssetsWithPlans}</span> ativos com planos preventivos
             </p>
           </div>
           
           <div className="flex items-center gap-2">
              <TooltipProvider>
                 <Tooltip>
-                   <TooltipTrigger>
-                      <Button variant="outline" size="icon" className="h-10 w-10 border-border/40 hover:bg-white/5 transition-colors">
+                   <TooltipTrigger render={<span tabIndex={0} className="cursor-pointer" />}>
+                      <Button variant="outline" size="icon" className="h-10 w-10 border-border/40 hover:bg-muted transition-colors" tabIndex={-1} aria-hidden>
                         <HelpCircle className="h-5 w-5 text-muted-foreground" />
                       </Button>
                    </TooltipTrigger>

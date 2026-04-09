@@ -27,13 +27,14 @@ export function useDashboard() {
     const supabase = createClient();
 
     try {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) throw new Error("Não autenticado");
+      // Use getSession() instead of getUser() to avoid WebLock contention
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session?.user) throw new Error("Não autenticado");
 
       const { data: profile } = await supabase
         .from("users")
         .select("company_id")
-        .eq("id", user.id)
+        .eq("id", session.user.id)
         .single();
 
       if (!profile) throw new Error("Perfil não encontrado");
