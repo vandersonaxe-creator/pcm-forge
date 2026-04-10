@@ -3,6 +3,7 @@
 import { useState, useCallback } from "react";
 import { createClient } from "@/lib/supabase/client";
 import type { Calibration, Asset } from "@/lib/types/database";
+import { syncCalibrationFileToAssetDocuments } from "@/hooks/use-asset-documents";
 
 export function useCalibrations(assetId?: string) {
   const [calibrations, setCalibrations] = useState<Calibration[]>([]);
@@ -117,5 +118,21 @@ export async function createCalibration(calibrationData: Partial<Calibration>, f
     .single();
 
   if (error) throw error;
+
+  if (file && data) {
+    try {
+      await syncCalibrationFileToAssetDocuments({
+        companyId: profile.company_id,
+        assetId: calibrationData.asset_id!,
+        calibrationId: data.id,
+        certificateNumber: calibrationData.certificate_number ?? null,
+        file,
+        uploadedBy: user.id,
+      });
+    } catch (syncErr) {
+      console.warn("Não foi possível espelhar certificado na ficha do ativo:", syncErr);
+    }
+  }
+
   return data;
 }

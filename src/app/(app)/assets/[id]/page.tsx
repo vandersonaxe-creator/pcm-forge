@@ -38,6 +38,7 @@ import {
   Info,
 } from "lucide-react";
 import { AssetQRCode } from "@/components/assets/asset-qr";
+import { AssetDocuments } from "@/components/assets/asset-documents";
 
 export default function AssetDetailPage({
   params,
@@ -140,6 +141,9 @@ export default function AssetDetailPage({
           </Button>
         </div>
       </div>
+
+      {/* Documentos técnicos / certificados (visível na ficha e ao escanear QR interno) */}
+      <AssetDocuments assetId={asset.id} companyId={asset.company_id} />
 
       {/* Tabs */}
       <Tabs defaultValue="general" className="space-y-4">

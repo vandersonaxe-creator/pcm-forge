@@ -15,6 +15,7 @@ export type UserRole = 'admin' | 'manager' | 'technician'
 export type CompanyPlan = 'trial' | 'starter' | 'pro' | 'enterprise'
 export type CalibrationResult = 'approved' | 'reproved' | 'adjusted'
 export type ChecklistItemType = 'check' | 'measure' | 'photo' | 'text' | 'select'
+export type AssetDocumentType = 'certificate' | 'manual' | 'datasheet' | 'report' | 'other'
 
 // Tables
 export interface Company {
@@ -95,6 +96,21 @@ export interface Asset {
   // Joined fields
   category?: AssetCategory
   location?: AssetLocation
+}
+
+/** Caminho no bucket Storage `documents` (signed URL na leitura) */
+export interface AssetDocument {
+  id: string
+  company_id: string
+  asset_id: string
+  name: string
+  description: string | null
+  document_type: AssetDocumentType
+  file_url: string
+  file_name: string
+  file_size: number | null
+  uploaded_by: string | null
+  created_at: string
 }
 
 export interface Calibration {

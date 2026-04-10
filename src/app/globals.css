@@ -223,6 +223,29 @@
   @apply bg-[var(--color-neutral-bg)] text-[var(--color-neutral-text)] border-[var(--color-neutral-border)];
 }
 
+/* Painel metrológico — scrollbar discreta nas colunas Kanban */
+.calibration-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 transparent;
+}
+
+.calibration-scroll::-webkit-scrollbar {
+  width: 4px;
+}
+
+.calibration-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.calibration-scroll::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 2px;
+}
+
+.calibration-scroll::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
 /* Printing styles */
 @media print {
   .no-print {
