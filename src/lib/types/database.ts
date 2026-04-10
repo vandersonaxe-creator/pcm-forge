@@ -253,6 +253,20 @@ export interface Photo {
   created_at: string
 }
 
+// Work Order Parts (materials used)
+export interface WorkOrderPart {
+  id: string
+  work_order_id: string
+  part_name: string
+  part_code: string | null
+  quantity: number
+  unit: string
+  unit_cost: number | null
+  notes: string | null
+  added_by: string | null
+  created_at: string
+}
+
 // Dashboard KPIs
 export interface DashboardKPIs {
   total_assets: number

@@ -1,16 +1,23 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { QRCodeSVG, QRCodeCanvas } from "qrcode.react";
 import { Button } from "@/components/ui/button";
-import { Download, Printer } from "lucide-react";
+import { Download, Printer, QrCode, ExternalLink } from "lucide-react";
+import { cn } from "@/lib/utils";
 import type { Asset } from "@/lib/types/database";
+
+type QRMode = "internal" | "public";
 
 export function AssetQRCode({ asset }: { asset: Asset }) {
   const qrRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [mode, setMode] = useState<QRMode>("public");
 
-  const qrValue = `${typeof window !== "undefined" ? window.location.origin : ""}/assets/${asset.id}`;
+  const origin = typeof window !== "undefined" ? window.location.origin : "";
+  const internalUrl = `${origin}/assets/${asset.id}`;
+  const publicUrl = asset.qr_code ? `${origin}/request/${asset.qr_code}` : internalUrl;
+  const qrValue = mode === "public" ? publicUrl : internalUrl;
 
   const downloadPNG = () => {
     const canvas = document.getElementById(`qr-canvas-${asset.id}`) as HTMLCanvasElement;
@@ -93,6 +100,36 @@ export function AssetQRCode({ asset }: { asset: Asset }) {
 
   return (
     <div className="flex flex-col items-center gap-4 w-full">
+      {/* Mode Toggle */}
+      {asset.qr_code && (
+        <div className="flex items-center bg-muted rounded-lg p-0.5 w-full">
+          <button
+            onClick={() => setMode("public")}
+            className={cn(
+              "flex-1 flex items-center justify-center gap-1.5 text-[11px] font-semibold py-1.5 rounded-md transition-all",
+              mode === "public"
+                ? "bg-background shadow-sm text-foreground"
+                : "text-muted-foreground hover:text-foreground"
+            )}
+          >
+            <ExternalLink className="h-3 w-3" />
+            Chamado Público
+          </button>
+          <button
+            onClick={() => setMode("internal")}
+            className={cn(
+              "flex-1 flex items-center justify-center gap-1.5 text-[11px] font-semibold py-1.5 rounded-md transition-all",
+              mode === "internal"
+                ? "bg-background shadow-sm text-foreground"
+                : "text-muted-foreground hover:text-foreground"
+            )}
+          >
+            <QrCode className="h-3 w-3" />
+            Ficha Interna
+          </button>
+        </div>
+      )}
+
       <div className="p-4 bg-white rounded-xl" ref={qrRef}>
         <QRCodeSVG
           id={`qr-svg-${asset.id}`}
@@ -101,12 +138,11 @@ export function AssetQRCode({ asset }: { asset: Asset }) {
           level="M"
           includeMargin={false}
         />
-        {/* Hidden high-res canvas for reliable PNG download and print */}
         <div style={{ display: "none" }}>
           <QRCodeCanvas
             id={`qr-canvas-${asset.id}`}
             value={qrValue}
-            size={1024} // very high res
+            size={1024}
             level="M"
             includeMargin={true}
           />
@@ -114,7 +150,9 @@ export function AssetQRCode({ asset }: { asset: Asset }) {
       </div>
       
       <p className="text-xs text-muted-foreground text-center mb-1">
-        Escaneie ou use as ações abaixo para a etiqueta
+        {mode === "public"
+          ? "QR para abertura de chamado sem login"
+          : "QR para ficha interna (requer login)"}
       </p>
 
       <div className="flex flex-wrap items-center justify-center gap-2 w-full">

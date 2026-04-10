@@ -5,7 +5,7 @@ import { Separator } from "@/components/ui/separator";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
-import type { WorkOrder, Company } from "@/lib/types/database";
+import type { WorkOrder, WorkOrderPart, Company } from "@/lib/types/database";
 import { cn } from "@/lib/utils";
 import { OS_STATUS_LABELS, OS_TYPE_LABELS, OS_STATUS_COLORS } from "@/lib/constants";
 import { MapPin, Calendar, Clock, User, ClipboardList, Camera, Globe } from "lucide-react";
@@ -13,9 +13,10 @@ import { MapPin, Calendar, Clock, User, ClipboardList, Camera, Globe } from "luc
 interface WOReportDocumentProps {
   workOrder: WorkOrder;
   company: Company | null;
+  parts?: WorkOrderPart[];
 }
 
-export function WOReportDocument({ workOrder, company }: WOReportDocumentProps) {
+export function WOReportDocument({ workOrder, company, parts = [] }: WOReportDocumentProps) {
   const items = workOrder.items || [];
   const photos = items.flatMap(i => (i.photos || []) as any[]);
   const now = new Date();
@@ -201,6 +202,60 @@ export function WOReportDocument({ workOrder, company }: WOReportDocumentProps) 
           </Table>
         </div>
       </section>
+
+      {/* Materials Used */}
+      {parts.length > 0 && (
+        <section className="mb-10">
+          <div className="flex items-center gap-2 mb-4 pb-2 border-b-2 border-zinc-900">
+            <ClipboardList className="h-5 w-5 text-primary" />
+            <h3 className="text-sm font-black uppercase tracking-widest text-zinc-900">Materiais Utilizados</h3>
+          </div>
+          <div className="border rounded-lg overflow-hidden border-zinc-200">
+            <Table>
+              <TableHeader className="bg-zinc-50 border-b border-zinc-200">
+                <TableRow>
+                  <TableHead className="text-[10px] font-black text-zinc-500 uppercase">Peça / Material</TableHead>
+                  <TableHead className="text-[10px] font-black text-zinc-500 uppercase">Código</TableHead>
+                  <TableHead className="text-[10px] font-black text-zinc-500 uppercase text-center w-16">Qtd</TableHead>
+                  <TableHead className="text-[10px] font-black text-zinc-500 uppercase text-center w-16">Unid.</TableHead>
+                  <TableHead className="text-[10px] font-black text-zinc-500 uppercase text-right w-24">Custo Unit.</TableHead>
+                  <TableHead className="text-[10px] font-black text-zinc-500 uppercase text-right w-24">Total</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {parts.map((part) => {
+                  const lineTotal = (part.quantity ?? 0) * (part.unit_cost ?? 0);
+                  return (
+                    <TableRow key={part.id} className="border-b border-zinc-100 last:border-0 h-10">
+                      <TableCell className="text-xs font-semibold">{part.part_name}</TableCell>
+                      <TableCell className="text-xs text-zinc-500 font-mono">{part.part_code || "—"}</TableCell>
+                      <TableCell className="text-xs text-center font-mono">{part.quantity}</TableCell>
+                      <TableCell className="text-xs text-center text-zinc-500">{part.unit}</TableCell>
+                      <TableCell className="text-xs text-right font-mono">
+                        {part.unit_cost != null ? `R$ ${Number(part.unit_cost).toFixed(2)}` : "—"}
+                      </TableCell>
+                      <TableCell className="text-xs text-right font-mono font-semibold">
+                        {part.unit_cost != null ? `R$ ${lineTotal.toFixed(2)}` : "—"}
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
+              </TableBody>
+            </Table>
+            {(() => {
+              const grandTotal = parts.reduce((s, p) => s + (p.quantity ?? 0) * (p.unit_cost ?? 0), 0);
+              return grandTotal > 0 ? (
+                <div className="flex justify-end p-3 bg-zinc-50 border-t border-zinc-200">
+                  <span className="text-[10px] font-bold uppercase text-zinc-400 mr-4">Total de Materiais:</span>
+                  <span className="text-sm font-black text-primary font-mono">
+                    R$ {grandTotal.toFixed(2)}
+                  </span>
+                </div>
+              ) : null;
+            })()}
+          </div>
+        </section>
+      )}
 
       {/* Evidence Gallery */}
       {photos.length > 0 && (

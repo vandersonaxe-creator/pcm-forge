@@ -37,12 +37,15 @@ import {
 } from "@/lib/constants";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
+import { WOCalendarView } from "@/components/work-orders/wo-calendar-view";
 import {
   Plus,
   Search,
   Filter,
   Loader2,
   Calendar,
+  CalendarDays,
+  List,
   X,
   ClipboardList,
   Wrench,
@@ -53,6 +56,8 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
+type ViewMode = "list" | "calendar";
+
 const IconMap: any = {
   Wrench,
   AlertTriangle,
@@ -62,6 +67,7 @@ const IconMap: any = {
 
 export default function WorkOrdersPage() {
   const router = useRouter();
+  const [viewMode, setViewMode] = useState<ViewMode>("list");
   const [page, setPage] = useState(1);
   const [filterStatus, setFilterStatus] = useState("all");
   const [filterType, setFilterType] = useState("all");
@@ -131,13 +137,43 @@ export default function WorkOrdersPage() {
             Acompanhe e gerencie a execução das atividades de manutenção industrial
           </p>
         </div>
-        <Button
-          onClick={() => router.push("/work-orders/new")}
-          className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm"
-        >
-          <Plus className="mr-2 h-4 w-4" />
-          Nova OS
-        </Button>
+        <div className="flex items-center gap-2">
+          {/* View Toggle */}
+          <div className="flex items-center bg-muted rounded-lg p-0.5">
+            <button
+              onClick={() => setViewMode("list")}
+              className={cn(
+                "flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-md transition-all",
+                viewMode === "list"
+                  ? "bg-background shadow-sm text-foreground"
+                  : "text-muted-foreground hover:text-foreground"
+              )}
+            >
+              <List className="h-3.5 w-3.5" />
+              Lista
+            </button>
+            <button
+              onClick={() => setViewMode("calendar")}
+              className={cn(
+                "flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-md transition-all",
+                viewMode === "calendar"
+                  ? "bg-background shadow-sm text-foreground"
+                  : "text-muted-foreground hover:text-foreground"
+              )}
+            >
+              <CalendarDays className="h-3.5 w-3.5" />
+              Calendário
+            </button>
+          </div>
+
+          <Button
+            onClick={() => router.push("/work-orders/new")}
+            className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm"
+          >
+            <Plus className="mr-2 h-4 w-4" />
+            Nova OS
+          </Button>
+        </div>
       </div>
 
       {/* Counters */}
@@ -162,7 +198,13 @@ export default function WorkOrdersPage() {
         ))}
       </div>
 
-      {/* Filters */}
+      {/* Calendar View */}
+      {viewMode === "calendar" && (
+        <WOCalendarView />
+      )}
+
+      {/* List View */}
+      {viewMode === "list" && <>
       <Card className="bg-card border-border shadow-sm">
         <CardContent className="p-4 space-y-4">
           <div className="flex flex-wrap items-end gap-3">
@@ -428,6 +470,7 @@ export default function WorkOrdersPage() {
           </div>
         </div>
       )}
+      </>}
     </div>
   );
 }

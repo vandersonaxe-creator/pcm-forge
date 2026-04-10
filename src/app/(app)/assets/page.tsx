@@ -24,6 +24,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { StatusBadge, CriticalityBadge, CalibrationBadge } from "@/components/shared/badges";
 import { EmptyState } from "@/components/shared/empty-state";
 import { ASSET_TYPE_LABELS } from "@/lib/constants";
+import { AssetTreeView } from "@/components/assets/asset-tree-view";
 import {
   Plus,
   Search,
@@ -33,11 +34,16 @@ import {
   Loader2,
   Filter,
   CheckCircle2,
+  List,
+  GitBranchPlus,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
+type AssetViewMode = "table" | "tree";
+
 export default function AssetsPage() {
   const router = useRouter();
+  const [viewMode, setViewMode] = useState<AssetViewMode>("table");
   const [search, setSearch] = useState("");
   const [filterType, setFilterType] = useState("all");
   const [filterStatus, setFilterStatus] = useState("all");
@@ -117,13 +123,41 @@ export default function AssetsPage() {
             Gerencie equipamentos e instrumentos de medição industrial
           </p>
         </div>
-        <Button
-          onClick={() => router.push("/assets/new")}
-          className="bg-primary text-primary-foreground hover:bg-primary/90 font-semibold"
-        >
-          <Plus className="mr-2 h-4 w-4" />
-          Novo Ativo
-        </Button>
+        <div className="flex items-center gap-2">
+          <div className="flex items-center bg-muted rounded-lg p-0.5">
+            <button
+              onClick={() => setViewMode("table")}
+              className={cn(
+                "flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-md transition-all",
+                viewMode === "table"
+                  ? "bg-background shadow-sm text-foreground"
+                  : "text-muted-foreground hover:text-foreground"
+              )}
+            >
+              <List className="h-3.5 w-3.5" />
+              Tabela
+            </button>
+            <button
+              onClick={() => setViewMode("tree")}
+              className={cn(
+                "flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-md transition-all",
+                viewMode === "tree"
+                  ? "bg-background shadow-sm text-foreground"
+                  : "text-muted-foreground hover:text-foreground"
+              )}
+            >
+              <GitBranchPlus className="h-3.5 w-3.5" />
+              Árvore
+            </button>
+          </div>
+          <Button
+            onClick={() => router.push("/assets/new")}
+            className="bg-primary text-primary-foreground hover:bg-primary/90 font-semibold"
+          >
+            <Plus className="mr-2 h-4 w-4" />
+            Novo Ativo
+          </Button>
+        </div>
       </div>
 
       {/* Counters */}
@@ -253,8 +287,19 @@ export default function AssetsPage() {
         </CardContent>
       </Card>
 
+      {/* Tree View */}
+      {viewMode === "tree" && (
+        loading ? (
+          <div className="flex items-center justify-center py-16">
+            <Loader2 className="h-8 w-8 animate-spin text-primary" />
+          </div>
+        ) : (
+          <AssetTreeView assets={assets} locations={locations} categories={categories} />
+        )
+      )}
+
       {/* Table */}
-      {loading ? (
+      {viewMode === "table" && (loading ? (
         <div className="flex items-center justify-center py-16">
           <Loader2 className="h-8 w-8 animate-spin text-primary" />
         </div>
@@ -362,7 +407,7 @@ export default function AssetsPage() {
             </Table>
           </div>
         </Card>
-      )}
+      ))}
     </div>
   );
 }

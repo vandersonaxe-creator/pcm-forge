@@ -2,6 +2,7 @@
 
 import { use, useEffect, useState } from "react";
 import { useWorkOrder } from "@/hooks/use-work-orders";
+import { useWorkOrderParts } from "@/hooks/use-work-order-parts";
 import { useCompany } from "@/hooks/use-company";
 import { WOReportDocument } from "@/components/work-orders/wo-report-document";
 import { Button } from "@/components/ui/button";
@@ -18,9 +19,10 @@ export default function WorkOrderReportPage({ params }: ReportPageProps) {
   const { id } = use(params);
   const router = useRouter();
   const { workOrder, loading: woLoading, error: woError } = useWorkOrder(id);
+  const { parts, loading: partsLoading } = useWorkOrderParts(id);
   const { company, loading: coLoading } = useCompany();
 
-  if (woLoading || coLoading) {
+  if (woLoading || coLoading || partsLoading) {
     return (
       <div className="max-w-4xl mx-auto p-12 space-y-8">
         <Skeleton className="h-40 w-full" />
@@ -77,7 +79,7 @@ export default function WorkOrderReportPage({ params }: ReportPageProps) {
 
       {/* The actual document */}
       <div className="print:m-0">
-        <WOReportDocument workOrder={workOrder} company={company} />
+        <WOReportDocument workOrder={workOrder} company={company} parts={parts} />
       </div>
 
       {/* Floating Info - Hidden on print */}

@@ -184,11 +184,10 @@ export function useDashboard() {
         ),
         supabase
           .from("work_orders")
-          .select("*, asset:assets(tag, name)")
+          .select("*, asset:assets(tag, name), assignee:users(full_name)")
           .eq("company_id", companyId)
-          .eq("status", "completed")
-          .order("completed_at", { ascending: false })
-          .limit(10),
+          .order("updated_at", { ascending: false })
+          .limit(15),
       ]);
 
       if (recentRes.error) throw recentRes.error;

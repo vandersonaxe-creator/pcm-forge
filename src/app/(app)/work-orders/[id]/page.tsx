@@ -7,6 +7,7 @@ import { WOContextSidebar } from "@/components/work-orders/wo-context-sidebar";
 import { WOChecklist } from "@/components/work-orders/wo-checklist";
 import { WOProgressBar } from "@/components/work-orders/wo-progress-bar";
 import { WOFinalizeModal } from "@/components/work-orders/wo-finalize-modal";
+import { WOPartsSection } from "@/components/work-orders/wo-parts-section";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent } from "@/components/ui/card";
@@ -146,6 +147,14 @@ export default function WorkOrderExecutionPage({ params }: WOPageProps) {
                     <p className="text-sm text-muted-foreground">Inicie o atendimento para habilitar o preenchimento do checklist técnico.</p>
                   </div>
                </div>
+            )}
+
+            {/* Parts & Materials */}
+            {(workOrder.status === "in_progress" || isReadOnly) && (
+              <WOPartsSection
+                workOrderId={workOrder.id}
+                isReadOnly={isReadOnly}
+              />
             )}
 
             {/* General Notes */}

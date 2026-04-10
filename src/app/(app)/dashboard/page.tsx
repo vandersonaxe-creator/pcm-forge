@@ -5,7 +5,7 @@ import { useCompany } from "@/hooks/use-company";
 import { GridKPIBar } from "@/components/dashboard/kpi-cards";
 import { OSMonthlyChart } from "@/components/dashboard/os-monthly-chart";
 import { ComplianceGauge } from "@/components/dashboard/compliance-gauge";
-import { RecentActivity } from "@/components/dashboard/recent-activity";
+import { ActivityTimeline, buildTimelineEvents } from "@/components/dashboard/activity-timeline";
 import { OverdueAlerts, CalibrationAlerts } from "@/components/dashboard/alerts-panels";
 import { Button } from "@/components/ui/button";
 import { RefreshCw, Clock, LayoutDashboard, Building2 } from "lucide-react";
@@ -86,11 +86,19 @@ export default function DashboardPage() {
          </div>
       </div>
 
-      {/* Seção 3: Alertas Operacionais */}
-      <section className="grid gap-6 lg:grid-cols-2">
-         <OverdueAlerts items={overdue} />
-         <CalibrationAlerts items={calibrations} />
-      </section>
+      {/* Seção 3: Alertas Operacionais + Timeline */}
+      <div className="grid gap-6 lg:grid-cols-12">
+        <div className="lg:col-span-5">
+          <ActivityTimeline
+            events={buildTimelineEvents(recentWOs)}
+            loading={loading}
+          />
+        </div>
+        <div className="lg:col-span-7 grid gap-6 grid-rows-2">
+          <OverdueAlerts items={overdue} />
+          <CalibrationAlerts items={calibrations} />
+        </div>
+      </div>
 
       <footer className="pt-8 flex flex-col items-center gap-2 border-t border-border/40">
           <p className="text-[11px] text-[var(--color-text-muted)] opacity-60">
