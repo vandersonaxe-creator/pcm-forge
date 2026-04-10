@@ -118,7 +118,7 @@ export default async function PublicRequestPage({ params }: PageProps) {
       {/* Footer */}
       <footer className="py-4 text-center">
         <p className="text-[10px] text-zinc-400">
-          Powered by PCM Forge Mantix
+          Powered by PCM Forge
         </p>
       </footer>
     </div>

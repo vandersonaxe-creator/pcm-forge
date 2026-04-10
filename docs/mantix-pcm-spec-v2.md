@@ -1,4 +1,4 @@
-# MANTIX PCM v2 — Especificação Técnica Completa
+# PCM Forge v2 — Especificação Técnica Completa
 
 > **Documento para uso como prompt-base no Cursor AI.**
 > Atualizado em: 09/04/2026
@@ -10,7 +10,7 @@
 
 ## 1. Visão do Produto
 
-### O que é o Mantix
+### O que é o PCM Forge
 
 Sistema de **PCM (Planejamento e Controle de Manutenção) + Controle Metrológico** para prestadoras de serviço de manutenção industrial e PMEs industriais de pequeno e médio porte (5 a 50 técnicos).
 
@@ -26,7 +26,7 @@ Substitui planilhas de Excel e controles manuais por um sistema web/mobile que g
 
 ### Posicionamento competitivo
 
-| Aspecto | Produttivo | Tractian | **Mantix** |
+| Aspecto | Produttivo | Tractian | **PCM Forge** |
 |---------|-----------|---------|-----------|
 | Foco | Horizontal (qualquer setor) | Enterprise industrial (IoT + CMMS) | PME industrial (PCM + Metrológico) |
 | Controle metrológico | Não tem | Parcial (via CMMS) | **Nativo** (calibrações, certificados, alertas, rastreabilidade) |

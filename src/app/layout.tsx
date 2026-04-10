@@ -16,7 +16,7 @@ const jetbrainsMono = JetBrains_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "PCM Forge — Mantix",
+    default: "PCM Forge",
     template: "%s | PCM Forge",
   },
   description:
