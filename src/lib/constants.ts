@@ -175,20 +175,28 @@ export const CHECKLIST_CATEGORIES = [
   'Geral'
 ] as const;
 
-// Navigation items for sidebar
-export const NAV_ITEMS = [
+// Navigation items for sidebar (Grouped for Presentation)
+export const NAV_MAIN_ITEMS = [
   { label: 'Dashboard', href: '/dashboard', icon: 'LayoutDashboard' },
   { label: 'Ativos', href: '/assets', icon: 'Wrench' },
-  { label: 'Calibrações', href: '/calibrations', icon: 'Gauge' },
   { label: 'Planos', href: '/plans', icon: 'CalendarClock' },
   { label: 'Planejamento', href: '/planning', icon: 'CalendarRange' },
-  { label: 'Ordens de Serviço', href: '/work-orders', icon: 'ClipboardList' },
-  { label: 'Templates', href: '/templates', icon: 'FileCheck' },
+  { label: 'Ordem de Serviço', href: '/work-orders', icon: 'ClipboardList' },
 ] as const
 
-export const NAV_SETTINGS_ITEMS = [
-  { label: 'Empresa', href: '/settings', icon: 'Building2' },
-  { label: 'Usuários', href: '/settings/users', icon: 'Users' },
-  { label: 'Categorias', href: '/settings/categories', icon: 'Tag' },
-  { label: 'Localizações', href: '/settings/locations', icon: 'MapPin' },
+export const NAV_METROLOGY_ITEMS = [
+  { label: 'Metrologia', href: '/calibrations', icon: 'Gauge' },
+  { label: 'Plano Metrológico', href: '/calibrations/plans', icon: 'FileCheck' },
 ] as const
+
+export const NAV_ADMIN_ITEMS = [
+  { label: 'Categorias', href: '/settings/categories', icon: 'Tag' },
+  { label: 'Logs de Usuários', href: '/settings/logs', icon: 'History' },
+  { label: 'Avisos', href: '/settings/notices', icon: 'Bell' },
+  { label: 'Alertas', href: '/settings/alerts', icon: 'AlertTriangle' },
+] as const
+
+// Legacy exports for compatibility during transition (to be updated in components)
+export const NAV_ITEMS = NAV_MAIN_ITEMS
+export const NAV_SETTINGS_ITEMS = NAV_ADMIN_ITEMS
+
