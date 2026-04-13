@@ -1,10 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { Plus, Pencil, Trash2, Tag, Loader2 } from "lucide-react";
+import { Plus, Pencil, Trash2, Tag, Loader2, ListChecks } from "lucide-react";
 import { useCategories, createCategory, updateCategory, deleteCategory } from "@/hooks/use-assets";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import {
   Table,
   TableBody,
@@ -34,6 +34,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { ASSET_TYPE_LABELS } from "@/lib/constants";
 import { toast } from "sonner";
+import { cn } from "@/lib/utils";
 
 export default function CategoriesPage() {
   const { categories, loading, refetch } = useCategories();
@@ -82,14 +83,20 @@ export default function CategoriesPage() {
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight text-white">Categorias</h1>
-          <p className="text-[var(--color-text-secondary)] mt-1">
-            Gerencie as categorias de equipamentos e instrumentos do sistema.
+    <div className="flex flex-col min-h-screen bg-background px-6 pt-6 pb-20 lg:px-10 lg:pt-8 space-y-6">
+      
+      {/* Header Section */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div className="space-y-1">
+          <h1 className="text-[24px] font-bold tracking-tight text-[var(--color-text-primary)]">
+            Categorias de Ativos
+          </h1>
+          <p className="text-[14px] text-[var(--color-text-tertiary)] flex items-center gap-1.5">
+            <ListChecks className="h-4 w-4" />
+            <span>Gerencie as categorias de equipamentos e instrumentos do sistema</span>
           </p>
         </div>
+
         <Dialog open={isDialogOpen} onOpenChange={(open) => {
           setIsDialogOpen(open);
           if (!open) {
@@ -99,42 +106,44 @@ export default function CategoriesPage() {
         }}>
           <DialogTrigger
             render={
-              <Button className="bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-white gap-2">
+              <Button className="bg-[var(--color-brand)] hover:bg-[var(--color-brand-hover)] text-white shadow-sm gap-2">
                 <Plus className="h-4 w-4" />
                 Nova Categoria
               </Button>
             }
           />
-          <DialogContent className="bg-[#1E293B] border-[#334155] text-white">
+          <DialogContent className="bg-white border-[var(--color-border)]">
             <form onSubmit={handleSubmit}>
               <DialogHeader>
-                <DialogTitle>{editingCategory ? "Editar Categoria" : "Nova Categoria"}</DialogTitle>
-                <DialogDescription className="text-slate-400">
-                  Defina o nome e o tipo base para a categoria.
+                <DialogTitle className="text-[var(--color-text-primary)]">
+                  {editingCategory ? "Editar Categoria" : "Nova Categoria"}
+                </DialogTitle>
+                <DialogDescription className="text-[var(--color-text-tertiary)]">
+                  Defina o nome e o tipo base para organizar seus ativos.
                 </DialogDescription>
               </DialogHeader>
               <div className="grid gap-4 py-4">
                 <div className="grid gap-2">
-                  <Label htmlFor="name">Nome da Categoria</Label>
+                  <Label htmlFor="name" className="text-[var(--color-text-secondary)] font-semibold">Nome da Categoria</Label>
                   <Input
                     id="name"
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                     placeholder="Ex: Motores, Multímetros..."
-                    className="bg-[#0F172A] border-[#334155] text-white"
+                    className="bg-white border-[var(--color-border)] text-[var(--color-text-primary)] focus:ring-[var(--color-brand)]"
                     required
                   />
                 </div>
                 <div className="grid gap-2">
-                  <Label htmlFor="type">Tipo Base</Label>
+                  <Label htmlFor="type" className="text-[var(--color-text-secondary)] font-semibold">Tipo Base</Label>
                   <Select
                     value={formData.type}
                     onValueChange={(val) => setFormData({ ...formData, type: val })}
                   >
-                    <SelectTrigger className="bg-[#0F172A] border-[#334155] text-white">
+                    <SelectTrigger className="bg-white border-[var(--color-border)] text-[var(--color-text-primary)]">
                       <SelectValue placeholder="Selecione o tipo" />
                     </SelectTrigger>
-                    <SelectContent className="bg-[#1E293B] border-[#334155] text-white">
+                    <SelectContent className="bg-white border-[var(--color-border)]">
                       <SelectItem value="equipment">Equipamento</SelectItem>
                       <SelectItem value="instrument">Instrumento (Metrologia)</SelectItem>
                     </SelectContent>
@@ -146,16 +155,16 @@ export default function CategoriesPage() {
                   type="button" 
                   variant="ghost" 
                   onClick={() => setIsDialogOpen(false)}
-                  className="text-slate-300 hover:text-white"
+                  className="text-[var(--color-text-tertiary)] hover:bg-[var(--color-bg-muted)]"
                 >
                   Cancelar
                 </Button>
                 <Button 
                   type="submit" 
                   disabled={isSubmitting}
-                  className="bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-white"
+                  className="bg-[var(--color-brand)] hover:bg-[var(--color-brand-hover)] text-white"
                 >
-                  {isSubmitting ? <Loader2 className="h-4 w-4 animate-spin" /> : "Salvar"}
+                  {isSubmitting ? <Loader2 className="h-4 w-4 animate-spin" /> : "Salvar Categoria"}
                 </Button>
               </DialogFooter>
             </form>
@@ -163,50 +172,56 @@ export default function CategoriesPage() {
         </Dialog>
       </div>
 
-      <Card className="bg-[#1E293B] border-[#334155] overflow-hidden">
+      {/* Main Table Content */}
+      <Card className="bg-white border-[var(--color-border)] shadow-card overflow-hidden rounded-xl">
         <CardContent className="p-0">
           <Table>
-            <TableHeader className="bg-[#0F172A]/50">
-              <TableRow className="border-[#334155] hover:bg-transparent">
-                <TableHead className="text-slate-400 font-bold uppercase text-[11px] tracking-wider w-[50px]"></TableHead>
-                <TableHead className="text-slate-400 font-bold uppercase text-[11px] tracking-wider">Nome</TableHead>
-                <TableHead className="text-slate-400 font-bold uppercase text-[11px] tracking-wider">Tipo Base</TableHead>
-                <TableHead className="text-slate-400 font-bold uppercase text-[11px] tracking-wider text-right">Ações</TableHead>
+            <TableHeader className="bg-[var(--color-bg-page)]/50">
+              <TableRow className="border-[var(--color-border)] hover:bg-transparent">
+                <TableHead className="text-[12px] font-bold uppercase tracking-wider text-[var(--color-text-tertiary)] w-[60px] pl-6"></TableHead>
+                <TableHead className="text-[12px] font-bold uppercase tracking-wider text-[var(--color-text-tertiary)]">Nome da Categoria</TableHead>
+                <TableHead className="text-[12px] font-bold uppercase tracking-wider text-[var(--color-text-tertiary)]">Tipo de Ativo</TableHead>
+                <TableHead className="text-[12px] font-bold uppercase tracking-wider text-[var(--color-text-tertiary)] text-right pr-6">Ações</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {loading ? (
                 <TableRow>
                   <TableCell colSpan={4} className="h-32 text-center border-none">
-                    <Loader2 className="h-8 w-8 animate-spin mx-auto text-[var(--color-primary)]" />
+                    <Loader2 className="h-8 w-8 animate-spin mx-auto text-[var(--color-brand)]" />
                   </TableCell>
                 </TableRow>
               ) : categories.length === 0 ? (
                 <TableRow>
-                  <TableCell colSpan={4} className="h-32 text-center text-slate-500 border-none">
+                  <TableCell colSpan={4} className="h-32 text-center text-[var(--color-text-muted)] border-none">
                     Nenhuma categoria encontrada.
                   </TableCell>
                 </TableRow>
               ) : (
                 categories.map((category) => (
-                  <TableRow key={category.id} className="border-[#334155] hover:bg-slate-800/50 transition-colors">
-                    <TableCell>
-                      <div className="h-8 w-8 rounded-lg bg-[var(--color-primary)]/10 flex items-center justify-center">
-                        <Tag className="h-4 w-4 text-[var(--color-primary)]" />
+                  <TableRow key={category.id} className="border-[var(--color-border)] hover:bg-[var(--color-bg-card-hover)] transition-colors group">
+                    <TableCell className="pl-6">
+                      <div className="h-9 w-9 rounded-lg bg-[var(--color-brand-light)] flex items-center justify-center">
+                        <Tag className="h-4 w-4 text-[var(--color-brand)]" />
                       </div>
                     </TableCell>
-                    <TableCell className="font-medium text-white">{category.name}</TableCell>
+                    <TableCell className="font-semibold text-[var(--color-text-primary)]">
+                      {category.name}
+                    </TableCell>
                     <TableCell>
-                      <Badge className={category.asset_type === "instrument" ? "badge-warning" : "badge-info"}>
+                      <Badge className={cn(
+                        "font-medium border shadow-none px-2 py-0.5",
+                        category.asset_type === "instrument" ? "badge-warning" : "badge-info"
+                      )}>
                         {ASSET_TYPE_LABELS[category.asset_type as keyof typeof ASSET_TYPE_LABELS]}
                       </Badge>
                     </TableCell>
-                    <TableCell className="text-right space-x-2">
+                    <TableCell className="text-right pr-6 space-x-1">
                       <Button
                         size="icon"
                         variant="ghost"
                         onClick={() => handleEdit(category)}
-                        className="h-8 w-8 text-slate-400 hover:text-white hover:bg-slate-700"
+                        className="h-8 w-8 text-[var(--color-text-tertiary)] hover:text-[var(--color-brand)] hover:bg-[var(--color-brand-light)]"
                       >
                         <Pencil className="h-4 w-4" />
                       </Button>
@@ -214,7 +229,7 @@ export default function CategoriesPage() {
                         size="icon"
                         variant="ghost"
                         onClick={() => handleDelete(category.id)}
-                        className="h-8 w-8 text-slate-400 hover:text-red-400 hover:bg-red-400/10"
+                        className="h-8 w-8 text-[var(--color-text-tertiary)] hover:text-red-600 hover:bg-red-50"
                       >
                         <Trash2 className="h-4 w-4" />
                       </Button>
@@ -226,6 +241,12 @@ export default function CategoriesPage() {
           </Table>
         </CardContent>
       </Card>
+      
+      <footer className="pt-4 flex justify-center border-t border-border/40">
+        <p className="text-[11px] text-[var(--color-text-muted)] opacity-60">
+          PCM Forge · Gestão de Categorias v1.0
+        </p>
+      </footer>
     </div>
   );
 }
