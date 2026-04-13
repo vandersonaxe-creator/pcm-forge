@@ -97,12 +97,14 @@ export default function CategoriesPage() {
             setFormData({ name: "", type: "equipment" });
           }
         }}>
-          <DialogTrigger asChild>
-            <Button className="bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-white gap-2">
-              <Plus className="h-4 w-4" />
-              Nova Categoria
-            </Button>
-          </DialogTrigger>
+          <DialogTrigger
+            render={
+              <Button className="bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-white gap-2">
+                <Plus className="h-4 w-4" />
+                Nova Categoria
+              </Button>
+            }
+          />
           <DialogContent className="bg-[#1E293B] border-[#334155] text-white">
             <form onSubmit={handleSubmit}>
               <DialogHeader>
