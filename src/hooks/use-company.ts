@@ -29,7 +29,10 @@ export function useCompany() {
       .single();
 
     if (userProfile) {
-      setUser(userProfile as User);
+      setUser({
+        ...(userProfile as User),
+        email: authUser.email || "",
+      });
 
       // Fetch company
       const { data: companyData } = await supabase

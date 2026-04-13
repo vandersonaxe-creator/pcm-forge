@@ -42,6 +42,7 @@ export interface User {
   role: UserRole
   phone: string | null
   avatar_url: string | null
+  email: string
   is_active: boolean
   created_at: string
 }
