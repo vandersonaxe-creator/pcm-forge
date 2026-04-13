@@ -315,3 +315,14 @@ export interface OverdueMaintenance {
   due_date: string
   days_overdue: number
 }
+
+export interface UserLog {
+  id: string
+  company_id: string
+  user_id: string | null
+  user_name: string | null
+  user_email: string | null
+  action: string
+  details: string | null
+  created_at: string
+}

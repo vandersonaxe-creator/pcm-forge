@@ -157,6 +157,26 @@ export async function createCategory(name: string, type: 'equipment' | 'instrume
   return data;
 }
 
+export async function updateCategory(id: string, name: string, type: 'equipment' | 'instrument') {
+  const supabase = createClient();
+  const { data, error } = await supabase
+    .from("asset_categories")
+    .update({ name, asset_type: type })
+    .eq("id", id)
+    .select()
+    .single();
+  
+  if (error) throw error;
+  return data;
+}
+
+export async function deleteCategory(id: string) {
+  const supabase = createClient();
+  const { error } = await supabase.from("asset_categories").delete().eq("id", id);
+  if (error) throw error;
+}
+
+
 export async function createLocation(name: string) {
   const supabase = createClient();
   const { data: { user } } = await supabase.auth.getUser();
